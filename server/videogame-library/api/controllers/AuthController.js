@@ -26,7 +26,25 @@ module.exports = {
     
         const newUser = await Korisnik.create({ ime, prezime, korime, email, lozinka: hash, sol, tip_korisnika_id: 2 }).fetch();
     
-        return res.json({ message: 'Registracija je uspješna!' });
-      }
+        return res.json({ message: 'Registracija je uspješna.' });
+    },
+
+    login: async function (req, res) {
+        const { korime, lozinka } = req.body;
+
+        const user = await Korisnik.findOne({ korime: korime });
+
+        if (!user) {
+            return res.status(401).json({ error: 'Korisničko ime je neispravno!' });
+        }
+
+        const passwordMatch = await bcrypt.compare(lozinka, user.lozinka);
+
+        if (!passwordMatch) {
+            return res.status(401).json({ error: 'Lozinka je neispravna!' });
+        }
+
+        return res.json({ message: 'Prijava je uspješna.' });
+    }
 };
 
