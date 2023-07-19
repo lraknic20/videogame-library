@@ -20,6 +20,11 @@ module.exports.routes = {
   ***************************************************************************/
 
   '/': { view: 'pages/homepage' },
+  'GET /korisnici': 'KorisnikController.findAll',
+  'GET /korisnik/:id': 'KorisnikController.findOne',
+  'GET /tip_korisnika': 'TipKorisnikaController.find',
+  'GET /tip_korisnika_s_korisnicima': 'TipKorisnikaController.findWithUsers',
+  'POST /register': 'AuthController.register',
 
 
   /***************************************************************************
