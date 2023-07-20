@@ -28,6 +28,7 @@ module.exports.routes = {
   'POST /login': 'AuthController.login',
 
   'GET /izdavaci': 'RawgController.getDevelopers',
+  'GET /best_games': 'RawgController.getBestGames',
 
   /***************************************************************************
   *                                                                          *

@@ -38,5 +38,28 @@ module.exports = {
             return res.serverError(error);
         }
     },
+
+    async getBestGames(req, res) {
+        try {
+            const page = req.query.page;
+            const pageSize  = req.query.pageSize;
+            const parameters = {
+                page: page,
+                page_size: pageSize,
+                metacritic: '90,100',
+                ordering: '-added'
+            }
+
+            const data = await getData("games", parameters)    
+
+            if (data.detail === "Invalid page."){
+                return res.badRequest(data);
+            }
+
+            return res.ok(data);
+        } catch (error) {
+            return res.serverError(error);
+        }
+    },
 };
 
