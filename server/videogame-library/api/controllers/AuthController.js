@@ -6,6 +6,7 @@
  */
 
 const bcrypt = require('bcrypt');
+const JwtController = require('./JwtController');
 
 module.exports = {
     register: async function (req, res) {
@@ -26,11 +27,15 @@ module.exports = {
     
         const newUser = await Korisnik.create({ ime, prezime, korime, email, lozinka: hash, sol, tip_korisnika_id: 2 }).fetch();
     
-        return res.json({ message: 'Registracija je uspješna.' });
+        return res.status(200).json({ message: 'Registracija je uspješna.' });
     },
 
     login: async function (req, res) {
         const { korime, lozinka } = req.body;
+
+        if(!korime || !lozinka) {
+            return res.status(401).json({ error: 'Korisničko ime i lozinka su obavezni!' });
+        }
 
         const user = await Korisnik.findOne({ korime: korime });
 
@@ -43,8 +48,14 @@ module.exports = {
         if (!passwordMatch) {
             return res.status(401).json({ error: 'Lozinka je neispravna!' });
         }
-
-        return res.json({ message: 'Prijava je uspješna.' });
+        
+        const token = JwtController.createToken(user.id, user.korime, user.tip_korisnika_id);
+        
+        if(!token) {
+            return res.status(500).json({ error: 'Greška kod kreiranja JWT!' });
+        }
+        
+        return res.status(200).json({ token, message: 'Prijava je uspješna.' });
     }
 };
 
