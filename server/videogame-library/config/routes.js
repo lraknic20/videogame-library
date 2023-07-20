@@ -29,6 +29,7 @@ module.exports.routes = {
 
   'GET /izdavaci': 'RawgController.getDevelopers',
   'GET /best_games': 'RawgController.getBestGames',
+  'GET /popular_games': 'RawgController.getPopularGames',
 
   /***************************************************************************
   *                                                                          *

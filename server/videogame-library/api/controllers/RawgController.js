@@ -61,5 +61,28 @@ module.exports = {
             return res.serverError(error);
         }
     },
+
+    async getPopularGames(req, res) {
+        try {
+            const page = req.query.page;
+            const pageSize  = req.query.pageSize;
+            const parameters = {
+                page: page,
+                page_size: pageSize,
+                ordering: '-added',
+                dates: new Date().toISOString().slice(0, 10),
+            }
+
+            const data = await getData("games", parameters)    
+
+            if (data.detail === "Invalid page."){
+                return res.badRequest(data);
+            }
+
+            return res.ok(data);
+        } catch (error) {
+            return res.serverError(error);
+        }
+    },
 };
 
