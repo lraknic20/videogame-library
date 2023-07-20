@@ -66,11 +66,37 @@ module.exports = {
         try {
             const page = req.query.page;
             const pageSize  = req.query.pageSize;
+            const currentDate = new Date().toISOString().slice(0, 10);
             const parameters = {
                 page: page,
                 page_size: pageSize,
                 ordering: '-added',
-                dates: new Date().toISOString().slice(0, 10),
+                dates: currentDate,
+            }
+
+            const data = await getData("games", parameters)    
+
+            if (data.detail === "Invalid page."){
+                return res.badRequest(data);
+            }
+
+            return res.ok(data);
+        } catch (error) {
+            return res.serverError(error);
+        }
+    },
+
+    async getUpcomingGames(req, res) {
+        try {
+            const page = req.query.page;
+            const pageSize  = req.query.pageSize;
+            const currentDate = new Date().toISOString().slice(0, 10);
+            const futureDate = req.query.futureDate;
+            const parameters = {
+                page: page,
+                page_size: pageSize,
+                ordering: '-added',
+                dates: currentDate + ',' + futureDate,
             }
 
             const data = await getData("games", parameters)    
