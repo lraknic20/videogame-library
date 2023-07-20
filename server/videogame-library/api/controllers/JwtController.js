@@ -8,10 +8,14 @@
 const jwt = require('jsonwebtoken');
 
 module.exports = {
-    createToken: function (userId, username, userType) {
-        const token = jwt.sign({ userId, username, userType }, sails.config.secret, { expiresIn: '1h' });
+  createToken: function (userId, username, userType) {
+    const token = jwt.sign({ userId, username, userType }, sails.config.secret, { expiresIn: '1h' });
     
-        return token;
-      },
+    return token;
+  },
+
+  verifyToken: function (token) {
+    return jwt.verify(token, sails.config.secret);
+  },
 };
 

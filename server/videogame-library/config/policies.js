@@ -10,6 +10,10 @@
 
 module.exports.policies = {
 
+  'KorisnikController': {
+    '*': 'isAuthenticated',
+  },
+
   /***************************************************************************
   *                                                                          *
   * Default policy for all controllers and actions, unless overridden.       *
