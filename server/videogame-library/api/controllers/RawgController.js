@@ -14,7 +14,7 @@ async function getData(resource, parameters) {
     
     const response = await fetch(url);
     const data = await response.json();
-    return data;
+    return { data, statusCode: response.status };
 }
 
 module.exports = {
@@ -28,10 +28,10 @@ module.exports = {
                 page_size: pageSize
             }
 
-            const data = await getData("developers", parameters)    
+            const { data, statusCode } = await getData("developers", parameters)    
 
-            if (data.detail === "Invalid page."){
-                return res.badRequest(data);
+            if (statusCode === 404){
+                return res.notFound();
             }
 
             return res.ok(data);
@@ -54,10 +54,10 @@ module.exports = {
                 ...(genres && { genres }),
             }
 
-            const data = await getData("games", parameters)    
+            const { data, statusCode } = await getData("games", parameters)    
 
-            if (data.detail === "Invalid page."){
-                return res.badRequest(data);
+            if (statusCode === 404){
+                return res.notFound();
             }
 
             return res.ok(data);
@@ -79,10 +79,10 @@ module.exports = {
                 dates: currentDate,
             }
 
-            const data = await getData("games", parameters)    
+            const { data, statusCode } = await getData("games", parameters)    
 
-            if (data.detail === "Invalid page."){
-                return res.badRequest(data);
+            if (statusCode === 404){
+                return res.notFound();
             }
 
             return res.ok(data);
@@ -105,10 +105,10 @@ module.exports = {
                 dates: currentDate + ',' + futureDate,
             }
 
-            const data = await getData("games", parameters)    
+            const { data, statusCode } = await getData("games", parameters)    
 
-            if (data.detail === "Invalid page."){
-                return res.badRequest(data);
+            if (statusCode === 404){
+                return res.notFound();
             }
 
             return res.ok(data);
@@ -139,10 +139,10 @@ module.exports = {
                 ...(search && { search }),
             }
 
-            const data = await getData("games", parameters)    
+            const { data, statusCode } = await getData("games", parameters)    
 
-            if (data.detail === "Invalid page."){
-                return res.badRequest(data);
+            if (statusCode === 404){
+                return res.notFound();
             }
 
             return res.ok(data);
