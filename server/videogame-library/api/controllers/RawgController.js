@@ -151,9 +151,11 @@ module.exports = {
         }
     },
 
-    async getGenres(req, res) {
+    async getGame(req, res) {
         try {
-            const { data, statusCode } = await getData("genres")    
+            const slug = req.query.slug;
+
+            const { data, statusCode } = await getData("games" + '/' + slug)
 
             if (statusCode === 404){
                 return res.notFound();
