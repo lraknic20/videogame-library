@@ -35,6 +35,7 @@ module.exports.routes = {
   'GET /zanrovi': 'RawgController.getGenres',
   'GET /platforme': 'RawgController.getPlatforms',
 
+  'POST /zanrovi': 'ZanrController.saveGenres',
 
   /***************************************************************************
   *                                                                          *
