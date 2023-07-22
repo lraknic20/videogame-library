@@ -24,14 +24,17 @@ module.exports.routes = {
   'GET /korisnik/:id': 'KorisnikController.findOne',
   'GET /tip_korisnika': 'TipKorisnikaController.find',
   'GET /tip_korisnika_s_korisnicima': 'TipKorisnikaController.findWithUsers',
-  'POST /register': 'AuthController.register',
-  'POST /login': 'AuthController.login',
+  'POST /registracija': 'AuthController.register',
+  'POST /prijava': 'AuthController.login',
 
   'GET /izdavaci': 'RawgController.getDevelopers',
-  'GET /best_games': 'RawgController.getBestGames',
-  'GET /popular_games': 'RawgController.getPopularGames',
-  'GET /upcoming_games': 'RawgController.getUpcomingGames',
-  'GET /games': 'RawgController.getGames',
+  'GET /najbolje_igre': 'RawgController.getBestGames',
+  'GET /popularne_igre': 'RawgController.getPopularGames',
+  'GET /nadolazece_igre': 'RawgController.getUpcomingGames',
+  'GET /igre': 'RawgController.getGames',
+  'GET /zanrovi': 'RawgController.getGenres',
+  'GET /platforme': 'RawgController.getPlatforms',
+
 
   /***************************************************************************
   *                                                                          *

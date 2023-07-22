@@ -150,5 +150,55 @@ module.exports = {
             return res.serverError(error);
         }
     },
+
+    async getGenres(req, res) {
+        try {
+            const { data, statusCode } = await getData("genres")    
+
+            if (statusCode === 404){
+                return res.notFound();
+            }
+
+            return res.ok(data);
+        } catch (error) {
+            return res.serverError(error);
+        }
+    },
+
+    async getGenres(req, res) {
+        try {
+            const { data, statusCode } = await getData("genres")    
+
+            if (statusCode === 404){
+                return res.notFound();
+            }
+
+            return res.ok(data);
+        } catch (error) {
+            return res.serverError(error);
+        }
+    },
+
+    async getPlatforms(req, res) {
+        try {
+            const page = req.query.page;
+            const pageSize  = req.query.pageSize;
+            
+            const parameters = {
+                page: page,
+                page_size: pageSize
+            }
+
+            const { data, statusCode } = await getData("platforms", parameters)    
+
+            if (statusCode === 404){
+                return res.notFound();
+            }
+
+            return res.ok(data);
+        } catch (error) {
+            return res.serverError(error);
+        }
+    },
 };
 
