@@ -36,6 +36,7 @@ module.exports.routes = {
   'GET /platforme': 'RawgController.getPlatforms',
 
   'POST /zanrovi': 'ZanrController.saveGenres',
+  'POST /platforme': 'PlatformaController.savePlatforms',
 
   /***************************************************************************
   *                                                                          *
