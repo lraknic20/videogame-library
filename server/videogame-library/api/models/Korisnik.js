@@ -9,6 +9,7 @@ module.exports = {
   datastore: 'default',
   tableName: 'korisnik',
   attributes: {
+    id: { type: 'number', autoIncrement: true, },
     ime: { type: 'string', required: true, },
     prezime: { type: 'string', required: true, },
     korime: { type: 'string', required: true, },
@@ -17,6 +18,12 @@ module.exports = {
     sol: { type: 'string', required: true, },
     datum_istek_bloka: { type: 'string', allowNull: true, },
     tip_korisnika_id: { model: 'TipKorisnika', required: true, },
+    igra: {
+      collection: 'igra',
+      via: 'korisnik',
+      through: 'favorit',
+      dominant: true
+    }
   },
 };
 

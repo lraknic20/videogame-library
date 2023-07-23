@@ -39,6 +39,7 @@ module.exports.routes = {
   'POST /zanrovi': 'ZanrController.saveGenres',
   'POST /platforme': 'PlatformaController.savePlatforms',
   'POST /igra': 'IgraController.saveGame',
+  'POST /favoriziranjeIgre': 'FavoritController.saveFavourite',
 
   /***************************************************************************
   *                                                                          *
