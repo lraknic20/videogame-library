@@ -11,10 +11,11 @@ module.exports = {
   attributes: {
     naziv: { type: 'string', required: true, },
     kratki_naziv: { type: 'string', required: true, },
-    broj_igara: { type: 'number', required: true, },
+    broj_igara: { type: 'number', },
     igra: {
       collection: 'igra',
-      via: 'izdavac'
+      via: 'izdavac',
+      through: 'igra_izdavac',
     }
   },
 };

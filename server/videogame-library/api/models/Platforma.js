@@ -10,10 +10,11 @@ module.exports = {
   tableName: 'platforma',
   attributes: {
     naziv: { type: 'string', required: true, },
-    broj_igara: { type: 'number', required: true, },
+    broj_igara: { type: 'number', },
     igra: {
       collection: 'igra',
-      via: 'platforma'
+      via: 'platforma',
+      through: 'igra_platforma',
     }
   },
 };

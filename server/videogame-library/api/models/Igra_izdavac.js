@@ -1,5 +1,5 @@
 /**
- * Zanr.js
+ * Igra_izdavac.js
  *
  * @description :: A model definition represents a database table/collection.
  * @docs        :: https://sailsjs.com/docs/concepts/models-and-orm/models
@@ -7,15 +7,15 @@
 
 module.exports = {
   datastore: 'default',
-  tableName: 'zanr',
+  tableName: 'igra_has_izdavac',
   attributes: {
-    naziv: { type: 'string', required: true, },
-    broj_igara: { type: 'number', },
-    igra: {
-      collection: 'igra',
-      via: 'zanr',
-      through: 'igra_zanr',
+    igra:{
+      model:'igra',
+      columnName: 'igra_id'
+    },
+    izdavac: {
+      model: 'izdavac',
+      columnName: 'izdavac_id'
     }
   },
 };
-
