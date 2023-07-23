@@ -34,5 +34,35 @@ module.exports = {
         } catch (err) {
             return res.serverError(err);
         }
+    },
+
+    deleteFavourite: async function (req, res) {
+        try {
+            const korisnikId = req.body.korisnik;
+            const igraId = req.body.igra;
+
+            const existingGame = await Igra.findOne({ id: igraId });
+            if (existingGame) {
+                const favExists = await Favorit.findOne({
+                    korisnik: korisnikId,
+                    igra: igraId,
+                });
+    
+                if (favExists) {
+                    await Favorit.destroy({
+                        korisnik: korisnikId,
+                        igra: igraId,
+                    });
+    
+                    return res.ok('Igra je uklonjena iz favorita!');
+                } else {
+                    return res.badRequest('Igra ne postoji u favoritima!');
+                }
+            } else {
+                return res.status(404).json('Igra nije pronađena!');
+            }
+        } catch (err) {
+            return res.serverError(err);
+        }
     }
 };
