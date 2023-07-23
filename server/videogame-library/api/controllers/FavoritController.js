@@ -14,14 +14,14 @@ module.exports = {
             const existingGame = await Igra.findOne({ id: igraId });
             if (existingGame) {
                 const favExists = await Favorit.findOne({
-                    korisnik: korisnikId,
-                    igra: igraId,
+                    favoritKorisnik: korisnikId,
+                    favoritIgra: igraId,
                 });
     
                 if (!favExists) {
                     await Favorit.create({
-                        korisnik: korisnikId,
-                        igra: igraId,
+                        favoritKorisnik: korisnikId,
+                        favoritIgra: igraId,
                     });
     
                     return res.ok('Igra je dodana u favorite!');

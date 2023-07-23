@@ -41,6 +41,7 @@ module.exports.routes = {
   'POST /igra': 'IgraController.saveGame',
   'POST /favoriziranjeIgre': 'FavoritController.saveFavourite',
   'POST /brisanjeFavoriziraneIgre': 'FavoritController.deleteFavourite',
+  'POST /dodajRecenziju': 'RecenzijaController.saveReview',
 
   /***************************************************************************
   *                                                                          *

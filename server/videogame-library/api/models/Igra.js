@@ -9,7 +9,6 @@ module.exports = {
   datastore: 'default',
   tableName: 'igra',
   attributes: {
-    id: { type: 'number', autoIncrement: true, },
     naziv: { type: 'string', required: true, },
     kratki_naziv: { type: 'string', required: true, },
     opis: { type: 'string', required: true, },
@@ -38,10 +37,15 @@ module.exports = {
       through: 'igra_platforma',
       dominant: true
     },
-    korisnik: {
+    favoritKorisnik: {
       collection: 'korisnik',
-      via: 'igra',
+      via: 'favoritIgra',
       through: 'favorit'
+    },
+    recenzijaKorisnik: {
+      collection: 'korisnik',
+      via: 'recenzijaIgra',
+      through: 'recenzija'
     }
   },
 };
