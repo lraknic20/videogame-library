@@ -62,4 +62,14 @@ module.exports = {
             return res.serverError(err);
         }
     },
+
+    getGames: async function (req, res) {
+        try {
+            const games = await Igra.find();
+
+            return res.ok(games);
+        } catch (err) {
+            return res.serverError(err);
+        }
+    }
 };

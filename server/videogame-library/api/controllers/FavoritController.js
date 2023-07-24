@@ -36,6 +36,20 @@ module.exports = {
         }
     },
 
+    getFavourites: async function (req, res) {
+        try {
+            const korisnikId = req.query.korisnik;
+
+            const favs = await Favorit.find({
+                favoritKorisnik: korisnikId,
+            }).populate('favoritIgra');
+
+            return res.ok(favs);
+        } catch (err) {
+            return res.serverError(err);
+        }
+    },
+
     deleteFavourite: async function (req, res) {
         try {
             const favoritId = req.params.id;
