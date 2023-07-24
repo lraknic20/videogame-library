@@ -38,6 +38,48 @@ module.exports = {
         } catch (err) {
             return res.serverError(err);
         }
+    },
+
+    markAsDeltedReview: async function (req, res) {
+        try {
+            const recenzijaId = req.params.id;
+
+            const reviewExists = await Recenzija.findOne({ id: recenzijaId });
+
+            if (reviewExists) {
+                if(reviewExists.obrisano == 1) {
+                    return res.badRequest('Recenzija je već označena kao obrisana!');
+                }
+                const updatedReview = {
+                    obrisano: true
+                }
+                await Recenzija.updateOne({ id: recenzijaId }).set(updatedReview);
+
+                return res.ok('Recenzija je označena kao obrisana!');
+            } else {
+                return res.badRequest('Recenzija ne postoji!');
+            }
+        } catch (err) {
+            return res.serverError(err);
+        }
+    },
+
+    deleteReview: async function (req, res) {
+        try {
+            const recenzijaId = req.params.id;
+
+            const reviewExists = await Recenzija.findOne({ id: recenzijaId });
+
+            if (reviewExists) {
+                await Recenzija.destroy({ id: recenzijaId });
+
+                return res.ok('Recenzija je uklonjena!');
+            } else {
+                return res.badRequest('Recenzija ne postoji!');
+            }
+        } catch (err) {
+            return res.serverError(err);
+        }
     }
 };
 
