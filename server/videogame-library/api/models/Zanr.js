@@ -15,6 +15,11 @@ module.exports = {
       collection: 'igra',
       via: 'zanr',
       through: 'igra_zanr',
+    },
+    zaduzenKorisnik: {
+      collection: 'korisnik',
+      via: 'zaduzenZanr',
+      through: 'zaduzenZanr'
     }
   },
 };

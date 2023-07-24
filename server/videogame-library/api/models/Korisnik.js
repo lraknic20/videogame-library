@@ -28,6 +28,12 @@ module.exports = {
       via: 'recenzijaKorisnik',
       through: 'recenzija',
       dominant: true
+    },
+    zaduzenZanr: {
+      collection: 'zanr',
+      via: 'zaduzenKorisnik',
+      through: 'zaduzenZanr',
+      dominant: true
     }
   },
   isBlocked: async function (korisnikId) {
