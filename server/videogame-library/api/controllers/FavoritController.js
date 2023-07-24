@@ -6,6 +6,30 @@
  */
 
 module.exports = {
+    getFavourites: async function (req, res) {
+        try {
+            const favoriti = await Favorit.find().populate('favoritIgra');
+
+            return res.ok(favoriti);
+        } catch (err) {
+            return res.serverError(err);
+        }
+    },
+
+    getFavouritesForUser: async function (req, res) {
+        try {
+            const korisnikId = req.params.userId;
+
+            const favoriti = await Favorit.find({
+                favoritKorisnik: korisnikId,
+            }).populate('favoritIgra');
+
+            return res.ok(favoriti);
+        } catch (err) {
+            return res.serverError(err);
+        }
+    },
+    
     saveFavourite: async function (req, res) {
         try {
             const korisnikId = req.body.korisnik;
@@ -31,20 +55,6 @@ module.exports = {
             } else {
                 return res.status(404).json('Igra nije pronađena!');
             }
-        } catch (err) {
-            return res.serverError(err);
-        }
-    },
-
-    getFavourites: async function (req, res) {
-        try {
-            const korisnikId = req.query.korisnik;
-
-            const favs = await Favorit.find({
-                favoritKorisnik: korisnikId,
-            }).populate('favoritIgra');
-
-            return res.ok(favs);
         } catch (err) {
             return res.serverError(err);
         }
