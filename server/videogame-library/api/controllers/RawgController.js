@@ -153,9 +153,9 @@ module.exports = {
 
     async getGame(req, res) {
         try {
-            const slug = req.query.slug;
+            const id = req.params.id;
 
-            const { data, statusCode } = await getData("games" + '/' + slug)
+            const { data, statusCode } = await getData("games" + '/' + id)
 
             if (statusCode === 404){
                 return res.notFound();
