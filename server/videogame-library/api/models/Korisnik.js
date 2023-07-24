@@ -30,5 +30,21 @@ module.exports = {
       dominant: true
     }
   },
+  isBlocked: async function (korisnikId) {
+    const korisnik = await Korisnik.findOne({ id: korisnikId });
+
+    const datum_istek_bloka = new Date(korisnik.datum_istek_bloka).toLocaleString("hr-HR");
+    const localTime = new Date().toLocaleString('hr-HR', { timeZone: 'Europe/Zagreb' });
+
+    if (datum_istek_bloka > localTime) {
+      return {
+        status: true,
+        message: 'Blokirani ste do ' + datum_istek_bloka
+      };
+    }
+    else {
+      return false;
+    }
+  }
 };
 

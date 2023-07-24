@@ -13,6 +13,11 @@ module.exports = {
             const ocjena = req.body.ocjena;
             const komentar = req.body.komentar;
 
+            const blocked = await Korisnik.isBlocked(korisnikId);
+            if (blocked.status) {
+                return res.status(403).json(blocked.message);
+            }
+
             const existingGame = await Igra.findOne({ id: igraId });
             if (existingGame) {
                 const reviewExists = await Recenzija.findOne({
