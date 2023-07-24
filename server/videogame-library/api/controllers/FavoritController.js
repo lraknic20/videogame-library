@@ -17,13 +17,13 @@ module.exports = {
                     favoritKorisnik: korisnikId,
                     favoritIgra: igraId,
                 });
-    
+
                 if (!favExists) {
                     await Favorit.create({
                         favoritKorisnik: korisnikId,
                         favoritIgra: igraId,
                     });
-    
+
                     return res.ok('Igra je dodana u favorite!');
                 } else {
                     return res.badRequest('Igra već postoji u favoritima!');
@@ -38,29 +38,18 @@ module.exports = {
 
     deleteFavourite: async function (req, res) {
         try {
-            const korisnikId = req.body.korisnik;
-            const igraId = req.body.igra;
+            const favoritId = req.params.id;
 
-            const existingGame = await Igra.findOne({ id: igraId });
-            if (existingGame) {
-                const favExists = await Favorit.findOne({
-                    korisnik: korisnikId,
-                    igra: igraId,
-                });
-    
-                if (favExists) {
-                    await Favorit.destroy({
-                        korisnik: korisnikId,
-                        igra: igraId,
-                    });
-    
-                    return res.ok('Igra je uklonjena iz favorita!');
-                } else {
-                    return res.badRequest('Igra ne postoji u favoritima!');
-                }
+            const favExists = await Favorit.findOne({ id: favoritId });
+
+            if (favExists) {
+                await Favorit.destroy({ id: favoritId });
+
+                return res.ok('Igra je uklonjena iz favorita!');
             } else {
-                return res.status(404).json('Igra nije pronađena!');
+                return res.badRequest('Igra ne postoji u favoritima!');
             }
+
         } catch (err) {
             return res.serverError(err);
         }
