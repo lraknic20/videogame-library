@@ -16,6 +16,16 @@ module.exports = {
         } catch (err) {
             return res.serverError(err);
         }
+    },
+
+    getPlatforms: async function (req, res) {
+        try {
+            const platforms = await Platforma.find();
+
+            return res.ok(platforms);
+        } catch (err) {
+            return res.serverError(err);
+        }
     }
 };
 

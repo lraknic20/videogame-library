@@ -16,5 +16,15 @@ module.exports = {
         } catch (err) {
             return res.serverError(err);
         }
+    },
+
+    getGenres: async function (req, res) {
+        try {
+            const genres = await Zanr.find();
+
+            return res.ok(genres);
+        } catch (err) {
+            return res.serverError(err);
+        }
     }
 };
