@@ -24,10 +24,13 @@ module.exports.routes = {
   'GET /korisnici/:id': 'KorisnikController.findOne',
   'PUT /korisnici/:id': 'KorisnikController.updateUser',
   'PUT /korisnici/:id/tipKorisnika': 'KorisnikController.updateUserType',
-  'PUT /korisnici/:id/zaduzenZanr': 'ZaduzenZanrController.updateGenresInCharge',
   'PUT /korisnici/:id/datumIstekBloka': 'KorisnikController.updateUserTimeout',
+  
+  'PUT /korisnici/:id/zaduzenZanr': 'ZaduzenZanrController.updateGenresInCharge',
+  
   'GET /tip_korisnika': 'TipKorisnikaController.find',
   'GET /tip_korisnika_s_korisnicima': 'TipKorisnikaController.findWithUsers',
+  
   'POST /registracija': 'AuthController.register',
   'POST /prijava': 'AuthController.login',
 

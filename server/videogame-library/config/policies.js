@@ -12,6 +12,11 @@ module.exports.policies = {
 
   'KorisnikController': {
     '*': 'isAuthenticated',
+    'findAll': ['isAuthenticated', 'isAdmin'],
+    'findOne': ['isAuthenticated', 'isCorrectUser'],
+    'updateUser': ['isAuthenticated', 'isCorrectUser'],
+    'updateUserType': ['isAuthenticated', 'isAdmin'],
+    'updateUserTimeout': ['isAuthenticated', 'isModerator'],
   },
 
   /***************************************************************************

@@ -17,5 +17,9 @@ module.exports = {
   verifyToken: function (token) {
     return jwt.verify(token, sails.config.secret);
   },
+
+  decodeToken: function (token) {
+    return jwt.decode(token, sails.config.secret);
+  }
 };
 
