@@ -48,6 +48,7 @@ module.exports.routes = {
   'GET /favoriti': 'FavoritController.getFavourites',
   'POST /favoriti': 'FavoritController.saveFavourite',
   'DELETE /favoriti/:id': 'FavoritController.deleteFavourite',
+  'GET /recenzije': 'RecenzijaController.getReviews',
   'POST /recenzije': 'RecenzijaController.saveReview',
   'PUT /recenzije/:id': 'RecenzijaController.markAsDeltedReview',
   'DELETE /recenzije/:id': 'RecenzijaController.deleteReview',

@@ -6,6 +6,23 @@
  */
 
 module.exports = {
+    getReviews: async function (req, res) {
+        try {
+            const reviews = await Recenzija.find().populate('recenzijaKorisnik').populate('recenzijaIgra');
+
+            const anonReviews = reviews.map(review => {
+                return {
+                    ...review,
+                    recenzijaKorisnik: review.recenzijaKorisnik.korime
+                };
+            });
+
+            return res.ok(anonReviews);
+        } catch (err) {
+            return res.serverError(err);
+        }
+    },
+
     saveReview: async function (req, res) {
         try {
             const korisnikId = req.body.korisnik;
