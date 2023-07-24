@@ -15,7 +15,7 @@ module.exports = {
     email: { type: 'string', required: true, },
     lozinka: { type: 'string', required: true, },
     sol: { type: 'string', required: true, },
-    datum_istek_bloka: { type: 'string', allowNull: true, },
+    datum_istek_bloka: { type: 'ref', columnType: 'datetime' },
     tip_korisnika_id: { model: 'TipKorisnika', required: true, },
     favoritIgra: {
       collection: 'igra',

@@ -71,5 +71,25 @@ module.exports = {
     } catch (err) {
       return res.serverError(err);
     }
+  },
+
+  updateUserTimeout: async function (req, res) {
+    try {
+      const korisnikId = req.params.id;
+      const datum_istek_bloka = req.body.datum_istek_bloka;
+
+      const updatedKorisnik = {
+        datum_istek_bloka: datum_istek_bloka
+      };
+
+      const updated = await Korisnik.updateOne({ id: korisnikId }).set(updatedKorisnik);
+      if (!updated) {
+        return res.status(404).json('Korisnik nije pronađen!');
+      }
+      
+      return res.ok('Korisnik je ažuriran!');
+    } catch (err) {
+      return res.serverError(err);
+    }
   }
 };
