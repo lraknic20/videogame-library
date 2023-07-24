@@ -22,6 +22,7 @@ module.exports.routes = {
   '/': { view: 'pages/homepage' },
   'GET /korisnici': 'KorisnikController.findAll',
   'GET /korisnik/:id': 'KorisnikController.findOne',
+  'PUT /korisnik/:id': 'KorisnikController.updateUser',
   'GET /tip_korisnika': 'TipKorisnikaController.find',
   'GET /tip_korisnika_s_korisnicima': 'TipKorisnikaController.findWithUsers',
   'POST /registracija': 'AuthController.register',
@@ -44,6 +45,7 @@ module.exports.routes = {
   'POST /recenzija': 'RecenzijaController.saveReview',
   'PUT /recenzija/:id': 'RecenzijaController.markAsDeltedReview',
   'DELETE /recenzija/:id': 'RecenzijaController.deleteReview',
+
 
   /***************************************************************************
   *                                                                          *
