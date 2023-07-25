@@ -20,6 +20,43 @@ module.exports.routes = {
   ***************************************************************************/
 
   '/': { view: 'pages/homepage' },
+  'GET /korisnici': 'KorisnikController.findAll',
+  'GET /korisnici/:id': 'KorisnikController.findOne',
+  'PUT /korisnici/:id': 'KorisnikController.updateUser',
+  'PUT /korisnici/:id/tipKorisnika': 'KorisnikController.updateUserType',
+  'PUT /korisnici/:id/datumIstekBloka': 'KorisnikController.updateUserTimeout',
+  
+  'PUT /korisnici/:id/zaduzenZanr': 'ZaduzenZanrController.updateGenresInCharge',
+  
+  'GET /tip_korisnika': 'TipKorisnikaController.find',
+  'GET /tip_korisnika_s_korisnicima': 'TipKorisnikaController.findWithUsers',
+  
+  'POST /registracija': 'AuthController.register',
+  'POST /prijava': 'AuthController.login',
+
+  'GET /rawg/izdavaci': 'RawgController.getDevelopers',
+  'GET /rawg/najbolje_igre': 'RawgController.getBestGames',
+  'GET /rawg/popularne_igre': 'RawgController.getPopularGames',
+  'GET /rawg/nadolazece_igre': 'RawgController.getUpcomingGames',
+  'GET /rawg/igre': 'RawgController.getGames',
+  'GET /rawg/igre/:id': 'RawgController.getGame',
+  'GET /rawg/zanrovi': 'RawgController.getGenres',
+  'GET /rawg/platforme': 'RawgController.getPlatforms',
+
+  'GET /zanrovi': 'ZanrController.getGenres',
+  'POST /zanrovi': 'ZanrController.saveGenres',
+  'GET /platforme': 'PlatformaController.getPlatforms',
+  'POST /platforme': 'PlatformaController.savePlatforms',
+  'GET /igre': 'IgraController.getGames',
+  'POST /igre': 'IgraController.saveGame',
+  'GET /favoriti': 'FavoritController.getFavourites',
+  'GET /favoriti/:id': 'FavoritController.getFavouritesForUser',
+  'POST /favoriti': 'FavoritController.saveFavourite',
+  'DELETE /favoriti/:id': 'FavoritController.deleteFavourite',
+  'GET /recenzije': 'RecenzijaController.getReviews',
+  'POST /recenzije': 'RecenzijaController.saveReview',
+  'PUT /recenzije/:id': 'RecenzijaController.markAsDeltedReview',
+  'DELETE /recenzije/:id': 'RecenzijaController.deleteReview',
 
 
   /***************************************************************************

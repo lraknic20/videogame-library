@@ -10,6 +10,47 @@
 
 module.exports.policies = {
 
+  'KorisnikController': {
+    '*': 'isAuthenticated',
+    'findAll': ['isAuthenticated', 'isAdmin'],
+    'findOne': ['isAuthenticated', 'isCorrectUser'],
+    'updateUser': ['isAuthenticated', 'isCorrectUser'],
+    'updateUserType': ['isAuthenticated', 'isAdmin'],
+    'updateUserTimeout': ['isAuthenticated', 'isModerator'],
+  },
+
+  'ZaduzenZanrController': {
+    'updateGenresInCharge': ['isAuthenticated', 'isAdmin'],
+  },
+
+  'TipKorisnikaController': {
+    '*': ['isAuthenticated', 'isAdmin']
+  },
+
+  'ZanrController': {
+    'saveGenres': ['isAuthenticated', 'isAdmin']
+  },
+
+  'PlatformaController': {
+    'savePlatforms': ['isAuthenticated', 'isAdmin']
+  },
+
+  'IgraController': {
+    'saveGame': 'isAuthenticated'
+  },
+
+  'FavoritController': {
+    '*': 'isAuthenticated',
+    'getFavourites': ['isAuthenticated', 'isAdmin'],
+    'getFavouritesForUser': ['isAuthenticated', 'isCorrectUser']
+  },
+
+  'RecenzijaController': {
+    'saveReview': 'isAuthenticated',
+    'markAsDeltedReview': ['isAuthenticated', 'isModerator'],
+    'deleteReview': ['isAuthenticated', 'isAdmin'],
+  },
+
   /***************************************************************************
   *                                                                          *
   * Default policy for all controllers and actions, unless overridden.       *

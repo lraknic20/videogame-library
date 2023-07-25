@@ -35,6 +35,7 @@ module.exports.datastores = {
   default: {
     adapter: require('sails-mysql'),
     url: 'mysql://root:@pj12fV2@localhost:3306/mydb',
+    timezone: 'Europe/Zagreb'
   },
 
 
