@@ -18,7 +18,7 @@ module.exports = {
 
     getFavouritesForUser: async function (req, res) {
         try {
-            const korisnikId = req.params.userId;
+            const korisnikId = req.params.id;
 
             const favoriti = await Favorit.find({
                 favoritKorisnik: korisnikId,

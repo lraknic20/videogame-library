@@ -19,6 +19,38 @@ module.exports.policies = {
     'updateUserTimeout': ['isAuthenticated', 'isModerator'],
   },
 
+  'ZaduzenZanrController': {
+    'updateGenresInCharge': ['isAuthenticated', 'isAdmin'],
+  },
+
+  'TipKorisnikaController': {
+    '*': ['isAuthenticated', 'isAdmin']
+  },
+
+  'ZanrController': {
+    'saveGenres': ['isAuthenticated', 'isAdmin']
+  },
+
+  'PlatformaController': {
+    'savePlatforms': ['isAuthenticated', 'isAdmin']
+  },
+
+  'IgraController': {
+    'saveGame': 'isAuthenticated'
+  },
+
+  'FavoritController': {
+    '*': 'isAuthenticated',
+    'getFavourites': ['isAuthenticated', 'isAdmin'],
+    'getFavouritesForUser': ['isAuthenticated', 'isCorrectUser']
+  },
+
+  'RecenzijaController': {
+    'saveReview': 'isAuthenticated',
+    'markAsDeltedReview': ['isAuthenticated', 'isModerator'],
+    'deleteReview': ['isAuthenticated', 'isAdmin'],
+  },
+
   /***************************************************************************
   *                                                                          *
   * Default policy for all controllers and actions, unless overridden.       *

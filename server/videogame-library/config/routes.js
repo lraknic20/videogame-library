@@ -50,7 +50,7 @@ module.exports.routes = {
   'GET /igre': 'IgraController.getGames',
   'POST /igre': 'IgraController.saveGame',
   'GET /favoriti': 'FavoritController.getFavourites',
-  'GET /favoriti/:userId': 'FavoritController.getFavouritesForUser',
+  'GET /favoriti/:id': 'FavoritController.getFavouritesForUser',
   'POST /favoriti': 'FavoritController.saveFavourite',
   'DELETE /favoriti/:id': 'FavoritController.deleteFavourite',
   'GET /recenzije': 'RecenzijaController.getReviews',
