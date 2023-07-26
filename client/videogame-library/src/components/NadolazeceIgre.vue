@@ -1,50 +1,75 @@
 <template>
-    <div>
-      <h2>Nadolazeće igre</h2>
+  <div>
+    <h2>Nadolazeće igre</h2>
+      <div class="date-picker-container">
+        <VueDatePicker 
+          v-model="selectedDate"
+          :enable-time-picker="false"
+          locale="hr"
+          format="d.M.yyyy"
+          select-text="Odaberi"
+          cancel-text="Odustani"
+          :clearable="false"
+          :min-date="new Date()"
+          @update:model-value="onDateChange"
+        />
+      </div>
       <div class="game-container">
         <div v-for="igra in nadolazeceIgre" :key="igra.id" class="game-item">
           <img :src="igra.background_image" :alt="igra.name" class="game-picture" />
           <p class="game-name">{{ igra.name }}</p>
         </div>
-      </div>
     </div>
-  </template>
+  </div>
+</template>
 
 <script setup lang="ts">
-import axios from 'axios';
 import { ref, onMounted } from 'vue';
-import type { IgraRAWGI } from '../types';
+import type { IgraRAWGI } from '@/types/IgreRAWGI';
+import axiosClient from '@/services/axiosClient';
 
-const nadolazeceIgre = ref<IgraRAWGI[]>([]);
+let nadolazeceIgre = ref<IgraRAWGI[]>([]);
 
-const fetchData = async () => {
-    try {
-        const response = await axios.get('http://localhost:1337/rawg/nadolazece_igre?page=1&pageSize=20&futureDate=2023-08-20');
-        const data = await response.data;
-        nadolazeceIgre.value = data.results;
-    } catch (error) {
-        console.error('Greška pri dohvaćanju nadolazećih igara!', error);
-    }
+let selectedDate = ref(new Date());
+selectedDate.value.setMonth(selectedDate.value.getMonth() + 1);
+
+const onDateChange = () => {
+  fetchData();
+};
+
+var fetchData = async () => {
+  try {
+    const response = await axiosClient.get('rawg/nadolazece_igre?page=1&pageSize=20&futureDate=' + selectedDate.value.toISOString().split('T')[0]);
+    const data = await response.data;
+    nadolazeceIgre.value = data.results;
+  } catch (error) {
+    console.error('Greška pri dohvaćanju nadolazećih igara!', error);
+  }
 };
 
 onMounted(fetchData);
 </script>
 
 <style scoped>
+.date-picker-container {
+  width: 20%;
+  margin-bottom: 2%;
+}
+
 .game-container {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: center;
 }
 
 .game-item {
-  width: 30%;
+  width: 40%;
   margin-bottom: 20px;
   text-align: center;
 }
 
 .game-picture {
-  width: 100%;
+  width: 70%;
   max-height: 200px;
   object-fit: cover;
 }
