@@ -1,25 +1,37 @@
 <template>
   <div>
     <h2>Nadolazeće igre</h2>
-      <div class="date-picker-container">
-        <VueDatePicker 
-          v-model="selectedDate"
-          :enable-time-picker="false"
-          locale="hr"
-          format="d.M.yyyy"
-          select-text="Odaberi"
-          cancel-text="Odustani"
-          :clearable="false"
-          :min-date="new Date()"
-          @update:model-value="onDateChange"
-        />
-      </div>
-      <div class="game-container">
-        <div v-for="igra in nadolazeceIgre" :key="igra.id" class="game-item">
-          <img :src="igra.background_image" :alt="igra.name" class="game-picture" />
-          <p class="game-name">{{ igra.name }}</p>
-        </div>
+    <div class="date-picker-container">
+      <VueDatePicker v-model="selectedDate" 
+        :enable-time-picker="false"
+        locale="hr"
+        format="d.M.yyyy"
+        select-text="Odaberi"
+        cancel-text="Odustani"
+        :clearable="false"
+        :min-date="new Date()"
+        @update:model-value="onDateChange"
+      />
     </div>
+    <select v-model="pageSize" @change="onPageSizeChange">
+      <option value="10" selected>10</option>
+      <option value="20">20</option>
+      <option value="30">30</option>
+      <option value="40">40</option>
+    </select>
+    <div class="game-container">
+      <div v-for="igra in nadolazeceIgre" :key="igra.id" class="game-item">
+        <img :src="igra.background_image" :alt="igra.name" class="game-picture" />
+        <p class="game-name">{{ igra.name }}</p>
+      </div>
+    </div>
+    <vue-awesome-paginate
+      :total-items="count"
+      :items-per-page="pageSize"
+      :max-pages-shown="5"
+      v-model="currentPage"
+      :on-click="onPageChange"
+    />
   </div>
 </template>
 
@@ -33,15 +45,28 @@ let nadolazeceIgre = ref<IgraRAWGI[]>([]);
 let selectedDate = ref(new Date());
 selectedDate.value.setMonth(selectedDate.value.getMonth() + 1);
 
+let currentPage = ref(1);
+let pageSize = ref(10);
+let count = ref();
+
 const onDateChange = () => {
+  fetchData();
+};
+
+const onPageChange = () => {
+  fetchData();
+};
+
+const onPageSizeChange = () => {
   fetchData();
 };
 
 var fetchData = async () => {
   try {
-    const response = await axiosClient.get('rawg/nadolazece_igre?page=1&pageSize=20&futureDate=' + selectedDate.value.toISOString().split('T')[0]);
+    const response = await axiosClient.get('rawg/nadolazece_igre?page=' + currentPage.value + '&pageSize=' + pageSize.value + '&futureDate=' + selectedDate.value.toISOString().split('T')[0]);
     const data = await response.data;
     nadolazeceIgre.value = data.results;
+    count.value = data.count;
   } catch (error) {
     console.error('Greška pri dohvaćanju nadolazećih igara!', error);
   }
