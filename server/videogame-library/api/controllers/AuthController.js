@@ -40,13 +40,13 @@ module.exports = {
         const user = await Korisnik.findOne({ korime: korime });
 
         if (!user) {
-            return res.status(401).json({ error: 'Korisničko ime je neispravno!' });
+            return res.status(401).json({ error: 'Korisničko ime ili lozinka su neispravni!' });
         }
 
         const passwordMatch = await bcrypt.compare(lozinka, user.lozinka);
 
         if (!passwordMatch) {
-            return res.status(401).json({ error: 'Lozinka je neispravna!' });
+            return res.status(401).json({ error: 'Korisničko ime ili lozinka su neispravni!' });
         }
         
         const token = JwtController.createToken(user.id, user.korime, user.tip_korisnika_id);
@@ -55,7 +55,7 @@ module.exports = {
             return res.status(500).json({ error: 'Greška kod kreiranja JWT!' });
         }
         
-        return res.status(200).json({ token, message: 'Prijava je uspješna.' });
+        return res.status(200).json({ id: user.id, korime: user.korime, token, message: 'Prijava je uspješna.' });
     }
 };
 

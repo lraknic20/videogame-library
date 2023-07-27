@@ -47,7 +47,7 @@ selectedDate.value.setMonth(selectedDate.value.getMonth() + 1);
 
 let currentPage = ref(1);
 let pageSize = ref(10);
-let count = ref();
+let count = ref(0);
 
 const onDateChange = () => {
   fetchData();

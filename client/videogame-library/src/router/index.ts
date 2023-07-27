@@ -1,4 +1,5 @@
-import PocetnaViewVue from '@/views/PocetnaView.vue'
+import PocetnaView from '@/views/PocetnaView.vue'
+import PrijavaView from '@/views/PrijavaView.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 
 const router = createRouter({
@@ -6,8 +7,13 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: 'home',
-      component: PocetnaViewVue
+      name: 'pocetna',
+      component: PocetnaView
+    },
+    {
+      path: '/prijava',
+      name: 'prijava',
+      component: PrijavaView
     },
     // {
     //   path: '/about',

@@ -7,6 +7,7 @@ import { RouterLink, RouterView } from 'vue-router'
     <div class="wrapper">
       <nav>
         <RouterLink to="/">Početna</RouterLink>
+        <RouterLink to="/prijava">Prijava</RouterLink>
       </nav>
     </div>
   </header>
