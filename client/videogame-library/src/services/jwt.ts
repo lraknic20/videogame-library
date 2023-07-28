@@ -14,3 +14,12 @@ export function isTokenExpired(token: string): boolean {
         return true;
     }
 }
+
+export function returnDecodedToken(token: string) {
+    try {
+        const decodedToken = jwtDecode(token);
+        return decodedToken;
+    } catch (error) {
+        return {};
+    }
+}

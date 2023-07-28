@@ -1,5 +1,10 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
+import { isLoggedIn, isAdmin, isModerator } from '@/services/auth';
+import { ref } from 'vue';
+
+let loggedIn = ref(isLoggedIn());
+
 </script>
 
 <template>
@@ -7,7 +12,8 @@ import { RouterLink, RouterView } from 'vue-router'
     <div class="wrapper">
       <nav>
         <RouterLink to="/">Početna</RouterLink>
-        <RouterLink to="/prijava">Prijava</RouterLink>
+        <RouterLink v-if="!loggedIn" to="/prijava">Prijava</RouterLink>
+        <RouterLink v-if="loggedIn" to="/odjava">Odjava</RouterLink>
       </nav>
     </div>
   </header>
