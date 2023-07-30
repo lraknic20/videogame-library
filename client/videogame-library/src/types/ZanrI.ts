@@ -1,5 +1,5 @@
 export interface ZanrI {
     id: number;
     naziv: string;
-    br_igara: number;
+    broj_igara: number;
 }

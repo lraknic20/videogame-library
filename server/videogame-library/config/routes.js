@@ -26,6 +26,8 @@ module.exports.routes = {
   'PUT /korisnici/:id/tipKorisnika': 'KorisnikController.updateUserType',
   'PUT /korisnici/:id/datumIstekBloka': 'KorisnikController.updateUserTimeout',
   
+  'POST /korisnici/:id/zaduzenZanr': 'ZaduzenZanrController.addGenresInCharge',
+  'DELETE /korisnici/:id/zaduzenZanr': 'ZaduzenZanrController.deleteGenresInCharge',
   'PUT /korisnici/:id/zaduzenZanr': 'ZaduzenZanrController.updateGenresInCharge',
   
   'GET /tip_korisnika': 'TipKorisnikaController.find',

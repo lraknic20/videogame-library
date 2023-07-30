@@ -1,6 +1,7 @@
 import PocetnaView from '@/views/PocetnaView.vue'
 import PrijavaView from '@/views/PrijavaView.vue'
 import ProfilView  from '@/views/ProfilView.vue'
+import AdminView  from '@/views/AdminView.vue'
 import Odjava from '@/components/Odjava.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 
@@ -43,6 +44,12 @@ const router = createRouter({
       name: 'profil',
       component: ProfilView,
       meta: { requiresAuth: true },
+    },
+    {
+      path: '/admin',
+      name: 'admin',
+      component: AdminView,
+      meta: { requiresAuth: true, userType: 2 },
     },
     // {
     //   path: '/about',

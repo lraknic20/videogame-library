@@ -8,7 +8,7 @@
 module.exports = {
   findAll: async function (req, res) {
     try {
-      const korisnici = await Korisnik.find();
+      const korisnici = await Korisnik.find().populate('tip_korisnika_id').populate('zaduzenZanr');
       return res.json(korisnici);
     } catch (err) {
       return res.serverError(err);

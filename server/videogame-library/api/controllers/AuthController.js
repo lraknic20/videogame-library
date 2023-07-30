@@ -25,7 +25,7 @@ module.exports = {
         const sol = await bcrypt.genSalt(saltRounds);
         const hash = await bcrypt.hash(lozinka, sol);
     
-        const newUser = await Korisnik.create({ ime, prezime, korime, email, lozinka: hash, sol, tip_korisnika_id: 2 }).fetch();
+        const newUser = await Korisnik.create({ ime, prezime, korime, email, lozinka: hash, sol, tip_korisnika_id: 1 }).fetch();
     
         return res.status(200).json({ message: 'Registracija je uspješna.' });
     },

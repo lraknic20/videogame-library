@@ -15,6 +15,7 @@ let loggedIn = ref(isLoggedIn());
         <RouterLink v-if="!loggedIn" to="/prijava">Prijava</RouterLink>
         <RouterLink v-if="loggedIn" to="/odjava">Odjava</RouterLink>
         <RouterLink v-if="loggedIn" to="/profil">Profil</RouterLink>
+        <RouterLink v-if="loggedIn && isAdmin()" to="/admin">Admin</RouterLink>
       </nav>
     </div>
   </header>
