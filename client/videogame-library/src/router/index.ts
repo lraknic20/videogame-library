@@ -2,6 +2,7 @@ import PocetnaView from '@/views/PocetnaView.vue'
 import PrijavaView from '@/views/PrijavaView.vue'
 import ProfilView  from '@/views/ProfilView.vue'
 import AdminView  from '@/views/AdminView.vue'
+import IstraziView  from '@/views/IstraziView.vue'
 import Odjava from '@/components/Odjava.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 
@@ -50,6 +51,12 @@ const router = createRouter({
       name: 'admin',
       component: AdminView,
       meta: { requiresAuth: true, userType: 2 },
+    },
+    {
+      path: '/istrazi',
+      name: 'istrazi',
+      component: IstraziView,
+      meta: { requiresAuth: false },
     },
     // {
     //   path: '/about',
