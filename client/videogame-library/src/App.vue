@@ -13,6 +13,7 @@ let loggedIn = ref(isLoggedIn());
       <nav>
         <RouterLink to="/">Početna</RouterLink>
         <RouterLink to="/istrazi">Istraži</RouterLink>
+        <RouterLink to="/izdavaci">Izdavači</RouterLink>
         <RouterLink v-if="!loggedIn" to="/prijava">Prijava</RouterLink>
         <RouterLink v-if="loggedIn" to="/odjava">Odjava</RouterLink>
         <RouterLink v-if="loggedIn" to="/profil">Profil</RouterLink>

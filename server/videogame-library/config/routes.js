@@ -36,7 +36,8 @@ module.exports.routes = {
   'POST /registracija': 'AuthController.register',
   'POST /prijava': 'AuthController.login',
 
-  'GET /rawg/izdavaci': 'RawgController.getDevelopers',
+  'GET /rawg/izdavaci': 'RawgController.getPublishers',
+  'GET /rawg/izdavaci/:id': 'RawgController.getPublisher',
   'GET /rawg/najbolje_igre': 'RawgController.getBestGames',
   'GET /rawg/popularne_igre': 'RawgController.getPopularGames',
   'GET /rawg/nadolazece_igre': 'RawgController.getUpcomingGames',

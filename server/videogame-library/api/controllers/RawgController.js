@@ -18,7 +18,7 @@ async function getData(resource, parameters) {
 }
 
 module.exports = {
-    async getDevelopers(req, res) {
+    async getPublishers(req, res) {
         try {
             const page = req.query.page;
             const pageSize  = req.query.pageSize;
@@ -28,7 +28,23 @@ module.exports = {
                 page_size: pageSize
             }
 
-            const { data, statusCode } = await getData("developers", parameters)    
+            const { data, statusCode } = await getData("publishers", parameters)    
+
+            if (statusCode === 404){
+                return res.notFound();
+            }
+
+            return res.ok(data);
+        } catch (error) {
+            return res.serverError(error);
+        }
+    },
+
+    async getPublisher(req, res) {
+        try {
+            const id = req.params.id;
+
+            const { data, statusCode } = await getData("publishers/" + id)    
 
             if (statusCode === 404){
                 return res.notFound();

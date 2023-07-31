@@ -3,6 +3,8 @@ import PrijavaView from '@/views/PrijavaView.vue'
 import ProfilView  from '@/views/ProfilView.vue'
 import AdminView  from '@/views/AdminView.vue'
 import IstraziView  from '@/views/IstraziView.vue'
+import IzdavaciView  from '@/views/IzdavaciView.vue'
+import IzdavacView  from '@/views/IzdavacView.vue'
 import Odjava from '@/components/Odjava.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 
@@ -56,6 +58,18 @@ const router = createRouter({
       path: '/istrazi',
       name: 'istrazi',
       component: IstraziView,
+      meta: { requiresAuth: false },
+    },
+    {
+      path: '/izdavaci',
+      name: 'izdavaci',
+      component: IzdavaciView,
+      meta: { requiresAuth: false },
+    },
+    {
+      path: '/izdavaci/:id',
+      name: 'izdavac',
+      component: IzdavacView,
       meta: { requiresAuth: false },
     },
     // {
