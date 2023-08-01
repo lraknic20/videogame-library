@@ -28,8 +28,10 @@
     {{ error }}
     <div class="game-container">
         <div v-for="igra in igre" :key="igra.id" class="game-item">
-            <img :src="igra.background_image" :alt="igra.name" class="game-picture" />
-            <p class="game-name">{{ igra.name }}</p>
+            <RouterLink :to="`/igre/${igra.slug}`">
+                <img :src="igra.background_image" :alt="igra.name" class="game-picture" />
+                <p class="game-name">{{ igra.name }}</p>
+            </RouterLink>
         </div>
     </div>
     <vue-awesome-paginate :total-items="count" :items-per-page="pageSize" :max-pages-shown="5" v-model="currentPage"

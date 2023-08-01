@@ -8,31 +8,45 @@ export interface IgreRAWGI {
 export interface IgraRAWGI {
     id: number;
     name: string;
-    slug: string,
-    genres: Array<ZanrRAWGI>;
-    platforms: Array<PlatformeRAWGI>;
-    tba: boolean,
-    released: string,
-    background_image: string,
+    slug: string;
+    description: string;
+    genres: Array<genres>;
+    platforms: Array<platforms>;
+    publishers: Array<publishers>;
+    tba: boolean;
+    released: string;
+    background_image: string;
+    website: string;
+    metacritic: number;
 }
 
-export interface ZanrRAWGI {
+export interface genres {
     id: number;
     name: string;
-    slug: string,
+    slug: string;
 }
 
-export interface PlatformeRAWGI {
-    id: number;
-    name: string;
-    slug: string,
+export interface platforms {
+    platform: platform;
+    requirements?: requirements;
 }
 
-export interface IzdavacRAWGI {
+export interface platform {
     id: number;
     name: string;
-    slug: string,
-    games_count: number,
-    image_background: string,
-    description: string
+    slug: string;
+}
+
+export interface requirements {
+    minimum: string;
+    recommended: string;
+}
+
+export interface publishers {
+    id: number;
+    name: string;
+    slug: string;
+    games_count: number;
+    image_background: string;
+    description: string;
 }

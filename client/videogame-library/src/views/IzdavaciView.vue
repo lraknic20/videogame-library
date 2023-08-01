@@ -15,10 +15,10 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import type { IzdavacRAWGI } from '@/types/IgreRAWGI';
+import type { publishers } from '@/types/IgreRAWGI';
 import axiosClient from '@/services/axiosClient';
 
-let izdavaci = ref<IzdavacRAWGI[]>([]);
+let izdavaci = ref<publishers[]>([]);
 let currentPage = ref<number>(1);
 let pageSize = ref<number>(10);
 let count = ref<number>(0);

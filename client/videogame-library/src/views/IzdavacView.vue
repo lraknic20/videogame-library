@@ -11,23 +11,25 @@
     {{ error }}
     <div v-if="igre" class="game-container">
         <div v-for="igra in igre" :key="igra.id" class="game-item">
-            <img :src="igra.background_image" :alt="igra.name" class="game-picture" />
-            <p class="game-name">{{ igra.name }}</p>
+            <RouterLink :to="`/igre/${igra.slug}`">
+                <img :src="igra.background_image" :alt="igra.name" class="game-picture" />
+                <p class="game-name">{{ igra.name }}</p>
+            </RouterLink>
         </div>
     </div>
-    <vue-awesome-paginate v-if="igre" :total-items="count" :items-per-page="pageSize" :max-pages-shown="5" v-model="currentPage"
-        :on-click="getGamesForPublisher" />
+    <vue-awesome-paginate v-if="igre" :total-items="count" :items-per-page="pageSize" :max-pages-shown="5"
+        v-model="currentPage" :on-click="getGamesForPublisher" />
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import type { IzdavacRAWGI, IgraRAWGI } from '@/types/IgreRAWGI';
+import type { publishers, IgraRAWGI } from '@/types/IgreRAWGI';
 import axiosClient from '@/services/axiosClient';
 import { useRoute } from 'vue-router'
 
-const route = useRoute()
+const route = useRoute();
 
-let izdavac = ref<IzdavacRAWGI>();
+let izdavac = ref<publishers>();
 let igre = ref<IgraRAWGI[]>([]);
 let error = ref<string>();
 
