@@ -24,6 +24,7 @@ export interface genres {
     id: number;
     name: string;
     slug: string;
+    games_count: number;
 }
 
 export interface platforms {
@@ -35,6 +36,7 @@ export interface platform {
     id: number;
     name: string;
     slug: string;
+    games_count: number;
 }
 
 export interface requirements {

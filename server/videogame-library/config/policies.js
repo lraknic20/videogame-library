@@ -28,7 +28,8 @@ module.exports.policies = {
   },
 
   'ZanrController': {
-    'saveGenres': ['isAuthenticated', 'isAdmin']
+    'saveGenres': ['isAuthenticated', 'isAdmin'],
+    'updateGenre': ['isAuthenticated', 'isAdmin']
   },
 
   'PlatformaController': {
