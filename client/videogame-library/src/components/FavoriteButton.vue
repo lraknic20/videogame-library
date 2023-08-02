@@ -47,14 +47,14 @@ const saveFavoriteGame = () => {
                 minimalni_zahtjevi: props.game.platforms.find((data) => data.platform.name === 'PC')?.requirements?.minimum,
                 preporuceni_zahtjevi: props.game.platforms.find((data) => data.platform.name === 'PC')?.requirements?.recommended,
             },
-            zanr: props.game.genres.map((genre) => genre.name).join(', '),
             izdavac: props.game.publishers.map((publisher) => ({
                 id: publisher.id,
                 naziv: publisher.name,
                 kratki_naziv: publisher.slug,
                 broj_igara: publisher.games_count,
             })),
-            platforma: props.game.platforms.map((platform) => platform.platform.name).join(', ')
+            zanr: props.game.genres.map((genre) => genre.id),
+            platforma: props.game.platforms.map((platform) => platform.platform.id)
         })
         .then((response) => {
             if (response.status == 200)
@@ -75,8 +75,7 @@ var deleteFavorite = () => {
             }
         })
         .catch((err) => {
-            console.log('Greška kod brisanja favorita');
-            console.log(err);
+            toast.error("Greška kod brisanja favorita!")
         });
 }
 
