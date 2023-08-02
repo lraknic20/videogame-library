@@ -42,7 +42,8 @@ module.exports.policies = {
   'FavoritController': {
     '*': 'isAuthenticated',
     'getFavourites': ['isAuthenticated', 'isAdmin'],
-    'getFavouritesForUser': ['isAuthenticated', 'isCorrectUser']
+    'getFavouritesForUser': ['isAuthenticated', 'isCorrectUser'],
+    'getFavouriteForUser': ['isAuthenticated', 'isCorrectUser']
   },
 
   'RecenzijaController': {

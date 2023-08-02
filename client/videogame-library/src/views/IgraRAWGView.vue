@@ -2,7 +2,10 @@
     <div v-if="igra && !error" class="game-card">
         <img :src="igra.background_image" :alt="igra.name" class="game-image" />
         <div class="game-details">
-            <h2 class="game-name">{{ igra.name }}</h2>
+            <div class="game-name">
+                <h2>{{ igra.name }}</h2>
+                <FavoriteButton :game="igra" />
+            </div>
             <p class="game-description" v-html="igra.description"></p>
             <div class="game-genres">
                 <h3 class="game-genres">Žanrovi:</h3>
@@ -40,9 +43,10 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import type { IgraRAWGI, genres, platforms, publishers, requirements } from '@/types/IgreRAWGI';
+import type { IgraRAWGI, genres, platforms, requirements } from '@/types/IgreRAWGI';
 import axiosClient from '@/services/axiosClient';
 import { useRoute } from 'vue-router'
+import FavoriteButton from '@/components/FavoriteButton.vue';
 
 const route = useRoute();
 
@@ -108,6 +112,12 @@ onMounted(getGame);
     font-size: 24px;
     font-weight: bold;
     margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+}
+
+.game-name h2 {
+    margin-right: 8px;
 }
 
 .game-description {

@@ -29,7 +29,23 @@ module.exports = {
             return res.serverError(err);
         }
     },
-    
+
+    getFavouriteForUser: async function (req, res) {
+        try {
+            const korisnikId = req.params.id;
+            const gameId = req.params.gameId;
+
+            const favoriti = await Favorit.find({
+                favoritKorisnik: korisnikId,
+                favoritIgra: gameId,
+            });
+
+            return res.ok(favoriti);
+        } catch (err) {
+            return res.serverError(err);
+        }
+    },
+
     saveFavourite: async function (req, res) {
         try {
             const korisnikId = req.body.korisnik;
@@ -43,12 +59,15 @@ module.exports = {
                 });
 
                 if (!favExists) {
-                    await Favorit.create({
+                    const newFavorite = await Favorit.create({
                         favoritKorisnik: korisnikId,
                         favoritIgra: igraId,
-                    });
+                    }).fetch();
 
-                    return res.ok('Igra je dodana u favorite!');
+                    return res.status(200).json({
+                        message: 'Igra je dodana u favorite!',
+                        favorit: newFavorite,
+                    });
                 } else {
                     return res.badRequest('Igra već postoji u favoritima!');
                 }

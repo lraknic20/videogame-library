@@ -14,12 +14,23 @@ import "vue-awesome-paginate/dist/style.css";
 import PrimeVue from 'primevue/config';
 import 'primevue/resources/themes/lara-light-blue/theme.css';
 
+import Toast from "vue-toastification";
+import type { PluginOptions } from "vue-toastification";
+import "vue-toastification/dist/index.css";
+
 const pinia = createPinia()
 const app = createApp(App)
 
 app.use(pinia)
 app.use(router)
 app.use(PrimeVue);
+
+app.use(Toast, {
+    transition: "Vue-Toastification__bounce",
+    maxToasts: 10,
+    newestOnTop: true,
+    timeout: 3000
+});
 
 app.component('VueDatePicker', VueDatePicker);
 

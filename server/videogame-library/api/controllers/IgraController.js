@@ -15,7 +15,7 @@ module.exports = {
 
             const existingGame = await Igra.findOne({ id: igra.id });
             if (existingGame) {
-                return res.badRequest('Ova igra je već dodana!');
+                return res.ok('Ova igra je već dodana!');
             }
 
             const newGame = await Igra.create({
