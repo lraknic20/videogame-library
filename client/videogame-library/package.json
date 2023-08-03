@@ -12,6 +12,7 @@
   "dependencies": {
     "@vuepic/vue-datepicker": "^5.4.0",
     "axios": "^1.4.0",
+    "jenesius-vue-modal": "^1.9.0",
     "jwt-decode": "^3.1.2",
     "pinia": "^2.1.6",
     "primevue": "^3.31.0",
@@ -19,6 +20,7 @@
     "vue": "^3.3.4",
     "vue-awesome-paginate": "^1.1.46",
     "vue-router": "^4.2.2",
+    "vue-star-rating": "^2.1.0",
     "vue-toastification": "^2.0.0-rc.5",
     "yup": "^1.2.0"
   },

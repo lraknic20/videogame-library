@@ -2,6 +2,7 @@
 import { RouterLink, RouterView } from 'vue-router'
 import { isLoggedIn, isAdmin, isModerator } from '@/services/auth';
 import { ref } from 'vue';
+import { container as WidgetContainerModal } from "jenesius-vue-modal";
 
 let loggedIn = ref(isLoggedIn());
 
@@ -23,6 +24,7 @@ let loggedIn = ref(isLoggedIn());
   </header>
 
   <RouterView />
+  <widget-container-modal />
 </template>
 
 <style scoped>

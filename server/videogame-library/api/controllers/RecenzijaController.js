@@ -23,6 +23,27 @@ module.exports = {
         }
     },
 
+    getReviewForGame: async function (req, res) {
+        try {
+            const igraId = req.params.gameId;
+
+            const reviews = await Recenzija.find({ recenzijaIgra: igraId }).populate('recenzijaKorisnik');
+
+            const anonReviews = reviews.map(review => {
+                const { recenzijaKorisnik, ...reviewWithoutKorisnik } = review;
+                return {
+                    ...reviewWithoutKorisnik,
+                    korime: recenzijaKorisnik.korime,
+                    korisnikId: recenzijaKorisnik.id
+                };
+            });
+
+            return res.ok(anonReviews);
+        } catch (err) {
+            return res.serverError(err);
+        }
+    },
+
     saveReview: async function (req, res) {
         try {
             const korisnikId = req.body.korisnik;
@@ -69,7 +90,7 @@ module.exports = {
             const reviewExists = await Recenzija.findOne({ id: recenzijaId });
 
             if (reviewExists) {
-                if(reviewExists.obrisano == 1) {
+                if (reviewExists.obrisano == 1) {
                     return res.badRequest('Recenzija je već označena kao obrisana!');
                 }
                 const updatedReview = {

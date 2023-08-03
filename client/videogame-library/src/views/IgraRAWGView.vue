@@ -6,7 +6,7 @@
                 <h2>{{ igra.name }}</h2>
                 <FavoriteButton :game="igra" />
             </div>
-            <p class="game-description" v-html="igra.description"></p>
+            <p class="game-description">{{ igra.description.replace( /(<([^>]+)>)/ig, '') }}</p>
             <div class="game-genres">
                 <h3 class="game-genres">Žanrovi:</h3>
                 <p>{{ formatGenres(igra.genres) }}</p>
@@ -38,6 +38,7 @@
         </div>
     </div>
     {{ error }}
+    <Recenzije v-if="igra && !error" :game="igra"/>
 </template>
   
 
@@ -47,6 +48,7 @@ import type { IgraRAWGI, genres, platforms, requirements } from '@/types/IgreRAW
 import axiosClient from '@/services/axiosClient';
 import { useRoute } from 'vue-router'
 import FavoriteButton from '@/components/FavoriteButton.vue';
+import Recenzije from '@/components/Recenzije.vue';
 
 const route = useRoute();
 
@@ -94,7 +96,6 @@ onMounted(getGame);
 
 <style scoped>
 .game-card {
-    display: flex;
     border: 1px solid #ccc;
     border-radius: 5px;
     padding: 16px;
@@ -102,10 +103,10 @@ onMounted(getGame);
 }
 
 .game-image {
-    width: 30%;
-    height: 20%;
+    width: 40%;
     border-radius: 5px;
-    margin-right: 16px;
+    display: block;
+    margin: 0 auto;
 }
 
 .game-name {
@@ -122,9 +123,11 @@ onMounted(getGame);
 
 .game-description {
     font-size: 16px;
-    margin-bottom: 8px;
     max-height: 150px;
     overflow-y: auto;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 8px;
 }
 
 .game-genres,
