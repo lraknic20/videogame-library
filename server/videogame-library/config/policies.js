@@ -49,6 +49,7 @@ module.exports.policies = {
 
   'RecenzijaController': {
     'saveReview': 'isAuthenticated',
+    'getReviewsForModerator': ['isAuthenticated', 'isModerator'],
     'markAsDeltedReview': ['isAuthenticated', 'isModerator'],
     'deleteReview': ['isAuthenticated', 'isAdmin'],
   },

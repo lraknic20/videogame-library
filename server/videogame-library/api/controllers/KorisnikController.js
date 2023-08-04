@@ -17,7 +17,7 @@ module.exports = {
 
   findOne: async function (req, res) {
     try {
-      const korisnik = await Korisnik.findOne({ id: req.params.id });
+      const korisnik = await Korisnik.findOne({ id: req.params.id }).populate('zaduzenZanr');
       if (!korisnik) {
         return res.notFound('Korisnik nije pronađen');
       }
@@ -87,7 +87,7 @@ module.exports = {
         return res.status(404).json('Korisnik nije pronađen!');
       }
       
-      return res.ok('Korisnik je ažuriran!');
+      return res.ok('Korisnik je uspješno blokiran!');
     } catch (err) {
       return res.serverError(err);
     }

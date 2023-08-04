@@ -23,7 +23,57 @@ module.exports = {
         }
     },
 
-    getReviewForGame: async function (req, res) {
+    getReviewsForModerator: async function (req, res) {
+        try {
+            const userId = req.params.id;
+
+            const user = await Korisnik.findOne({ id: userId }).populate('zaduzenZanr');
+
+            if (!user) {
+                return res.status(404).json('Korisnik nije pronađen!');
+            }
+            if (user.tip_korisnika_id !== 3) {
+                return res.status(403).json('Korisnik nije moderator!');
+            }
+
+            if(user.zaduzenZanr.length == 0) {
+                return res.status(404).json('Korisnik nema zadužene žanrove!');
+            }
+
+            const zaduzeniZanrovi = user.zaduzenZanr.map(zanr => zanr.id);
+
+            const reviews = await Recenzija.find().populate('recenzijaKorisnik').populate('recenzijaIgra');
+
+            var gameIds = reviews.map(review => review.recenzijaIgra.id);
+
+            const game_genre = await Igra_zanr.find({ igra: gameIds, zanr: zaduzeniZanrovi }).populate('igra').populate('zanr');
+
+            const anonReviews = reviews.map(review => {
+                let game = game_genre.find(game_genre => game_genre.igra.id === review.recenzijaIgra.id);
+                if (game) {
+                    const { recenzijaKorisnik, recenzijaIgra, ...reviewWithoutKorisnikIgra } = review;
+                    return {
+                        ...reviewWithoutKorisnikIgra,
+                        igra: {
+                            id: review.recenzijaIgra.id,
+                            naziv: review.recenzijaIgra.naziv,
+                            kratki_naziv: review.recenzijaIgra.kratki_naziv,
+                            slika: review.recenzijaIgra.slika,
+                        },
+                        korime: review.recenzijaKorisnik.korime,
+                        korisnikId: review.recenzijaKorisnik.id,
+                        datum_istek_bloka: review.recenzijaKorisnik.datum_istek_bloka,
+                    };
+                }
+            }).filter(Boolean).sort((a, b) => (a.obrisano === b.obrisano ? 0 : a.obrisano ? 1 : -1));
+
+            return res.ok(anonReviews);
+        } catch (err) {
+            return res.serverError(err);
+        }
+    },
+
+    getReviewsForGame: async function (req, res) {
         try {
             const igraId = req.params.gameId;
 

@@ -1,3 +1,5 @@
+import type { IgraI } from './IgraI';
+
 export interface RecenzijaI {
     id: number;
     ocjena: number;
@@ -6,4 +8,6 @@ export interface RecenzijaI {
     obrisano: boolean;
     korime: string;
     korisnikId: number;
+    igra: IgraI;
+    datum_istek_bloka: string;
 }

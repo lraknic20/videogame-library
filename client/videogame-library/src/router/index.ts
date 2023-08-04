@@ -6,6 +6,7 @@ import IstraziView  from '@/views/IstraziView.vue'
 import IzdavaciView  from '@/views/IzdavaciView.vue'
 import IzdavacView  from '@/views/IzdavacView.vue'
 import IgraRAWGView  from '@/views/IgraRAWGView.vue'
+import ModeratorView  from '@/views/ModeratorView.vue'
 import Odjava from '@/components/Odjava.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 
@@ -78,6 +79,12 @@ const router = createRouter({
       name: 'igra',
       component: IgraRAWGView,
       meta: { requiresAuth: false },
+    },
+    {
+      path: '/moderator',
+      name: 'moderator',
+      component: ModeratorView,
+      meta: { requiresAuth: true, userType: 3 },
     },
     // {
     //   path: '/about',
