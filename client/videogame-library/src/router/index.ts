@@ -7,6 +7,7 @@ import IzdavaciView  from '@/views/IzdavaciView.vue'
 import IzdavacView  from '@/views/IzdavacView.vue'
 import IgraRAWGView  from '@/views/IgraRAWGView.vue'
 import ModeratorView  from '@/views/ModeratorView.vue'
+import FavoritiView  from '@/views/FavoritiView.vue'
 import Odjava from '@/components/Odjava.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 
@@ -85,6 +86,12 @@ const router = createRouter({
       name: 'moderator',
       component: ModeratorView,
       meta: { requiresAuth: true, userType: 3 },
+    },
+    {
+      path: '/favoriti',
+      name: 'favoriti',
+      component: FavoritiView,
+      meta: { requiresAuth: true },
     },
     // {
     //   path: '/about',

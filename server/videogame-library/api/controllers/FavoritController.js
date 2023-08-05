@@ -8,9 +8,15 @@
 module.exports = {
     getFavourites: async function (req, res) {
         try {
-            const favoriti = await Favorit.find().populate('favoritIgra');
+            const page = parseInt(req.query.page) || 1;
+            const pageSize = parseInt(req.query.pageSize) || 10;
+            const count = await Favorit.count();
+            const sortDirection = req.query.sort || 'desc';
 
-            return res.ok(favoriti);
+            const favoriti = await Favorit.find().populate('favoritIgra').sort('id '+sortDirection).skip((page - 1) * pageSize).limit(pageSize);
+            const games = favoriti.map(favorit => favorit.favoritIgra);
+
+            return res.ok({count, games});
         } catch (err) {
             return res.serverError(err);
         }
@@ -18,13 +24,20 @@ module.exports = {
 
     getFavouritesForUser: async function (req, res) {
         try {
+            const page = parseInt(req.query.page) || 1;
+            const pageSize = parseInt(req.query.pageSize) || 10;
             const korisnikId = req.params.id;
+            const count = await await Favorit.count({
+                favoritKorisnik: korisnikId,
+            });
+            const sortDirection = req.query.sort || 'desc';
 
             const favoriti = await Favorit.find({
                 favoritKorisnik: korisnikId,
-            }).populate('favoritIgra');
+            }).populate('favoritIgra').sort('id '+sortDirection).skip((page - 1) * pageSize).limit(pageSize);
+            const games = favoriti.map(favorit => favorit.favoritIgra);
 
-            return res.ok(favoriti);
+            return res.ok({count, games});
         } catch (err) {
             return res.serverError(err);
         }
