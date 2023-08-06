@@ -1,5 +1,6 @@
 import PocetnaView from '@/views/PocetnaView.vue'
 import PrijavaView from '@/views/PrijavaView.vue'
+import RegistracijaView from '@/views/RegistracijaView.vue'
 import ProfilView  from '@/views/ProfilView.vue'
 import AdminView  from '@/views/AdminView.vue'
 import IstraziView  from '@/views/IstraziView.vue'
@@ -39,6 +40,12 @@ const router = createRouter({
       path: '/prijava',
       name: 'prijava',
       component: PrijavaView,
+      meta: { requiresAuth: false }
+    },
+    {
+      path: '/registracija',
+      name: 'registracija',
+      component: RegistracijaView,
       meta: { requiresAuth: false }
     },
     {

@@ -12,20 +12,33 @@ module.exports = {
     register: async function (req, res) {
         const { ime, prezime, korime, email, lozinka } = req.body;
     
-        const existingUsername = await Korisnik.findOne({ korime: korime });
-        const existingEmail = await Korisnik.findOne({ email: email });
-        if (existingUsername) {
-            return res.status(400).json({ error: 'Korisnik s tim korisničkim imenom već postoji!' });
+        const emailRegex = /^\S+@\S+\.\S+$/;
+
+        if (!ime || !prezime || !korime || !email || !lozinka) {
+            return res.status(400).json({ error: 'Sva polja su obavezna!' });
         }
+
+        if (!emailRegex.test(email)) {
+            return res.status(400).json({ error: 'Email nije ispravan!' });
+        }
+        if (lozinka.length < 6) {
+            return res.status(400).json({ error: 'Lozinka mora sadržavati najmanje 6 znakova!' });
+        }
+
+        const existingEmail = await Korisnik.findOne({ email: email });
+        const existingUsername = await Korisnik.findOne({ korime: korime });
         if (existingEmail) {
             return res.status(400).json({ error: 'Taj email je već registriran!' });
         }
-    
+        if (existingUsername) {
+            return res.status(400).json({ error: 'Korisnik s tim korisničkim imenom već postoji!' });
+        }
+        
         const saltRounds = 10;
         const sol = await bcrypt.genSalt(saltRounds);
         const hash = await bcrypt.hash(lozinka, sol);
     
-        const newUser = await Korisnik.create({ ime, prezime, korime, email, lozinka: hash, sol, tip_korisnika_id: 1 }).fetch();
+        await Korisnik.create({ ime, prezime, korime, email, lozinka: hash, sol, tip_korisnika_id: 1 });
     
         return res.status(200).json({ message: 'Registracija je uspješna.' });
     },
