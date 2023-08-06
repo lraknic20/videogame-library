@@ -3,6 +3,7 @@ import PrijavaView from '@/views/PrijavaView.vue'
 import ProfilView  from '@/views/ProfilView.vue'
 import AdminView  from '@/views/AdminView.vue'
 import IstraziView  from '@/views/IstraziView.vue'
+import NajboljeOcjenjeneView  from '@/views/NajboljeOcjenjeneView.vue'
 import IzdavaciView  from '@/views/IzdavaciView.vue'
 import IzdavacView  from '@/views/IzdavacView.vue'
 import IgraRAWGView  from '@/views/IgraRAWGView.vue'
@@ -62,6 +63,12 @@ const router = createRouter({
       path: '/istrazi',
       name: 'istrazi',
       component: IstraziView,
+      meta: { requiresAuth: false },
+    },
+    {
+      path: '/najbolje-igre',
+      name: 'najbolje_igre',
+      component: NajboljeOcjenjeneView,
       meta: { requiresAuth: false },
     },
     {

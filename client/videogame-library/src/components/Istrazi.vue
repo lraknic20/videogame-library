@@ -26,14 +26,7 @@
             filter</button>
     </div>
     {{ error }}
-    <div class="game-container">
-        <div v-for="igra in igre" :key="igra.id" class="game-item">
-            <RouterLink :to="`/igre/${igra.slug}`">
-                <img :src="igra.background_image" :alt="igra.name" class="game-picture" />
-                <p class="game-name">{{ igra.name }}</p>
-            </RouterLink>
-        </div>
-    </div>
+    <Igre :igre="igre" />
     <vue-awesome-paginate :total-items="count" :items-per-page="pageSize" :max-pages-shown="5" v-model="currentPage"
         :on-click="onRouteChange" />
 </template>
@@ -46,11 +39,13 @@ import type { PlatformaI } from '@/types/PlatformaI';
 import axiosClient from '@/services/axiosClient';
 import { useRoute, useRouter } from 'vue-router'
 import MultiSelect from 'primevue/multiselect';
+import Igre from '@/components/Igre.vue'
+import type { IgraI } from '@/types/IgraI';
 
 const route = useRoute()
 const router = useRouter();
 
-let igre = ref<IgraRAWGI[]>([]);
+let igre = ref<IgraI[]>([]);
 let zanrovi = ref<ZanrI[]>([]);
 let platforme = ref<PlatformaI[]>([]);
 
@@ -104,7 +99,12 @@ var getGames = () => {
                 }
             })
         .then((response) => {
-            igre.value = response.data.results;
+            const igreRAWGI: IgraRAWGI[] = response.data.results;
+            igre.value = igreRAWGI.map((game) => {
+                const { id, name, slug, background_image } = game;
+
+                return { id, naziv: name, kratki_naziv: slug, slika: background_image };
+            });
             count.value = response.data.count;
         })
         .catch((err) => {

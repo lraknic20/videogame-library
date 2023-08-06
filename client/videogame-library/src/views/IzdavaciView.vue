@@ -62,8 +62,7 @@ onMounted(() => {
 }
 
 .publisher-picture {
-    width: 70%;
-    max-height: 200px;
+    width: 60%;
     object-fit: cover;
 }
 

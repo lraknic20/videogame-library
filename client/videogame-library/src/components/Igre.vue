@@ -1,5 +1,5 @@
 <template>
-<div class="game-container">
+    <div class="game-container">
         <div v-for="igra in props.igre" :key="igra.id" class="game-item">
             <RouterLink :to="`/igre/${igra.kratki_naziv}`">
                 <img :src="igra.slika" :alt="igra.naziv" class="game-picture" />
@@ -28,12 +28,11 @@ const props = defineProps<{ igre: IgraI[] }>();
 }
 
 .game-picture {
-    width: 70%;
-    max-height: 200px;
+    width: 60%;
     object-fit: cover;
 }
 
 .game-name {
     font-size: 16px;
-} 
+}
 </style>

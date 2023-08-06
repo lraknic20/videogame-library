@@ -61,13 +61,15 @@ module.exports = {
             const page = req.query.page;
             const pageSize  = req.query.pageSize;
             const genres = req.query.genres;
-            
+            const platforms = req.query.platforms;
+
             const parameters = {
                 page: page,
                 page_size: pageSize,
                 metacritic: '90,100',
                 ordering: '-added',
                 ...(genres && { genres }),
+                ...(platforms && { platforms }),
             }
 
             const { data, statusCode } = await getData("games", parameters)    

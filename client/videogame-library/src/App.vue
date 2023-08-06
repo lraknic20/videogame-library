@@ -15,6 +15,7 @@ let loggedIn = ref(isLoggedIn());
         <RouterLink to="/">Početna</RouterLink>
         <RouterLink to="/istrazi">Istraži</RouterLink>
         <RouterLink to="/izdavaci">Izdavači</RouterLink>
+        <RouterLink to="/najbolje-igre">Najbolje ocijenjene igre</RouterLink>
         <RouterLink v-if="!loggedIn" to="/prijava">Prijava</RouterLink>
         <RouterLink v-if="loggedIn" to="/odjava">Odjava</RouterLink>
         <RouterLink v-if="loggedIn" to="/favoriti">Favoriti</RouterLink>

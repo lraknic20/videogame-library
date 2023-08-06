@@ -2,16 +2,9 @@
   <div>
     <h2>Nadolazeće igre</h2>
     <div class="date-picker-container">
-      <VueDatePicker v-model="selectedDate" 
-        :enable-time-picker="false"
-        locale="hr"
-        format="d.M.yyyy"
-        select-text="Odaberi"
-        cancel-text="Odustani"
-        :clearable="false"
-        :min-date="new Date()"
-        @update:model-value="onDateChange"
-      />
+      <VueDatePicker v-model="selectedDate" :enable-time-picker="false" locale="hr" format="d.M.yyyy"
+        select-text="Odaberi" cancel-text="Odustani" :clearable="false" :min-date="new Date()"
+        @update:model-value="onDateChange" />
     </div>
     <select v-model="pageSize" @change="onPageSizeChange">
       <option value="10" selected>10</option>
@@ -19,21 +12,9 @@
       <option value="30">30</option>
       <option value="40">40</option>
     </select>
-    <div class="game-container">
-      <div v-for="igra in nadolazeceIgre" :key="igra.id" class="game-item">
-        <RouterLink :to="`/igre/${igra.slug}`">
-          <img :src="igra.background_image" :alt="igra.name" class="game-picture" />
-          <p class="game-name">{{ igra.name }}</p>
-        </RouterLink>
-      </div>
-    </div>
-    <vue-awesome-paginate
-      :total-items="count"
-      :items-per-page="pageSize"
-      :max-pages-shown="5"
-      v-model="currentPage"
-      :on-click="onPageChange"
-    />
+    <Igre :igre="igre" />
+    <vue-awesome-paginate :total-items="count" :items-per-page="pageSize" :max-pages-shown="5" v-model="currentPage"
+      :on-click="onPageChange" />
   </div>
 </template>
 
@@ -41,8 +22,10 @@
 import { ref, onMounted } from 'vue';
 import type { IgraRAWGI } from '@/types/IgreRAWGI';
 import axiosClient from '@/services/axiosClient';
+import Igre from '@/components/Igre.vue'
+import type { IgraI } from '@/types/IgraI';
 
-let nadolazeceIgre = ref<IgraRAWGI[]>([]);
+let igre = ref<IgraI[]>([]);
 
 let selectedDate = ref(new Date());
 selectedDate.value.setMonth(selectedDate.value.getMonth() + 1);
@@ -67,7 +50,12 @@ var fetchData = async () => {
   try {
     const response = await axiosClient.get('rawg/nadolazece_igre?page=' + currentPage.value + '&pageSize=' + pageSize.value + '&futureDate=' + selectedDate.value.toISOString().split('T')[0]);
     const data = await response.data;
-    nadolazeceIgre.value = data.results;
+    const igreRAWGI: IgraRAWGI[] = data.results;
+    igre.value = igreRAWGI.map((game) => {
+      const { id, name, slug, background_image } = game;
+
+      return { id, naziv: name, kratki_naziv: slug, slika: background_image };
+    });
     count.value = data.count;
   } catch (error) {
     console.error('Greška pri dohvaćanju nadolazećih igara!', error);

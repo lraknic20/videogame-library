@@ -9,14 +9,7 @@
         </div>
     </div>
     {{ error }}
-    <div v-if="igre" class="game-container">
-        <div v-for="igra in igre" :key="igra.id" class="game-item">
-            <RouterLink :to="`/igre/${igra.slug}`">
-                <img :src="igra.background_image" :alt="igra.name" class="game-picture" />
-                <p class="game-name">{{ igra.name }}</p>
-            </RouterLink>
-        </div>
-    </div>
+    <Igre :igre="igre" />
     <vue-awesome-paginate v-if="igre" :total-items="count" :items-per-page="pageSize" :max-pages-shown="5"
         v-model="currentPage" :on-click="getGamesForPublisher" />
 </template>
@@ -26,11 +19,13 @@ import { ref, onMounted } from 'vue';
 import type { publishers, IgraRAWGI } from '@/types/IgreRAWGI';
 import axiosClient from '@/services/axiosClient';
 import { useRoute } from 'vue-router'
+import Igre from '@/components/Igre.vue'
+import type { IgraI } from '@/types/IgraI';
 
 const route = useRoute();
 
 let izdavac = ref<publishers>();
-let igre = ref<IgraRAWGI[]>([]);
+let igre = ref<IgraI[]>([]);
 let error = ref<string>();
 
 let currentPage = ref<number>(1);
@@ -59,7 +54,12 @@ var getGamesForPublisher = () => {
                 }
             })
         .then((response) => {
-            igre.value = response.data.results;
+            const igreRAWGI: IgraRAWGI[] = response.data.results;
+            igre.value = igreRAWGI.map((game) => {
+                const { id, name, slug, background_image } = game;
+
+                return { id, naziv: name, kratki_naziv: slug, slika: background_image };
+            });
             count.value = response.data.count;
         })
         .catch((err) => {
@@ -100,30 +100,5 @@ onMounted(() => {
 .publisher-games-count {
     font-size: 14px;
     color: #888;
-}
-
-
-
-
-.game-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-}
-
-.game-item {
-    width: 40%;
-    margin-bottom: 20px;
-    text-align: center;
-}
-
-.game-picture {
-    width: 70%;
-    max-height: 200px;
-    object-fit: cover;
-}
-
-.game-name {
-    font-size: 16px;
 }
 </style>
