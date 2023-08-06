@@ -51,6 +51,7 @@ module.exports.routes = {
   'PUT /zanrovi/:genreId': 'ZanrController.updateGenre',
   'GET /platforme': 'PlatformaController.getPlatforms',
   'POST /platforme': 'PlatformaController.savePlatforms',
+  'GET /izdavaci': 'IzdavacController.getPublishers',
   'GET /igre': 'IgraController.getGames',
   'POST /igre': 'IgraController.saveGame',
   'GET /favoriti': 'FavoritController.getFavourites',

@@ -8,16 +8,80 @@
 module.exports = {
     getReviews: async function (req, res) {
         try {
-            const reviews = await Recenzija.find().populate('recenzijaKorisnik').populate('recenzijaIgra');
+            const page = parseInt(req.query.page) || 1;
+            const pageSize = parseInt(req.query.pageSize) || 10;
+            const search = req.query.search;
+            const yearFilterMin = req.query.yearMin;
+            const yearFilterMax = req.query.yearMax;
+            const rating = req.query.rating;
+            const sortDirection = req.query.sort || 'desc';
+            let zanrovi = req.query.zanrovi;
+            let platforme = req.query.platforme;
+            let izdavaci = req.query.izdavaci;
 
-            const anonReviews = reviews.map(review => {
-                return {
-                    ...review,
-                    recenzijaKorisnik: review.recenzijaKorisnik.korime
-                };
+            let queryCriteria = {};
+            if (rating) queryCriteria.ocjena = rating;
+
+            const reviews = await Recenzija.find(queryCriteria).populate('recenzijaKorisnik').populate('recenzijaIgra').sort('id ' + sortDirection);
+
+            const filteredReviews = reviews.filter(review => !review.obrisano);
+
+            var gameIds = filteredReviews.map(review => review.recenzijaIgra.id);
+
+            let sql = `SELECT i.* FROM igra i`;
+
+            if (zanrovi && zanrovi.length > 0) {
+                sql += ` INNER JOIN igra_has_zanr z ON i.id = z.igra_id AND z.zanr_id IN (${zanrovi})`;
+            }
+
+            if (platforme && platforme.length > 0) {
+                sql += ` INNER JOIN igra_has_platforma p ON i.id = p.igra_id AND p.platforma_id IN (${platforme})`;
+            }
+
+            if (izdavaci && izdavaci.length > 0) {
+                sql += ` INNER JOIN igra_has_izdavac iz ON i.id = iz.igra_id AND iz.izdavac_id IN (${izdavaci})`;
+            }
+
+            if (gameIds && gameIds.length > 0) {
+                sql += ` WHERE i.id IN (${gameIds})`;
+            }
+
+            if (search) {
+                sql += ` AND i.naziv LIKE '%${search.trim()}%'`;
+            }
+
+            if (yearFilterMin && yearFilterMax) {
+                sql += ` AND EXTRACT(YEAR FROM i.datum_izlaska) BETWEEN ${yearFilterMin} AND ${yearFilterMax}`;
+            }
+
+            const rawResult = await sails.sendNativeQuery(sql);
+
+            const count = rawResult.rows.length;
+            const games = rawResult.rows;
+
+            const anonReviews = filteredReviews.map(review => {
+                let game = games.find(game => game.id === review.recenzijaIgra.id);
+                if (game) {
+                    const { recenzijaKorisnik, recenzijaIgra, ...reviewWithoutKorisnikIgra } = review;
+                    return {
+                        ...reviewWithoutKorisnikIgra,
+                        korime: review.recenzijaKorisnik.korime,
+                        igra: {
+                            id: review.recenzijaIgra.id,
+                            naziv: review.recenzijaIgra.naziv,
+                            kratki_naziv: review.recenzijaIgra.kratki_naziv,
+                            slika: review.recenzijaIgra.slika,
+                        }
+                    };
+                } else return null;
+            }).filter(review => review !== null);;
+
+            const allReviews = anonReviews.slice((page - 1) * pageSize, page * pageSize);
+
+            return res.ok({
+                count: count,
+                recenzije: allReviews,
             });
-
-            return res.ok(anonReviews);
         } catch (err) {
             return res.serverError(err);
         }
@@ -36,7 +100,7 @@ module.exports = {
                 return res.status(403).json('Korisnik nije moderator!');
             }
 
-            if(user.zaduzenZanr.length == 0) {
+            if (user.zaduzenZanr.length == 0) {
                 return res.status(404).json('Korisnik nema zadužene žanrove!');
             }
 

@@ -7,7 +7,7 @@
             <span v-if="userBlocked">Blokirani ste do {{ blockedDate }}</span>
         </div>
 
-        <div class="reviews">
+        <!-- <div class="reviews">
             <div v-for="recenzija in recenzije" :key="recenzija.id" class="review">
                 <Rating class="rating" v-model="recenzija.ocjena" v-if="recenzija.obrisano == false" :cancel="false" readonly />
                 <Rating class="rating" v-else :cancel="false" readonly disabled />
@@ -17,7 +17,8 @@
                 <p class="comment" v-if="recenzija.obrisano == false">{{ recenzija.komentar }}</p>
                 <p class="comment" v-else>[obrisano]</p>
             </div>
-        </div>
+        </div> -->
+        <RecenzijePrikaz :reviews="recenzije"/>
     </div>
 </template>
 
@@ -30,6 +31,7 @@ import type { KorisnikI } from '@/types/KorisnikI';
 import Rating from 'primevue/rating';
 import { openModal } from "jenesius-vue-modal";
 import Recenzija from '@/components/Recenzija.vue';
+import RecenzijePrikaz from '@/components/RecenzijePrikaz.vue'
 
 const props = defineProps<{ game: IgraRAWGI }>();
 

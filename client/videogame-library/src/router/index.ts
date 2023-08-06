@@ -8,6 +8,7 @@ import IzdavacView  from '@/views/IzdavacView.vue'
 import IgraRAWGView  from '@/views/IgraRAWGView.vue'
 import ModeratorView  from '@/views/ModeratorView.vue'
 import FavoritiView  from '@/views/FavoritiView.vue'
+import RecenzijeIgaraView  from '@/views/RecenzijeIgaraView.vue'
 import Odjava from '@/components/Odjava.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 
@@ -91,6 +92,12 @@ const router = createRouter({
       path: '/favoriti',
       name: 'favoriti',
       component: FavoritiView,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/recenzije',
+      name: 'recenzije',
+      component: RecenzijeIgaraView,
       meta: { requiresAuth: true },
     },
     // {

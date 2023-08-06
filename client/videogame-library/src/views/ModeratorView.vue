@@ -20,12 +20,6 @@
         <div class="buttons" v-if="recenzija.obrisano == false">
             <button @click="deleteReview(recenzija)">Obriši</button>
             <button @click="showCalendar(recenzija)">Obriši i blokiraj</button>
-            <!-- <div v-if="showDatePicker">
-                <p>Molimo odaberite datum završetka bloka:</p>
-                <VueDatePicker v-model="date" time-picker-inline locale="hr" format="d.M.yyyy HH:mm" select-text="Odaberi"
-                    cancel-text="Odustani" :clearable="false" :min-date=minDate />
-                <button @click="blockUser(recenzija)">Potvrdi</button>
-            </div> -->
         </div>
     </div>
 </template>
