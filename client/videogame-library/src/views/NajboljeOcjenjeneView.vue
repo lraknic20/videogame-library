@@ -13,7 +13,7 @@
     </select>
     <button @click="currentPage = 1, onRouteChange()">Spremi filter</button>
     <button @click="selectedGenres = [], selectedPlatforms = [], currentPage = 1, onRouteChange()">Resetiraj filter</button>
-    <Igre :igre="igre" />
+    <Igre :igre="igre" :stranica="'igreRAWG'"/>
     <vue-awesome-paginate :total-items="count" :items-per-page="pageSize" :max-pages-shown="5" v-model="currentPage"
         :on-click="onRouteChange" />
 </template>

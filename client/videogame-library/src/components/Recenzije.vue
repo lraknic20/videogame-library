@@ -6,18 +6,6 @@
             <button v-if="!userBlocked && isLoggedIn() && !isUserReviewed" @click="addReview()">Dodaj recenziju</button>
             <span v-if="userBlocked">Blokirani ste do {{ blockedDate }}</span>
         </div>
-
-        <!-- <div class="reviews">
-            <div v-for="recenzija in recenzije" :key="recenzija.id" class="review">
-                <Rating class="rating" v-model="recenzija.ocjena" v-if="recenzija.obrisano == false" :cancel="false" readonly />
-                <Rating class="rating" v-else :cancel="false" readonly disabled />
-                <span class="username" v-if="recenzija.obrisano == false">{{ recenzija.korime }}</span>
-                <span class="username" v-else>[obrisano]</span>
-                <span class="date">{{ formatDate(recenzija.datum) }}</span>
-                <p class="comment" v-if="recenzija.obrisano == false">{{ recenzija.komentar }}</p>
-                <p class="comment" v-else>[obrisano]</p>
-            </div>
-        </div> -->
         <RecenzijePrikaz :reviews="recenzije"/>
     </div>
 </template>
@@ -25,15 +13,14 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import axiosClient from '@/services/axiosClient';
-import type { IgraRAWGI } from '@/types/IgreRAWGI';
+import type { IgraI } from '@/types/IgraI';
 import type { RecenzijaI } from '@/types/RecenzijaI';
 import type { KorisnikI } from '@/types/KorisnikI';
-import Rating from 'primevue/rating';
 import { openModal } from "jenesius-vue-modal";
 import Recenzija from '@/components/Recenzija.vue';
 import RecenzijePrikaz from '@/components/RecenzijePrikaz.vue'
 
-const props = defineProps<{ game: IgraRAWGI }>();
+const props = defineProps<{ igra: IgraI }>();
 
 const recenzije = ref<RecenzijaI[]>([]);
 const userBlocked = ref(false);
@@ -43,7 +30,7 @@ const korisnik = ref<KorisnikI>();
 
 const addReview = async () => {
     const modal = await openModal(Recenzija, {
-        game: props.game,
+        igra: props.igra,
         userId: korisnik.value?.id
     });
     modal.onclose = () => {
@@ -53,7 +40,7 @@ const addReview = async () => {
 
 var getReviewsForGame = () => {
     axiosClient
-        .get('/recenzije/' + props.game.id)
+        .get('/recenzije/' + props.igra.id)
         .then((response) => {
             recenzije.value = response.data;
             if (isLoggedIn())
@@ -63,12 +50,6 @@ var getReviewsForGame = () => {
             console.log('Greška kod dohvaćanja favorita');
         });
 }
-
-const formatDate = (date: string) => {
-    const newDate = new Date(date);
-
-    return newDate.toLocaleDateString('hr-HR');
-};
 
 const isLoggedIn = () => {
     if (localStorage.getItem('token')) {

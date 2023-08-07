@@ -14,7 +14,7 @@ module.exports = {
     broj_igara: { type: 'number', },
     igra: {
       collection: 'igra',
-      via: 'izdavac',
+      via: 'izdavaci',
       through: 'igra_izdavac',
     }
   },

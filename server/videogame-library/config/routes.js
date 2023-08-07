@@ -56,6 +56,7 @@ module.exports.routes = {
 	'POST /platforme': 'PlatformaController.savePlatforms',
 	'GET /izdavaci': 'IzdavacController.getPublishers',
 	'GET /igre': 'IgraController.getGames',
+	'GET /igre/:gameId': 'IgraController.getGame',
 	'POST /igre': 'IgraController.saveGame',
 	'GET /favoriti': 'FavoritController.getFavourites',
 	'GET /favoriti/:id': 'FavoritController.getFavouritesForUser',

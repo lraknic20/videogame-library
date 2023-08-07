@@ -9,7 +9,7 @@
         </div>
     </div>
     {{ error }}
-    <Igre :igre="igre" />
+    <Igre :igre="igre" :stranica="'igreRAWG'"/>
     <vue-awesome-paginate v-if="igre" :total-items="count" :items-per-page="pageSize" :max-pages-shown="5"
         v-model="currentPage" :on-click="getGamesForPublisher" />
 </template>

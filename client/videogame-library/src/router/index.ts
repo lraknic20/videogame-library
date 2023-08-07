@@ -8,6 +8,7 @@ import NajboljeOcjenjeneView  from '@/views/NajboljeOcjenjeneView.vue'
 import IzdavaciView  from '@/views/IzdavaciView.vue'
 import IzdavacView  from '@/views/IzdavacView.vue'
 import IgraRAWGView  from '@/views/IgraRAWGView.vue'
+import IgraBPView  from '@/views/IgraBPView.vue'
 import ModeratorView  from '@/views/ModeratorView.vue'
 import FavoritiView  from '@/views/FavoritiView.vue'
 import RecenzijeIgaraView  from '@/views/RecenzijeIgaraView.vue'
@@ -91,9 +92,15 @@ const router = createRouter({
       meta: { requiresAuth: false },
     },
     {
+      path: '/igreRAWG/:id',
+      name: 'igraRAWG',
+      component: IgraRAWGView,
+      meta: { requiresAuth: false },
+    },
+    {
       path: '/igre/:id',
       name: 'igra',
-      component: IgraRAWGView,
+      component: IgraBPView,
       meta: { requiresAuth: false },
     },
     {

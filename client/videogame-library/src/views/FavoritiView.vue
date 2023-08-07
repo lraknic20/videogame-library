@@ -11,7 +11,7 @@
         <option value="desc" selected>Novije prema starijem</option>
         <option value="asc">Starije prema novijem</option>
     </select>
-    <Igre :igre="igre" />
+    <Igre :igre="igre" :stranica="'igre'"/>
     <vue-awesome-paginate :total-items="count" :items-per-page="pageSize" :max-pages-shown="5" v-model="currentPage"
         :on-click="onRouteChange" />
 </template>

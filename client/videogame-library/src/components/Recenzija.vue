@@ -16,13 +16,13 @@
 import { ref } from 'vue';
 import Rating from 'primevue/rating';
 import axiosClient from '@/services/axiosClient';
-import type { IgraRAWGI } from '@/types/IgreRAWGI';
+import type { IgraI } from '@/types/IgraI';
 import { useToast } from "vue-toastification";
 import { closeModal } from "jenesius-vue-modal"
 
 const toast = useToast();
 
-const props = defineProps<{ game: IgraRAWGI, userId: number | undefined }>();
+const props = defineProps<{ igra: IgraI, userId: number | undefined }>();
 
 const comment = ref<string>();
 const rating = ref<number>();
@@ -39,26 +39,26 @@ var saveGame = () => {
     axiosClient
         .post('/igre', {
             igra: {
-                id: props.game.id,
-                naziv: props.game.name,
-                kratki_naziv: props.game.slug,
-                opis: props.game.description,
-                slika: props.game.background_image,
-                objavljeno: props.game.tba,
-                datum_izlaska: props.game.released,
-                stranica: props.game.website,
-                metacritic: props.game.metacritic,
-                minimalni_zahtjevi: props.game.platforms.find((data) => data.platform.name === 'PC')?.requirements?.minimum,
-                preporuceni_zahtjevi: props.game.platforms.find((data) => data.platform.name === 'PC')?.requirements?.recommended,
+                id: props.igra.id,
+                naziv: props.igra.naziv,
+                kratki_naziv: props.igra.kratki_naziv,
+                opis: props.igra.opis,
+                slika: props.igra.slika,
+                objavljeno: props.igra.objavljeno,
+                datum_izlaska: props.igra.datum_izlaska,
+                stranica: props.igra.stranica,
+                metacritic: props.igra.metacritic,
+                minimalni_zahtjevi: props.igra.minimalni_zahtjevi,
+                preporuceni_zahtjevi: props.igra.preporuceni_zahtjevi,
             },
-            izdavac: props.game.publishers.map((publisher) => ({
-                id: publisher.id,
-                naziv: publisher.name,
-                kratki_naziv: publisher.slug,
-                broj_igara: publisher.games_count,
+            izdavac: props.igra.izdavaci!.map((izdavaci) => ({
+                id: izdavaci.id,
+                naziv: izdavaci.naziv,
+                kratki_naziv: izdavaci.kratki_naziv,
+                broj_igara: izdavaci.broj_igara,
             })),
-            zanr: props.game.genres.map((genre) => genre.id),
-            platforma: props.game.platforms.map((platform) => platform.platform.id)
+            zanr: props.igra.zanrovi!.map((zanr) => zanr.id),
+            platforma: props.igra.platforme!.map((platforme) => platforme.id)
         })
         .then((response) => {
             if (response.status == 200)
@@ -74,7 +74,7 @@ var addReview = () => {
         .post('/recenzije', {
             komentar: comment.value,
             ocjena: rating.value,
-            igra: props.game.id,
+            igra: props.igra.id,
             korisnik: props.userId
         })
         .then((response) => {

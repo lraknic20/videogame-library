@@ -13,7 +13,7 @@ module.exports = {
     broj_igara: { type: 'number', },
     igra: {
       collection: 'igra',
-      via: 'platforma',
+      via: 'platforme',
       through: 'igra_platforma',
     }
   },

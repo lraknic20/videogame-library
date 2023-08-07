@@ -12,7 +12,7 @@
       <option value="30">30</option>
       <option value="40">40</option>
     </select>
-    <Igre :igre="igre" />
+    <Igre :igre="igre" :stranica="'igreRAWG'"/>
     <vue-awesome-paginate :total-items="count" :items-per-page="pageSize" :max-pages-shown="5" v-model="currentPage"
       :on-click="onPageChange" />
   </div>

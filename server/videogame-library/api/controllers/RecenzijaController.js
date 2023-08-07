@@ -110,7 +110,7 @@ module.exports = {
 
             var gameIds = reviews.map(review => review.recenzijaIgra.id);
 
-            const game_genre = await Igra_zanr.find({ igra: gameIds, zanr: zaduzeniZanrovi }).populate('igra').populate('zanr');
+            const game_genre = await Igra_zanr.find({ igra: gameIds, zanrovi: zaduzeniZanrovi }).populate('igra').populate('zanrovi');
 
             const anonReviews = reviews.map(review => {
                 let game = game_genre.find(game_genre => game_genre.igra.id === review.recenzijaIgra.id);

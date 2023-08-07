@@ -19,19 +19,19 @@ module.exports = {
     metacritic: { type: 'number', allowNull: true, },
     minimalni_zahtjevi: { type: 'string', allowNull: true, },
     preporuceni_zahtjevi: { type: 'string', allowNull: true, },
-    zanr: {
+    zanrovi: {
       collection: 'zanr',
       via: 'igra',
       through: 'igra_zanr',
       dominant: true
     },
-    izdavac: {
+    izdavaci: {
       collection: 'izdavac',
       via: 'igra',
       through: 'igra_izdavac',
       dominant: true
     },
-    platforma: {
+    platforme: {
       collection: 'platforma',
       via: 'igra',
       through: 'igra_platforma',

@@ -12,10 +12,10 @@ module.exports = {
 
             const gameIds = favoriti.map(favorit => favorit.favoritIgra.id);
 
-            const zanrovi = await Igra_zanr.find({ igra: gameIds }).populate('zanr');
+            const igre_zanrovi = await Igra_zanr.find({ igra: gameIds }).populate('zanrovi');
 
-            const genreCount = zanrovi.reduce((acc, zanr) => {
-                const genre = zanr.zanr.naziv;
+            const genreCount = igre_zanrovi.reduce((acc, igra_zanr) => {
+                const genre = igra_zanr.zanrovi.naziv;
                 if (acc[genre]) {
                     acc[genre]++;
                 } else {

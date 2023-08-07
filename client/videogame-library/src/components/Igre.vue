@@ -1,7 +1,7 @@
 <template>
     <div class="game-container">
         <div v-for="igra in props.igre" :key="igra.id" class="game-item">
-            <RouterLink :to="`/igre/${igra.kratki_naziv}`">
+            <RouterLink :to="`/${props.stranica}/${igra.kratki_naziv}`">
                 <img :src="igra.slika" :alt="igra.naziv" class="game-picture" />
                 <p class="game-name">{{ igra.naziv }}</p>
             </RouterLink>
@@ -11,7 +11,7 @@
 
 <script setup lang="ts">
 import type { IgraI } from '@/types/IgraI';
-const props = defineProps<{ igre: IgraI[] }>();
+const props = defineProps<{ igre: IgraI[], stranica: string }>();
 </script>
 
 <style scoped>

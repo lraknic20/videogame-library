@@ -18,6 +18,8 @@ export interface IgraRAWGI {
     background_image: string;
     website: string;
     metacritic: number;
+    minimum_requirements: string;
+    recommended_requirements: string;
 }
 
 export interface genres {
