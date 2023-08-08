@@ -16,23 +16,28 @@ const props = defineProps<{ igre: IgraI[], stranica: string }>();
 
 <style scoped>
 .game-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    padding: 20px;
+
 }
 
 .game-item {
-    width: 40%;
-    margin-bottom: 20px;
+    /* align-self: center; */
     text-align: center;
 }
 
 .game-picture {
-    width: 60%;
-    object-fit: cover;
+    width: 80%;
 }
 
+/* .game-picture {
+    max-width: 100%;
+    height: 250px;
+} */
+
 .game-name {
-    font-size: 16px;
+    text-align: center;
 }
 </style>

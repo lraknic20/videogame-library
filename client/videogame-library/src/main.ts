@@ -13,9 +13,12 @@ import "vue-awesome-paginate/dist/style.css";
 
 import PrimeVue from 'primevue/config';
 import 'primevue/resources/themes/lara-light-blue/theme.css';
+import "primeicons/primeicons.css";
+import ProgressSpinner from 'primevue/progressspinner';
+import MultiSelect from 'primevue/multiselect';
+import InputText from 'primevue/inputtext';
 
 import Toast from "vue-toastification";
-import type { PluginOptions } from "vue-toastification";
 import "vue-toastification/dist/index.css";
 
 const pinia = createPinia()
@@ -33,5 +36,8 @@ app.use(Toast, {
 });
 
 app.component('VueDatePicker', VueDatePicker);
+app.component('ProgressSpinner', ProgressSpinner);
+app.component('MultiSelect', MultiSelect);
+app.component('InputText', InputText);
 
 app.use(VueAwesomePaginate).mount('#app')

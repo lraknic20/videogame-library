@@ -70,26 +70,4 @@ onMounted(fetchData);
   width: 20%;
   margin-bottom: 2%;
 }
-
-.game-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.game-item {
-  width: 40%;
-  margin-bottom: 20px;
-  text-align: center;
-}
-
-.game-picture {
-  width: 70%;
-  max-height: 200px;
-  object-fit: cover;
-}
-
-.game-name {
-  font-size: 16px;
-}
 </style>
