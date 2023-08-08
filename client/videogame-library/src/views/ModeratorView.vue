@@ -10,12 +10,12 @@
             <Rating class="rating" v-model="recenzija.ocjena" v-if="recenzija.obrisano == false" :cancel="false" readonly />
             <Rating class="rating" v-else :cancel="false" readonly disabled />
             <span class="username" v-if="recenzija.obrisano == false">{{ recenzija.korime }}</span>
-            <span class="username" v-else>[obrisano]</span>
+            <span class="username" v-else>[Obrisano]</span>
             <span v-if="recenzija.datum_istek_bloka">Blokiran do: {{ moment(recenzija.datum_istek_bloka)
                 .format('D.M.yyyy. HH: mm') }}</span>
             <span class="date">Objavljeno: {{ moment(recenzija.datum).format('D.M.yyyy.') }}</span>
             <p class="comment" v-if="recenzija.obrisano == false">{{ recenzija.komentar }}</p>
-            <p class="comment" v-else>[obrisano]</p>
+            <p class="comment" v-else>[Obrisano]</p>
         </div>
         <div class="buttons" v-if="recenzija.obrisano == false">
             <button @click="deleteReview(recenzija)">Obriši</button>

@@ -29,7 +29,7 @@
         <option value="30">30</option>
         <option value="40">40</option>
     </select>
-    <RecenzijePrikaz :reviews="recenzije" />
+    <ListaRecenzija :reviews="recenzije" />
     <p v-if="!error && recenzije.length == 0">Recenzije ne postoje</p>
     <span>{{ error }}</span>
     <vue-awesome-paginate v-if="recenzije.length != 0" :total-items="count" :items-per-page="pageSize" :max-pages-shown="5"
@@ -47,7 +47,7 @@ import MultiSelect from 'primevue/multiselect';
 import Calendar from 'primevue/calendar';
 import Rating from 'primevue/rating';
 import moment from 'moment';
-import RecenzijePrikaz from '@/components/RecenzijePrikaz.vue'
+import ListaRecenzija from '@/components/ListaRecenzija.vue'
 import { useRoute, useRouter } from 'vue-router'
 
 const route = useRoute()

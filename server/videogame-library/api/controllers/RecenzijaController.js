@@ -62,9 +62,9 @@ module.exports = {
             const anonReviews = filteredReviews.map(review => {
                 let game = games.find(game => game.id === review.recenzijaIgra.id);
                 if (game) {
-                    const { recenzijaKorisnik, recenzijaIgra, ...reviewWithoutKorisnikIgra } = review;
+                    const { recenzijaKorisnik, recenzijaIgra, ...recenzija } = review;
                     return {
-                        ...reviewWithoutKorisnikIgra,
+                        ...recenzija,
                         korime: review.recenzijaKorisnik.korime,
                         igra: {
                             id: review.recenzijaIgra.id,
@@ -115,9 +115,9 @@ module.exports = {
             const anonReviews = reviews.map(review => {
                 let game = game_genre.find(game_genre => game_genre.igra.id === review.recenzijaIgra.id);
                 if (game) {
-                    const { recenzijaKorisnik, recenzijaIgra, ...reviewWithoutKorisnikIgra } = review;
+                    const { recenzijaKorisnik, recenzijaIgra, ...recenzija } = review;
                     return {
-                        ...reviewWithoutKorisnikIgra,
+                        ...recenzija,
                         igra: {
                             id: review.recenzijaIgra.id,
                             naziv: review.recenzijaIgra.naziv,
@@ -144,11 +144,21 @@ module.exports = {
             const reviews = await Recenzija.find({ recenzijaIgra: igraId }).populate('recenzijaKorisnik');
 
             const anonReviews = reviews.map(review => {
-                const { recenzijaKorisnik, ...reviewWithoutKorisnik } = review;
+                const { recenzijaKorisnik, ...recenzija } = review;
+                if (recenzija.obrisano)
+                {
+                    return {
+                        id: recenzija.id,
+                        ocjena: 0,
+                        komentar: '[Obrisano]',
+                        datum: recenzija.datum,
+                        obrisano: recenzija.obrisano,
+                        korime: '[Obrisano]'
+                    }
+                }
                 return {
-                    ...reviewWithoutKorisnik,
-                    korime: recenzijaKorisnik.korime,
-                    korisnikId: recenzijaKorisnik.id
+                    ...recenzija,
+                    korime: recenzijaKorisnik.korime
                 };
             });
 

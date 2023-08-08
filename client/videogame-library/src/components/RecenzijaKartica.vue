@@ -6,7 +6,7 @@
             <button v-if="!userBlocked && isLoggedIn() && !isUserReviewed" @click="addReview()">Dodaj recenziju</button>
             <span v-if="userBlocked">Blokirani ste do {{ blockedDate }}</span>
         </div>
-        <RecenzijePrikaz :reviews="recenzije"/>
+        <ListaRecenzija :reviews="recenzije"/>
     </div>
 </template>
 
@@ -17,8 +17,8 @@ import type { IgraI } from '@/types/IgraI';
 import type { RecenzijaI } from '@/types/RecenzijaI';
 import type { KorisnikI } from '@/types/KorisnikI';
 import { openModal } from "jenesius-vue-modal";
-import Recenzija from '@/components/Recenzija.vue';
-import RecenzijePrikaz from '@/components/RecenzijePrikaz.vue'
+import DodajRecenziju from '@/components/DodajRecenziju.vue';
+import ListaRecenzija from '@/components/ListaRecenzija.vue'
 
 const props = defineProps<{ igra: IgraI }>();
 
@@ -29,7 +29,7 @@ const isUserReviewed = ref(false);
 const korisnik = ref<KorisnikI>();
 
 const addReview = async () => {
-    const modal = await openModal(Recenzija, {
+    const modal = await openModal(DodajRecenziju, {
         igra: props.igra,
         userId: korisnik.value?.id
     });

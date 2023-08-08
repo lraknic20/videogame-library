@@ -1,7 +1,7 @@
 <template>
     <Igra :igra="igra" />
     {{ error }}
-    <Recenzije v-if="igra && !error" :igra="igra" />
+    <RecenzijaKartica v-if="igra && !error" :igra="igra" />
 </template>
   
 
@@ -10,7 +10,7 @@ import { ref, onMounted } from 'vue';
 import type { IgraRAWGI } from '@/types/IgreRAWGI';
 import axiosClient from '@/services/axiosClient';
 import { useRoute } from 'vue-router'
-import Recenzije from '@/components/Recenzije.vue';
+import RecenzijaKartica from '@/components/RecenzijaKartica.vue';
 import Igra from '@/components/Igra.vue'
 import type { IgraI } from '@/types/IgraI';
 

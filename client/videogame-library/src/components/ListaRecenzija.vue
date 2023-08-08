@@ -1,19 +1,16 @@
 <template>
     <div v-for="recenzija in props.reviews" :key="recenzija.id" class="reviews">
         <div v-if="recenzija.igra" class="game">
-            <img :src="recenzija.igra.slika" :alt="recenzija.igra.naziv" class="game-image" />
-            <h4>{{ recenzija.igra.naziv }}</h4>
+            <RouterLink :to="`/igre/${recenzija.igra.kratki_naziv}`">
+                <img :src="recenzija.igra.slika" :alt="recenzija.igra.naziv" class="game-image" />
+                <h4>{{ recenzija.igra.naziv }}</h4>
+            </RouterLink>
         </div>
         <div class="review">
-            <Rating class="rating" v-model="recenzija.ocjena" v-if="recenzija.obrisano == false" :cancel="false" readonly />
-            <Rating class="rating" v-else :cancel="false" readonly disabled />
-            <span class="username" v-if="recenzija.obrisano == false">{{ recenzija.korime }}</span>
-            <span class="username" v-else>[obrisano]</span>
-            <span v-if="recenzija.datum_istek_bloka">Blokiran do: {{ moment(recenzija.datum_istek_bloka)
-                .format('D.M.yyyy. HH:mm') }}</span>
+            <Rating class="rating" v-model="recenzija.ocjena" :cancel="false" readonly :disabled="recenzija.obrisano == true"/>
+            <span class="username">{{ recenzija.korime }}</span>
             <span class="date">Objavljeno: {{ moment(recenzija.datum).format('D.M.yyyy. HH:mm') }}</span>
-            <p class="comment" v-if="recenzija.obrisano == false">{{ recenzija.komentar }}</p>
-            <p class="comment" v-else>[obrisano]</p>
+            <p class="comment">{{ recenzija.komentar }}</p>
         </div>
     </div>
 </template>
