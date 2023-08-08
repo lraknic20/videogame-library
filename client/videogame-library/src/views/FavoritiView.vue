@@ -1,17 +1,22 @@
 <template>
-    <button @click="currentPage=1, changeSelection('UserFavorites')">Moji Favoriti</button>
-    <button @click="currentPage=1, changeSelection('AllFavorites')">Svi favoriti</button>
-    <select v-model.number="pageSize" @change="changeSelection(curentlySelected)" id="pageSizeSelect">
+    <select v-model.number="pageSize" @change="changeTab" id="pageSizeSelect">
         <option value="10" selected>10</option>
         <option value="20">20</option>
         <option value="30">30</option>
         <option value="40">40</option>
     </select>
-    <select v-model="sort" @change="changeSelection(curentlySelected)" id="sortSelect">
+    <select v-model="sort" @change="changeTab" id="sortSelect">
         <option value="desc" selected>Novije prema starijem</option>
         <option value="asc">Starije prema novijem</option>
     </select>
-    <Igre :igre="igre" :stranica="'igre'"/>
+    <TabView :lazy="true" v-model:activeIndex="active" v-on:update:active-index="changeTab">
+        <TabPanel header="Moji favoriti">
+            <Igre :igre="igre" :stranica="'igre'" />
+        </TabPanel>
+        <TabPanel header="Svi favoriti">
+            <Igre :igre="igre" :stranica="'igre'" />
+        </TabPanel>
+    </TabView>
     <vue-awesome-paginate :total-items="count" :items-per-page="pageSize" :max-pages-shown="5" v-model="currentPage"
         :on-click="onRouteChange" />
 </template>
@@ -22,13 +27,15 @@ import Igre from '@/components/Igre.vue'
 import axiosClient from '@/services/axiosClient';
 import type { IgraI } from '@/types/IgraI';
 import { useRoute, useRouter } from 'vue-router'
+import TabView from 'primevue/tabview';
+import TabPanel from 'primevue/tabpanel';
 
 let igre = ref<IgraI[]>([]);
 let currentPage = ref<number>();
 let pageSize = ref<number>();
 let count = ref<number>(0);
-let curentlySelected = ref<string>('UserFavorites');
 let sort = ref<string>('desc');
+const active = ref(0);
 
 const route = useRoute()
 const router = useRouter();
@@ -47,17 +54,15 @@ const onRouteChange = () => {
     };
 
     router.push({ query: newQuery });
-    changeSelection(curentlySelected.value);
+    changeTab();
 };
 
-const changeSelection = (selection: string) => {
-    if (selection == 'UserFavorites') {
+const changeTab = () => {
+    if (active.value == 0) {
         getFavoritedGamesForUser();
-        curentlySelected.value = 'UserFavorites';
     }
-    if (selection == 'AllFavorites') {
+    if (active.value == 1) {
         getAllFavoritedGames();
-        curentlySelected.value = 'AllFavorites';
     }
 };
 
