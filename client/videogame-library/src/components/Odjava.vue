@@ -1,11 +1,11 @@
 <script setup lang="ts">
-    import { useRouter } from 'vue-router';
+import { useRouter } from 'vue-router';
+import { useAuthStore } from '@/stores/auth';
 
-    localStorage.removeItem('id');
-    localStorage.removeItem('korime');
-    localStorage.removeItem('token');
+const authStore = useAuthStore();
 
-    const router = useRouter();
-    router.push('/');
-    router.go(0);
+authStore.logout();
+
+const router = useRouter();
+router.push('/');
 </script>

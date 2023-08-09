@@ -22,7 +22,9 @@ import axiosClient from '@/services/axiosClient';
 import { useRouter } from 'vue-router';
 import { useToast } from "vue-toastification";
 const toast = useToast();
+import { useAuthStore } from '@/stores/auth';
 
+const authStore = useAuthStore();
 let error = ref();
 
 const schema = yup.object({
@@ -49,6 +51,7 @@ var performLogin = async (korime: string, lozinka: string) => {
 			localStorage.setItem('id', response.data.id);
 			localStorage.setItem('korime', response.data.korime);
 			localStorage.setItem('token', response.data.token);
+			authStore.login();
 			toast.success(response.data.message);
 			router.push('/');
 		})

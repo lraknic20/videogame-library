@@ -1,11 +1,9 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
-import { isLoggedIn, isAdmin, isModerator } from '@/services/auth';
-import { ref } from 'vue';
 import { container as WidgetContainerModal } from "jenesius-vue-modal";
+import { useAuthStore } from '@/stores/auth';
 
-let loggedIn = ref(isLoggedIn());
-
+const authStore = useAuthStore();
 </script>
 
 <template>
@@ -15,14 +13,14 @@ let loggedIn = ref(isLoggedIn());
 			<RouterLink to="/istrazi">Istraži</RouterLink>
 			<RouterLink to="/izdavaci">Izdavači</RouterLink>
 			<RouterLink to="/najbolje-igre">Najbolje ocijenjene igre</RouterLink>
-			<RouterLink v-if="!loggedIn" to="/prijava">Prijava</RouterLink>
-			<RouterLink v-if="!loggedIn" to="/registracija">Registracija</RouterLink>
-			<RouterLink v-if="loggedIn" to="/favoriti">Favoriti</RouterLink>
-			<RouterLink v-if="loggedIn" to="/recenzije">Recenzije igara</RouterLink>
-			<RouterLink v-if="loggedIn" to="/profil">Profil</RouterLink>
-			<RouterLink v-if="loggedIn && isAdmin()" to="/admin">Admin</RouterLink>
-			<RouterLink v-if="loggedIn && isModerator()" to="/moderator">Moderator</RouterLink>
-			<RouterLink v-if="loggedIn" to="/odjava">Odjava</RouterLink>
+			<RouterLink v-if="!authStore.loggedIn" to="/prijava">Prijava</RouterLink>
+			<RouterLink v-if="!authStore.loggedIn" to="/registracija">Registracija</RouterLink>
+			<RouterLink v-if="authStore.loggedIn" to="/favoriti">Favoriti</RouterLink>
+			<RouterLink v-if="authStore.loggedIn" to="/recenzije">Recenzije igara</RouterLink>
+			<RouterLink v-if="authStore.loggedIn" to="/profil">Profil</RouterLink>
+			<RouterLink v-if="authStore.loggedIn && authStore.isAdmin()" to="/admin">Admin</RouterLink>
+			<RouterLink v-if="authStore.loggedIn && authStore.isModerator()" to="/moderator">Moderator</RouterLink>
+			<RouterLink v-if="authStore.loggedIn" to="/odjava">Odjava</RouterLink>
 		</nav>
 	</header>
 
@@ -43,7 +41,6 @@ let loggedIn = ref(isLoggedIn());
 
 nav {
 	margin-left: -1rem;
-	margin-right: -1rem;
 	margin-top: -1rem;
 	margin-bottom: 1rem;
 	display: flex;

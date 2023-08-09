@@ -1,5 +1,7 @@
 import axios from 'axios'
 import { isTokenExpired } from '@/services/jwt';
+import { useToast } from "vue-toastification";
+const toast = useToast();
 
 const axiosClient = axios.create({
     baseURL: import.meta.env.VITE_API_BASE_URL,
@@ -13,6 +15,7 @@ axiosClient.interceptors.request.use(
         if (token && !isTokenExpired(token)) {
             config.headers['Authorization'] = `Bearer ${token}`;
         } else {
+            localStorage.removeItem('loggedIn');
             localStorage.removeItem('id');
             localStorage.removeItem('korime');
             localStorage.removeItem('token');
