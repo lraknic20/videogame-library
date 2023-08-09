@@ -19,7 +19,9 @@ import type { KorisnikI } from '@/types/KorisnikI';
 import { openModal } from "jenesius-vue-modal";
 import DodajRecenziju from '@/components/DodajRecenziju.vue';
 import ListaRecenzija from '@/components/ListaRecenzija.vue'
+import { useAuthStore } from '@/stores/auth';
 
+const authStore = useAuthStore();
 const props = defineProps<{ igra: IgraI }>();
 
 const recenzije = ref<RecenzijaI[]>([]);
@@ -52,11 +54,7 @@ var getReviewsForGame = () => {
 }
 
 const isLoggedIn = () => {
-    if (localStorage.getItem('token')) {
-        return true;
-    } else {
-        return false;
-    }
+    return authStore.checkLoggedIn();
 }
 
 const checkIfUserBlocked = () => {

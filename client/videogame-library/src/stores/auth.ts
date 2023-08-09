@@ -52,12 +52,14 @@ export const useAuthStore = defineStore('auth', {
             }
             else return 0;
         },
-        checkLoggedIn() {
+        checkLoggedIn(): boolean {
             const token = localStorage.getItem('token');
             if (token && !isTokenExpired(token)) {
                 this.loggedIn = true;
+                return true;
             } else {
                 this.loggedIn = false;
+                return false;
             }
         },
         logout() {

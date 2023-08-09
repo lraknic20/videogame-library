@@ -175,12 +175,16 @@ module.exports = {
             const ocjena = req.body.ocjena;
             const komentar = req.body.komentar;
 
-            const blocked = await Korisnik.isBlocked(korisnikId);
-            if (blocked.status) {
-                return res.status(403).json(blocked.message);
+            const korisnik = await Korisnik.findOne(korisnikId);
+            if (korisnik.datum_istek_bloka && new Date(korisnik.datum_istek_bloka) > new Date()) {
+                return res.status(403).json('Blokirani ste od dodavanja recenzija!');
             }
 
             const existingGame = await Igra.findOne({ id: igraId });
+            if (new Date(existingGame.datum_izlaska) > new Date()) {
+                return res.status(403).json('Igra još nije izašla!');
+            }
+
             if (existingGame) {
                 const reviewExists = await Recenzija.findOne({
                     recenzijaKorisnik: korisnikId,
@@ -197,7 +201,7 @@ module.exports = {
                     });
                     return res.ok('Recenzija je dodana!');
                 } else {
-                    return res.badRequest('Recenzija već postoji!');
+                    return res.badRequest('Već ste recenzirali ovu igru!');
                 }
             } else {
                 return res.status(404).json('Igra nije pronađena!');

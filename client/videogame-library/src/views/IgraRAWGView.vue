@@ -1,7 +1,7 @@
 <template>
     <Igra :igra="igra" />
     {{ error }}
-    <RecenzijaKartica v-if="igra && !error" :igra="igra" />
+    <RecenzijaKartica v-if="igra && !error && gameReleased()" :igra="igra" />
 </template>
   
 
@@ -25,6 +25,7 @@ const getGame = () => {
         .get('/rawg/igre/' + route.params.id)
         .then((response) => {
             igraRAWG.value = response.data;
+            console.log(igraRAWG.value);
             findRequirements();
             if (igraRAWG.value) {
                 igra.value = {
@@ -62,6 +63,12 @@ const getGame = () => {
         .catch((err) => {
             error.value = "Greška prilikom dohvaćanja igre";
         });
+}
+
+const gameReleased = () => {
+    if (igra.value?.datum_izlaska) {
+        return new Date(igra.value.datum_izlaska) < new Date();
+    }
 }
 
 const findRequirements = () => {

@@ -10,7 +10,9 @@ import type { IgraI } from '@/types/IgraI';
 import { ref, onMounted } from 'vue';
 import axiosClient from '@/services/axiosClient';
 import { useToast } from "vue-toastification";
+import { useAuthStore } from '@/stores/auth';
 
+const authStore = useAuthStore();
 const toast = useToast();
 
 const props = defineProps<{ igra: IgraI }>();
@@ -20,7 +22,7 @@ let favoritId = ref<number>();
 const isFavorite = ref<boolean>(false);
 
 const toggleFavorite = () => {
-    if (localStorage.getItem('token')) {
+    if (authStore.checkLoggedIn()) {
         if (!isFavorite.value) {
             saveFavoriteGame();
         } else {
@@ -112,7 +114,11 @@ var checkIfFavorited = () => {
         });
 }
 
-onMounted(checkIfFavorited);
+
+onMounted(() => {
+    if(authStore.checkLoggedIn())
+        checkIfFavorited();
+});
 </script>
   
 <style>
