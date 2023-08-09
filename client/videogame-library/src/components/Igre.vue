@@ -2,7 +2,8 @@
     <div class="game-container">
         <div v-for="igra in props.igre" :key="igra.id" class="game-item">
             <RouterLink :to="`/${props.stranica}/${igra.kratki_naziv}`">
-                <img :src="igra.slika" :alt="igra.naziv" class="game-picture" />
+                <img v-if="igra.slika" :src="igra.slika" :alt="igra.naziv" class="game-image" />
+                <img v-else src="https://fakeimg.pl/1920x1080?text=Slika+ne+postoji" :alt="igra.naziv" class="game-image" />
                 <p class="game-name">{{ igra.naziv }}</p>
             </RouterLink>
         </div>
@@ -28,7 +29,7 @@ const props = defineProps<{ igre: IgraI[], stranica: string }>();
     text-align: center;
 }
 
-.game-picture {
+.game-image {
     width: 80%;
 }
 

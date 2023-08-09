@@ -25,7 +25,6 @@ const getGame = () => {
         .get('/rawg/igre/' + route.params.id)
         .then((response) => {
             igraRAWG.value = response.data;
-            console.log(igraRAWG.value);
             findRequirements();
             if (igraRAWG.value) {
                 igra.value = {

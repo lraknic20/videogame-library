@@ -13,7 +13,7 @@
             <span class="username" v-else>[Obrisano]</span>
             <span v-if="recenzija.datum_istek_bloka">Blokiran do: {{ moment(recenzija.datum_istek_bloka)
                 .format('D.M.yyyy. HH:mm') }}</span>
-            <span class="date">Objavljeno: {{ moment(recenzija.datum).format('D.M.yyyy.') }}</span>
+            <span class="date"> Objavljeno: {{ moment(recenzija.datum).format('D.M.yyyy.') }}</span>
             <p class="comment" v-if="recenzija.obrisano == false">{{ recenzija.komentar }}</p>
             <p class="comment" v-else>[Obrisano]</p>
         </div>

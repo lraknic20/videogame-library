@@ -1,6 +1,7 @@
 <template>
     <div v-if="igra" class="game-card">
-        <img :src="igra.slika" :alt="igra.naziv" class="game-image" />
+        <img v-if="igra.slika" :src="igra.slika" :alt="igra.naziv" class="game-image" />
+        <img v-else src="https://fakeimg.pl/1920x1080?text=Slika+ne+postoji" :alt="igra.naziv" class="game-image" />
         <div class="game-details">
             <div class="game-name">
                 <h2>{{ igra.naziv }}</h2>
