@@ -23,17 +23,11 @@
         <option value="desc" selected>Novije prema starijem</option>
         <option value="asc">Starije prema novijem</option>
     </select>
-    <select v-model.number="pageSize" @change="getReviews" id="pageSizeSelect">
-        <option value="10" selected>10</option>
-        <option value="20">20</option>
-        <option value="30">30</option>
-        <option value="40">40</option>
-    </select>
     <ListaRecenzija :reviews="recenzije" />
     <p v-if="!error && recenzije.length == 0">Recenzije ne postoje</p>
     <span>{{ error }}</span>
-    <vue-awesome-paginate v-if="recenzije.length != 0" :total-items="count" :items-per-page="pageSize" :max-pages-shown="5"
-        v-model="currentPage" :on-click="onRouteChange" />
+    <Paginator v-model:rows="pageSize" v-model:totalRecords="count" :rowsPerPageOptions="[5, 10, 15, 20, 30, 40]"
+        @page="onPageChange" />
 </template>
 
 <script setup lang="ts">
@@ -72,11 +66,16 @@ let searchText = ref<string>();
 let years = ref<Date[]>();
 let selectedRating = ref<number>();
 
+const onPageChange = async (event: any) => {
+    currentPage.value = event.page + 1;
+    onRouteChange();
+};
+
 const routeQuery = () => {
     const { stranica, brojIgara, pretrazivanje, sortiranje, ocjena } = route.query;
 
     currentPage.value = stranica ? Number(stranica) : 1;
-    pageSize.value = brojIgara ? Number(brojIgara) : 10;
+    pageSize.value = brojIgara ? Number(brojIgara) : 5;
     searchText.value = pretrazivanje ? pretrazivanje.toString() : '';
     sort.value = sortiranje ? sortiranje.toString() : 'desc';
     selectedRating.value = ocjena ? Number(ocjena) : undefined;

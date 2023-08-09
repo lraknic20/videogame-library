@@ -30,21 +30,14 @@
                 <button @click="currentPage = 1, onRouteChange()">Spremi filter</button>
             </div>
         </div>
-        <!-- <label for="pageSizeSelect">Broj igara na stranici:</label>
-    <select v-model.number="pageSize" @change="onRouteChange" id="pageSizeSelect">
-        <option value="10" selected>10</option>
-        <option value="20">20</option>
-        <option value="30">30</option>
-        <option value="40">40</option>
-    </select> -->
         {{ error }}
         <ProgressSpinner v-if="isLoading" class="spinner" />
         <div>
             <Igre :igre="igre" :stranica="'igreRAWG'" />
         </div>
     </div>
-    <vue-awesome-paginate :total-items="count" :items-per-page="pageSize" :max-pages-shown="5" v-model="currentPage"
-        :on-click="onRouteChange" />
+    <Paginator v-model:rows="pageSize" v-model:totalRecords="count" :rowsPerPageOptions="[10, 20, 30, 40]"
+        @page="onPageChange" />
 </template>
 
 <script setup lang="ts">
@@ -78,6 +71,11 @@ const selectedDateRange = ref();
 
 const isLoading = ref(false);
 const error = ref<string>();
+
+const onPageChange = async (event: any) => {
+    currentPage.value = event.page + 1;
+    onRouteChange();
+};
 
 const routeQuery = () => {
     const { stranica, brojIgara, pretrazivanje } = route.query;
@@ -200,6 +198,7 @@ onMounted(() => {
     gap: 20px;
     padding: 20px;
 }
+
 .filter {
     max-height: 400px;
     padding: 10px;
@@ -212,9 +211,7 @@ onMounted(() => {
     margin: 10px 0 10px 0;
     text-align: center;
 }
-.filter .search {
-    width: 100%;
-} 
+
 .multiselect {
     width: 100%;
 }

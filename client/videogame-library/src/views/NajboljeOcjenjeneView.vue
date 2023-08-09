@@ -5,17 +5,11 @@
     <label for="platformSelect">Odabir platforme:</label>
     <MultiSelect v-model="selectedPlatforms" display="chip" :showToggleAll="false" :options="platforme" filter
         :optionLabel="platforma => platforma.naziv" :placeholder="'Sve platforme'" />
-    <select v-model.number="pageSize" @change="onRouteChange" id="pageSizeSelect">
-        <option value="10" selected>10</option>
-        <option value="20">20</option>
-        <option value="30">30</option>
-        <option value="40">40</option>
-    </select>
     <button @click="currentPage = 1, onRouteChange()">Spremi filter</button>
     <button @click="selectedGenres = [], selectedPlatforms = [], currentPage = 1, onRouteChange()">Resetiraj filter</button>
-    <Igre :igre="igre" :stranica="'igreRAWG'"/>
-    <vue-awesome-paginate :total-items="count" :items-per-page="pageSize" :max-pages-shown="5" v-model="currentPage"
-        :on-click="onRouteChange" />
+    <Igre :igre="igre" :stranica="'igreRAWG'" />
+    <Paginator v-model:rows="pageSize" v-model:totalRecords="count" :rowsPerPageOptions="[10, 20, 30, 40]"
+        @page="onPageChange" />
 </template>
 
 <script setup lang="ts">
@@ -41,6 +35,11 @@ const selectedPlatforms = ref<PlatformaI[]>([]);
 const currentPage = ref<number>();
 const pageSize = ref<number>();
 const count = ref<number>(0);
+
+const onPageChange = (event: any) => {
+    currentPage.value = event.page + 1;
+    onRouteChange();
+};
 
 const routeQuery = () => {
     const { stranica, brojIgara } = route.query;

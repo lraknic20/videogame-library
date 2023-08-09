@@ -17,6 +17,7 @@ import "primeicons/primeicons.css";
 import ProgressSpinner from 'primevue/progressspinner';
 import MultiSelect from 'primevue/multiselect';
 import InputText from 'primevue/inputtext';
+import Paginator from 'primevue/paginator';
 
 import Toast from "vue-toastification";
 import "vue-toastification/dist/index.css";
@@ -39,5 +40,6 @@ app.component('VueDatePicker', VueDatePicker);
 app.component('ProgressSpinner', ProgressSpinner);
 app.component('MultiSelect', MultiSelect);
 app.component('InputText', InputText);
+app.component('Paginator', Paginator);
 
 app.use(VueAwesomePaginate).mount('#app')

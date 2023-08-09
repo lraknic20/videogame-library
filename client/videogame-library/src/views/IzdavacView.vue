@@ -10,8 +10,8 @@
     </div>
     {{ error }}
     <Igre :igre="igre" :stranica="'igreRAWG'"/>
-    <vue-awesome-paginate v-if="igre" :total-items="count" :items-per-page="pageSize" :max-pages-shown="5"
-        v-model="currentPage" :on-click="getGamesForPublisher" />
+    <Paginator v-model:rows="pageSize" v-model:totalRecords="count" :rowsPerPageOptions="[10, 20, 30, 40]"
+        @page="onPageChange" />
 </template>
 
 <script setup lang="ts">
@@ -31,6 +31,11 @@ let error = ref<string>();
 let currentPage = ref<number>(1);
 let pageSize = ref<number>(10);
 let count = ref<number>(0);
+
+const onPageChange = async (event: any) => {
+    currentPage.value = event.page + 1;
+    getGamesForPublisher();
+};
 
 var getPublisher = () => {
     axiosClient

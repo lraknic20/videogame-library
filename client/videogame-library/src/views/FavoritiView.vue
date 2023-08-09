@@ -1,10 +1,4 @@
 <template>
-    <select v-model.number="pageSize" @change="changeTab" id="pageSizeSelect">
-        <option value="10" selected>10</option>
-        <option value="20">20</option>
-        <option value="30">30</option>
-        <option value="40">40</option>
-    </select>
     <select v-model="sort" @change="changeTab" id="sortSelect">
         <option value="desc" selected>Novije prema starijem</option>
         <option value="asc">Starije prema novijem</option>
@@ -17,8 +11,8 @@
             <Igre :igre="igre" :stranica="'igre'" />
         </TabPanel>
     </TabView>
-    <vue-awesome-paginate :total-items="count" :items-per-page="pageSize" :max-pages-shown="5" v-model="currentPage"
-        :on-click="onRouteChange" />
+    <Paginator v-model:rows="pageSize" v-model:totalRecords="count" :rowsPerPageOptions="[10, 20, 30, 40]"
+        @page="onPageChange" />
 </template>
 
 <script setup lang="ts">
@@ -39,6 +33,11 @@ const active = ref(0);
 
 const route = useRoute()
 const router = useRouter();
+
+const onPageChange = async (event: any) => {
+    currentPage.value = event.page + 1;
+    onRouteChange();
+};
 
 const routeQuery = () => {
     const { stranica, brojIgara } = route.query;
