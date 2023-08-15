@@ -39,17 +39,11 @@ module.exports = {
 
 			const emailRegex = /^\S+@\S+\.\S+$/;
 
-			console.log(updatedKorisnik);
-			console.log(req.body.ime);
-			console.log(req.body.prezime);
-			console.log(req.body.korime);
-			console.log(req.body.email);
-
 			if (!updatedKorisnik.ime || !updatedKorisnik.prezime || !updatedKorisnik.korime || !updatedKorisnik.email) {
 				return res.status(400).json({ error: 'Sva polja su obavezna!' });
 			}
 
-			if (!emailRegex.test(email)) {
+			if (!emailRegex.test(updatedKorisnik.email)) {
 				return res.status(400).json({ error: 'Email nije ispravan!' });
 			}
 

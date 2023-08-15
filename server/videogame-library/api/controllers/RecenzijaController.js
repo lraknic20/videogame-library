@@ -170,6 +170,7 @@ module.exports = {
 
     saveReview: async function (req, res) {
         try {
+            const { format } = require('date-fns');
             const korisnikId = req.body.korisnik;
             const igraId = req.body.igra;
             const ocjena = req.body.ocjena;
@@ -192,12 +193,13 @@ module.exports = {
                 });
 
                 if (!reviewExists) {
+                    const currentDate = format(new Date(), 'yyyy-MM-dd HH:mm:ss');
                     await Recenzija.create({
                         recenzijaKorisnik: korisnikId,
                         recenzijaIgra: igraId,
                         ocjena: ocjena,
                         komentar: komentar,
-                        datum: new Date().toISOString().slice(0, 19).replace('T', ' ')
+                        datum: currentDate
                     });
                     return res.ok('Recenzija je dodana!');
                 } else {

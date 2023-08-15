@@ -7,7 +7,7 @@ module.exports = async function (req, res, next) {
     const tokenKorisnikId = JwtController.decodeToken(token).userId;
 
     if (korisnikId != tokenKorisnikId) {
-        return res.status(401).json({ error: 'Neautoriziran pristup!' });
+        return res.status(401).json({ error: 'Neautoriziran pristup! Krivi korisnik!' });
     }
     else {
         next();

@@ -86,9 +86,10 @@ module.exports = {
 
     async getPopularGames(req, res) {
         try {
+            const { format } = require('date-fns');
             const page = req.query.page;
             const pageSize  = req.query.pageSize;
-            const currentDate = new Date().toISOString().slice(0, 10);
+            const currentDate = format(new Date(), 'yyyy-MM-dd');
            
             const parameters = {
                 page: page,
@@ -111,9 +112,10 @@ module.exports = {
 
     async getUpcomingGames(req, res) {
         try {
+            const { format } = require('date-fns');
             const page = req.query.page;
             const pageSize  = req.query.pageSize;
-            const currentDate = new Date().toISOString().slice(0, 10);
+            const currentDate = format(new Date(), 'yyyy-MM-dd');
             const futureDate = req.query.futureDate;
             
             const parameters = {

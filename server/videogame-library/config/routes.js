@@ -26,8 +26,6 @@ module.exports.routes = {
 	'PUT /korisnici/:id/tipKorisnika': 'KorisnikController.updateUserType',
 	'PUT /korisnici/:id/datumIstekBloka': 'KorisnikController.updateUserTimeout',
 
-	'POST /korisnici/:id/zaduzenZanr': 'ZaduzenZanrController.addGenresInCharge',
-	'DELETE /korisnici/:id/zaduzenZanr': 'ZaduzenZanrController.deleteGenresInCharge',
 	'PUT /korisnici/:id/zaduzenZanr': 'ZaduzenZanrController.updateGenresInCharge',
 
 	'GET /tip_korisnika': 'TipKorisnikaController.find',
@@ -52,21 +50,26 @@ module.exports.routes = {
 	'GET /zanrovi': 'ZanrController.getGenres',
 	'POST /zanrovi': 'ZanrController.saveGenres',
 	'PUT /zanrovi/:genreId': 'ZanrController.updateGenre',
+	
 	'GET /platforme': 'PlatformaController.getPlatforms',
 	'POST /platforme': 'PlatformaController.savePlatforms',
+
 	'GET /izdavaci': 'IzdavacController.getPublishers',
+
 	'GET /igre': 'IgraController.getGames',
 	'GET /igre/:gameId': 'IgraController.getGame',
 	'POST /igre': 'IgraController.saveGame',
+
 	'GET /favoriti': 'FavoritController.getFavourites',
 	'GET /favoriti/:id': 'FavoritController.getFavouritesForUser',
 	'GET /favoriti/:id/igra/:gameId': 'FavoritController.getFavouriteForUser',
 	'POST /favoriti': 'FavoritController.saveFavourite',
 	'DELETE /favoriti/:id': 'FavoritController.deleteFavourite',
+
 	'GET /recenzije': 'RecenzijaController.getReviews',
 	'GET /recenzije/:gameId': 'RecenzijaController.getReviewsForGame',
-	'GET /recenzije/moderator/:id': 'RecenzijaController.getReviewsForModerator',
 	'POST /recenzije': 'RecenzijaController.saveReview',
+	'GET /recenzije/moderator/:id': 'RecenzijaController.getReviewsForModerator',
 	'PUT /recenzije/:id': 'RecenzijaController.markAsDeltedReview',
 	'DELETE /recenzije/:id': 'RecenzijaController.deleteReview',
 

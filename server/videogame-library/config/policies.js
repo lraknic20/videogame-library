@@ -27,6 +27,10 @@ module.exports.policies = {
     '*': ['isAuthenticated', 'isAdmin']
   },
 
+  'AdminController': {
+    '*': ['isAuthenticated', 'isAdmin']
+  },
+
   'ZanrController': {
     'saveGenres': ['isAuthenticated', 'isAdmin'],
     'updateGenre': ['isAuthenticated', 'isAdmin']
@@ -47,8 +51,9 @@ module.exports.policies = {
   },
 
   'RecenzijaController': {
+    'getReviews': 'isAuthenticated',
     'saveReview': 'isAuthenticated',
-    'getReviewsForModerator': ['isAuthenticated', 'isModerator'],
+    'getReviewsForModerator': ['isAuthenticated', 'isCorrectUser', 'isModerator'],
     'markAsDeltedReview': ['isAuthenticated', 'isModerator'],
     'deleteReview': ['isAuthenticated', 'isAdmin'],
   },
