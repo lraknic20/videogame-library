@@ -32,7 +32,7 @@ const props = defineProps<{ igre: IgraI[], stranica: string }>();
 
 .game-image {
     margin-top: 16px;
-    width: 80%;
+    width: 90%;
 }
 
 /* .game-picture {

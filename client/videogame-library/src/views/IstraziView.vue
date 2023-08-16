@@ -1,11 +1,12 @@
 <template>
+    <h2>Istraži igre</h2>
     <div class="container">
         <div class="filter">
             <h3>Filter</h3>
             <div class="search">
                 <span class="p-input-icon-left">
                     <i class="pi pi-search" />
-                    <InputText v-model="searchText" placeholder="Pretraživanje" />
+                    <InputText v-model="searchText" class="searchText" placeholder="Pretraživanje" />
                 </span>
             </div>
             <div class="genre-select">
@@ -33,11 +34,11 @@
         {{ error }}
         <ProgressSpinner v-if="isLoading" class="spinner" />
         <div>
-            <Igre :igre="igre" :stranica="'igreRAWG'" />
+            <Igre v-if="igre" :igre="igre" :stranica="'igreRAWG'" />
         </div>
     </div>
-    <Paginator v-model:rows="pageSize" v-model:totalRecords="count" :rowsPerPageOptions="[10, 20, 30, 40]"
-        @page="onPageChange" />
+    <Paginator v-if="!error && igre" v-model:rows="pageSize" v-model:totalRecords="count"
+        :rowsPerPageOptions="[10, 20, 30, 40]" @page="onPageChange" />
 </template>
 
 <script setup lang="ts">
@@ -55,7 +56,7 @@ const route = useRoute()
 const router = useRouter();
 const toast = useToast();
 
-const igre = ref<IgraI[]>([]);
+const igre = ref<IgraI[]>();
 const zanrovi = ref<ZanrI[]>([]);
 const platforme = ref<PlatformaI[]>([]);
 
@@ -136,7 +137,8 @@ var getGames = () => {
             isLoading.value = false;
         })
         .catch((err) => {
-            error.value = "Greška prilikom dohvaćanja igara";
+            isLoading.value = false;
+            error.value = "Greška prilikom dohvaćanja igara. Molimo pokušajte kasnije.";
         });
 }
 
@@ -174,14 +176,10 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.date-picker-container {
-    width: 20%;
-    margin-bottom: 2%;
-}
-
-.date-picker-container {
-    width: 20%;
-    margin-bottom: 2%;
+h2 {
+    font-size: 36px;
+    color: rgb(51, 51, 51);
+    text-align: center;
 }
 
 .spinner {
@@ -200,19 +198,30 @@ onMounted(() => {
 }
 
 .filter {
-    max-height: 400px;
+    max-height: 435px;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    height: 100%;
 }
 
 .filter h3 {
+    color: rgb(51, 51, 51);
     margin: 10px 0 10px 0;
     text-align: center;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgb(204, 204, 204);
 }
 
 .multiselect {
+    width: 100%;
+}
+
+.p-input-icon-left {
+    width: 100%;
+}
+
+.searchText {
+    margin-top: 16px;
     width: 100%;
 }
 

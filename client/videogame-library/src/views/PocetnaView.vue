@@ -10,10 +10,10 @@
 					@update:model-value="getUpcomingGames" id="maxDate" />
 			</div>
 			{{ error }}
-			<Igre :igre="igre" :stranica="'igreRAWG'" />
+			<Igre v-if="igre" :igre="igre" :stranica="'igreRAWG'" />
 			<ProgressSpinner v-if="isLoading" class="spinner" />
 		</div>
-		<Paginator v-if="!error && !isLoading" v-model:rows="pageSize" v-model:totalRecords="count" :rowsPerPageOptions="[10, 20, 30, 40]"
+		<Paginator v-if="!error && igre" v-model:rows="pageSize" v-model:totalRecords="count" :rowsPerPageOptions="[10, 20, 30, 40]"
 			@page="onPageChange" />
 	</div>
 </template>
@@ -25,7 +25,7 @@ import axiosClient from '@/services/axiosClient';
 import Igre from '@/components/Igre.vue'
 import type { IgraI } from '@/types/IgraI';
 
-const igre = ref<IgraI[]>([]);
+const igre = ref<IgraI[]>();
 
 const selectedDate = ref(new Date());
 selectedDate.value.setMonth(selectedDate.value.getMonth() + 1);
