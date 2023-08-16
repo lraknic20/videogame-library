@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h2>Najbolje ocijenjene igre</h2>
+        <h1>Najbolje ocijenjene igre</h1>
         <div class="container">
             <div class="filter">
                 <h3>Filter</h3>
@@ -145,12 +145,6 @@ onMounted(() => {
 </script>
 
 <style scoped>
-h2 {
-    font-size: 36px;
-    color: rgb(51, 51, 51);
-    text-align: center;
-}
-
 .spinner {
     position: fixed;
     left: 0;

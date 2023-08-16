@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h2>Istraži igre</h2>
+        <h1>Istraži igre</h1>
         <div class="container">
             <div class="filter">
                 <h3>Filter</h3>
@@ -177,12 +177,6 @@ onMounted(() => {
 </script>
 
 <style scoped>
-h2 {
-    font-size: 36px;
-    color: rgb(51, 51, 51);
-    text-align: center;
-}
-
 .spinner {
     position: fixed;
     left: 0;
@@ -218,11 +212,11 @@ h2 {
 }
 
 .p-input-icon-left {
+    margin-top: 16px;
     width: 100%;
 }
 
 .searchText {
-    margin-top: 16px;
     width: 100%;
 }
 

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h2>Izdavači</h2>
+        <h1>Izdavači</h1>
         {{ error }}
         <ProgressSpinner v-if="isLoading" class="spinner" />
         <div class="publisher-container">
@@ -64,12 +64,6 @@ onMounted(() => {
 </script>
 
 <style scoped>
-h2 {
-    font-size: 36px;
-    color: rgb(51, 51, 51);
-    text-align: center;
-}
-
 .spinner {
     position: fixed;
     left: 0;
@@ -79,6 +73,7 @@ h2 {
 }
 
 .publisher-container {
+    margin-top: 16px;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     grid-auto-rows: 300px;

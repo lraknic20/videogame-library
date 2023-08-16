@@ -1,34 +1,55 @@
 <template>
     <div>
-        <div class="filter">
-            <label for="genreSelect">Odabir žanra:</label>
-            <MultiSelect v-model="selectedGenres" display="chip" :showToggleAll="false" :options="zanrovi"
-                :optionLabel="zanr => zanr.naziv" :maxSelectedLabels="3" :placeholder="'Svi žanrovi'" />
-            <label for="platformSelect">Odabir platforme:</label>
-            <MultiSelect v-model="selectedPlatforms" display="chip" :showToggleAll="false" :options="platforme" filter
-                :optionLabel="platforma => platforma.naziv" :placeholder="'Sve platforme'" />
-            <label for="publisherSelect">Odabir izdavača:</label>
-            <MultiSelect v-model="selectedPublishers" display="chip" :showToggleAll="false" :options="izdavaci" filter
-                :optionLabel="izdavac => izdavac.naziv" :placeholder="'Svi izdavači'" />
-            <label for="search">Pretraživanje:</label>
-            <input v-model="searchText" id="search">
-            <label for="rating">Broj zvjezdica:</label>
-            <Rating class="rating" v-model="selectedRating" :cancel="true" id="rating" />
-            <label for="calendar">Raspon po godinama izlaska igara:</label>
-            <Calendar v-model="years" view="year" dateFormat="yy." selectionMode="range" :manualInput="false"
-                id="calendar" />
-            <button @click="currentPage = 1, onRouteChange()">Spremi filter</button>
-            <button @click="selectedGenres = [], selectedPlatforms = [], selectedPublishers = [], searchText = undefined,
-                currentPage = 1, selectedRating = undefined, years = undefined, onRouteChange()">Resetiraj filter</button>
+        <h1>Recenzije igara</h1>
+        <div class="container">
+            <div class="filter">
+                <h3>Soritranje</h3>
+                <Dropdown v-model="selectedSort" :options="sortOptions" optionLabel="name" optionValue="value"
+                    @change="onRouteChange" id="sortSelect" class="multiselect" />
+                <h3>Filter</h3>
+                <div class="search">
+                    <span class="p-input-icon-left">
+                        <i class="pi pi-search" />
+                        <InputText v-model="searchText" class="searchText" placeholder="Pretraživanje" />
+                    </span>
+                </div>
+                <div class="genre-select">
+                    <label for="genreSelect">Odabir žanra:</label>
+                    <MultiSelect v-model="selectedGenres" display="chip" :showToggleAll="false" :options="zanrovi"
+                        :optionLabel="zanr => zanr.naziv" :maxSelectedLabels="3" :placeholder="'Svi žanrovi'"
+                        class="multiselect" />
+                </div>
+                <div class="platform-select">
+                    <label for="platformSelect">Odabir platforme:</label>
+                    <MultiSelect v-model="selectedPlatforms" display="chip" :showToggleAll="false" :options="platforme"
+                        filter :optionLabel="platforma => platforma.naziv" :placeholder="'Sve platforme'"
+                        class="multiselect" />
+                </div>
+                <div class="publisher-select">
+                    <label for="publisherSelect">Odabir izdavača:</label>
+                    <MultiSelect v-model="selectedPublishers" display="chip" :showToggleAll="false" :options="izdavaci"
+                        filter :optionLabel="izdavac => izdavac.naziv" :placeholder="'Svi izdavači'" class="multiselect" />
+                </div>
+                <div class="rating">
+                    <label for="rating">Broj zvjezdica:</label>
+                    <Rating class="rating" v-model="selectedRating" :cancel="true" id="rating" />
+                </div>
+                <div class="dateRange">
+                    <label for="calendar">Raspon godina izlaska igara:</label>
+                    <Calendar v-model="years" view="year" dateFormat="yy." selectionMode="range" :manualInput="false"
+                        id="calendar" class="multiselect" />
+                </div>
+                <div class="buttons">
+                    <button @click="selectedGenres = [], selectedPlatforms = [], selectedPublishers = [], searchText = undefined,
+                        currentPage = 1, selectedRating = undefined, years = undefined, onRouteChange()">Resetiraj
+                        filter</button>
+                    <button @click="currentPage = 1, onRouteChange()">Spremi filter</button>
+                </div>
+            </div>
+            {{ error }}
+            <ListaRecenzija :reviews="recenzije" />
         </div>
-        <select v-model="sort" @change="onRouteChange" id="sortSelect">
-            <option value="desc" selected>Novije prema starijem</option>
-            <option value="asc">Starije prema novijem</option>
-        </select>
-        <ListaRecenzija :reviews="recenzije" />
-        <p v-if="!error && recenzije.length == 0">Recenzije ne postoje</p>
-        <span>{{ error }}</span>
-        <Paginator v-model:rows="pageSize" v-model:totalRecords="count" :rowsPerPageOptions="[5, 10, 15, 20, 30, 40]"
+        <Paginator v-if="!error && recenzije" v-model:rows="pageSize" v-model:totalRecords="count" :rowsPerPageOptions="[5, 10, 15, 20, 30, 40]"
             @page="onPageChange" />
     </div>
 </template>
@@ -56,18 +77,22 @@ const platforme = ref<PlatformaI[]>([]);
 const izdavaci = ref<IzdavaciI[]>([]);
 const error = ref<string>('');
 
-let selectedGenres = ref<ZanrI[]>([]);
-let selectedPlatforms = ref<PlatformaI[]>([]);
-let selectedPublishers = ref<IzdavaciI[]>([]);
-let sort = ref<string>('desc');
+const selectedGenres = ref<ZanrI[]>([]);
+const selectedPlatforms = ref<PlatformaI[]>([]);
+const selectedPublishers = ref<IzdavaciI[]>([]);
+const selectedSort = ref();
+const sortOptions = [
+    { name: 'Novije prema starijem', value: 'desc' },
+    { name: 'Starije prema novijem', value: 'asc' },
+];
 
-let currentPage = ref<number>();
-let pageSize = ref<number>();
-let count = ref<number>(0);
+const currentPage = ref<number>();
+const pageSize = ref<number>();
+const count = ref<number>(0);
 
-let searchText = ref<string>();
-let years = ref<Date[]>();
-let selectedRating = ref<number>();
+const searchText = ref<string>();
+const years = ref<Date[]>();
+const selectedRating = ref<number>();
 
 const onPageChange = async (event: any) => {
     currentPage.value = event.page + 1;
@@ -80,7 +105,7 @@ const routeQuery = () => {
     currentPage.value = stranica ? Number(stranica) : 1;
     pageSize.value = brojIgara ? Number(brojIgara) : 5;
     searchText.value = pretrazivanje ? pretrazivanje.toString() : '';
-    sort.value = sortiranje ? sortiranje.toString() : 'desc';
+    selectedSort.value = sortiranje ? sortiranje.toString() : 'desc';
     selectedRating.value = ocjena ? Number(ocjena) : undefined;
 }
 
@@ -89,7 +114,7 @@ const onRouteChange = () => {
         stranica: currentPage.value,
         brojIgara: pageSize.value,
         ...(searchText.value != '' ? { pretrazivanje: searchText.value } : {}),
-        sortiranje: sort.value,
+        sortiranje: selectedSort.value,
         ...(selectedRating.value != undefined ? { ocjena: selectedRating.value } : {}),
     };
 
@@ -107,6 +132,7 @@ var getReviews = () => {
     let genres = selectedGenres.value.map((zanr) => zanr.id).join(',');
     let platforms = selectedPlatforms.value.map((platforma) => platforma.id).join(',');
     let publishers = selectedPublishers.value.map((izdavac) => izdavac.id).join(',');
+    error.value = '';
 
     axiosClient
         .get('recenzije',
@@ -120,16 +146,19 @@ var getReviews = () => {
                     search: searchText.value,
                     yearMin: yearMin,
                     yearMax: yearMax,
-                    sort: sort.value,
+                    sort: selectedSort.value,
                     rating: selectedRating.value
                 }
             })
         .then((response) => {
             recenzije.value = response.data.recenzije;
             count.value = response.data.count;
+            if (response.data.count == 0) {
+                error.value = "Ne postoje recenzije koje zadovoljavaju odabrane filtere";
+            }
         })
         .catch((err) => {
-            error.value += "Greška prilikom dohvaćanja igara";
+            error.value = "Greška prilikom dohvaćanja igara";
         });
 }
 
@@ -140,7 +169,7 @@ var getAllGenres = () => {
             zanrovi.value = response.data;
         })
         .catch((err) => {
-            error.value += "Greška prilikom dohvaćanja žanrova";
+            console.log("Greška prilikom dohvaćanja žanrova");
         });
 };
 
@@ -151,7 +180,7 @@ var getAllPlatforms = () => {
             platforme.value = response.data;
         })
         .catch((err) => {
-            error.value += "Greška prilikom dohvaćanja platforma";
+            console.log("Greška prilikom dohvaćanja platforma");
         });
 };
 
@@ -162,7 +191,7 @@ var getAllPublishers = () => {
             izdavaci.value = response.data;
         })
         .catch((err) => {
-            error.value += "Greška prilikom dohvaćanja platforma";
+            console.log("Greška prilikom dohvaćanja platforma");
         });
 };
 
@@ -178,4 +207,69 @@ onMounted(() => {
 });
 </script>
 
-<style scoped></style>
+<style scoped>
+h1 {
+    font-size: 36px;
+    color: rgb(51, 51, 51);
+    text-align: center;
+    margin-bottom: 0;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+    gap: 20px;
+    padding: 20px;
+}
+
+.filter {
+    max-height: 700px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.filter h3 {
+    color: rgb(51, 51, 51);
+    margin: 10px 0 10px 0;
+    text-align: center;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgb(204, 204, 204);
+}
+
+.multiselect {
+    width: 100%;
+}
+
+.p-input-icon-left {
+    margin-top: 16px;
+    width: 100%;
+}
+
+.searchText {
+    width: 100%;
+}
+
+.search,
+.genre-select,
+.platform-select,
+.publisher-select,
+.rating,
+.dateRange {
+    margin-bottom: 16px;
+}
+
+.buttons {
+    display: flex;
+    justify-content: space-between;
+}
+
+button {
+    margin: auto;
+    background-color: #0d79ec;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px;
+}
+</style>
