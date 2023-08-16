@@ -20,16 +20,18 @@ const props = defineProps<{ igre: IgraI[], stranica: string }>();
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 20px;
-    padding: 20px;
-
+    /* padding: 20px; */
 }
 
 .game-item {
     /* align-self: center; */
     text-align: center;
+    border: 1px solid rgb(204, 204, 204);
+    border-radius: 5px;
 }
 
 .game-image {
+    margin-top: 16px;
     width: 80%;
 }
 
@@ -38,7 +40,15 @@ const props = defineProps<{ igre: IgraI[], stranica: string }>();
     height: 250px;
 } */
 
+a {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+    font-size: 20px;
+}
+
 .game-name {
-    text-align: center;
+    margin: 8px;
+    margin-bottom: 16px;    
 }
 </style>
