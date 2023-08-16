@@ -12,9 +12,18 @@ async function getData(resource, parameters) {
     for(let p in parameters)
         url += '&' + p + "=" + parameters[p];
     
-    const response = await fetch(url);
-    const data = await response.json();
-    return { data, statusCode: response.status };
+    try {
+        const response = await fetch(url);
+        
+        if (!response.ok) {
+            throw new Error();
+        }
+
+        const data = await response.json();
+        return { data };
+    } catch (error) {
+        return { statusCode: 404 };
+    }
 }
 
 module.exports = {
