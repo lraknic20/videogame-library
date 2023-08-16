@@ -1,7 +1,9 @@
 <template>
-    <Igra :igra="igra" />
-    {{ error }}
-    <RecenzijaKartica v-if="igra && !error && gameReleased()" :igra="igra" />
+    <div>
+        <Igra :igra="igra" />
+        {{ error }}
+        <RecenzijaKartica v-if="igra && !error && gameReleased()" :igra="igra" />
+    </div>
 </template>
   
 
@@ -57,7 +59,7 @@ const getGame = () => {
                     })),
                 };
             }
-            
+
         })
         .catch((err) => {
             error.value = "Greška prilikom dohvaćanja igre";

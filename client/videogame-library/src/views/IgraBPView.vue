@@ -1,7 +1,9 @@
 <template>
-    <Igra :igra="igra" />
-    {{ error }}
-    <RecenzijaKartica v-if="igra && !error" :igra="igra" />
+    <div>
+        <Igra :igra="igra" />
+        {{ error }}
+        <RecenzijaKartica v-if="igra && !error" :igra="igra" />
+    </div>
 </template>
 
 <script setup lang="ts">

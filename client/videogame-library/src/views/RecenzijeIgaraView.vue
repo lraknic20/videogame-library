@@ -1,33 +1,36 @@
 <template>
-    <div class="filter">
-        <label for="genreSelect">Odabir žanra:</label>
-        <MultiSelect v-model="selectedGenres" display="chip" :showToggleAll="false" :options="zanrovi"
-            :optionLabel="zanr => zanr.naziv" :maxSelectedLabels="3" :placeholder="'Svi žanrovi'" />
-        <label for="platformSelect">Odabir platforme:</label>
-        <MultiSelect v-model="selectedPlatforms" display="chip" :showToggleAll="false" :options="platforme" filter
-            :optionLabel="platforma => platforma.naziv" :placeholder="'Sve platforme'" />
-        <label for="publisherSelect">Odabir izdavača:</label>
-        <MultiSelect v-model="selectedPublishers" display="chip" :showToggleAll="false" :options="izdavaci" filter
-            :optionLabel="izdavac => izdavac.naziv" :placeholder="'Svi izdavači'" />
-        <label for="search">Pretraživanje:</label>
-        <input v-model="searchText" id="search">
-        <label for="rating">Broj zvjezdica:</label>
-        <Rating class="rating" v-model="selectedRating" :cancel="true" id="rating" />
-        <label for="calendar">Raspon po godinama izlaska igara:</label>
-        <Calendar v-model="years" view="year" dateFormat="yy." selectionMode="range" :manualInput="false" id="calendar" />
-        <button @click="currentPage = 1, onRouteChange()">Spremi filter</button>
-        <button @click="selectedGenres = [], selectedPlatforms = [], selectedPublishers = [], searchText = undefined,
-            currentPage = 1, selectedRating = undefined, years = undefined, onRouteChange()">Resetiraj filter</button>
+    <div>
+        <div class="filter">
+            <label for="genreSelect">Odabir žanra:</label>
+            <MultiSelect v-model="selectedGenres" display="chip" :showToggleAll="false" :options="zanrovi"
+                :optionLabel="zanr => zanr.naziv" :maxSelectedLabels="3" :placeholder="'Svi žanrovi'" />
+            <label for="platformSelect">Odabir platforme:</label>
+            <MultiSelect v-model="selectedPlatforms" display="chip" :showToggleAll="false" :options="platforme" filter
+                :optionLabel="platforma => platforma.naziv" :placeholder="'Sve platforme'" />
+            <label for="publisherSelect">Odabir izdavača:</label>
+            <MultiSelect v-model="selectedPublishers" display="chip" :showToggleAll="false" :options="izdavaci" filter
+                :optionLabel="izdavac => izdavac.naziv" :placeholder="'Svi izdavači'" />
+            <label for="search">Pretraživanje:</label>
+            <input v-model="searchText" id="search">
+            <label for="rating">Broj zvjezdica:</label>
+            <Rating class="rating" v-model="selectedRating" :cancel="true" id="rating" />
+            <label for="calendar">Raspon po godinama izlaska igara:</label>
+            <Calendar v-model="years" view="year" dateFormat="yy." selectionMode="range" :manualInput="false"
+                id="calendar" />
+            <button @click="currentPage = 1, onRouteChange()">Spremi filter</button>
+            <button @click="selectedGenres = [], selectedPlatforms = [], selectedPublishers = [], searchText = undefined,
+                currentPage = 1, selectedRating = undefined, years = undefined, onRouteChange()">Resetiraj filter</button>
+        </div>
+        <select v-model="sort" @change="onRouteChange" id="sortSelect">
+            <option value="desc" selected>Novije prema starijem</option>
+            <option value="asc">Starije prema novijem</option>
+        </select>
+        <ListaRecenzija :reviews="recenzije" />
+        <p v-if="!error && recenzije.length == 0">Recenzije ne postoje</p>
+        <span>{{ error }}</span>
+        <Paginator v-model:rows="pageSize" v-model:totalRecords="count" :rowsPerPageOptions="[5, 10, 15, 20, 30, 40]"
+            @page="onPageChange" />
     </div>
-    <select v-model="sort" @change="onRouteChange" id="sortSelect">
-        <option value="desc" selected>Novije prema starijem</option>
-        <option value="asc">Starije prema novijem</option>
-    </select>
-    <ListaRecenzija :reviews="recenzije" />
-    <p v-if="!error && recenzije.length == 0">Recenzije ne postoje</p>
-    <span>{{ error }}</span>
-    <Paginator v-model:rows="pageSize" v-model:totalRecords="count" :rowsPerPageOptions="[5, 10, 15, 20, 30, 40]"
-        @page="onPageChange" />
 </template>
 
 <script setup lang="ts">

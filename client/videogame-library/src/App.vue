@@ -24,7 +24,7 @@ const authStore = useAuthStore();
 		</nav>
 	</header>
 
-	<RouterView />
+	<RouterView id="routerView"/>
 	<widget-container-modal />
 </template>
 
@@ -39,7 +39,7 @@ const authStore = useAuthStore();
 	transition: opacity 0.5s ease;
 }
 
-nav {
+/* nav {
 	margin-left: -1rem;
 	margin-top: -1rem;
 	margin-bottom: 1rem;
@@ -47,6 +47,18 @@ nav {
 	justify-content: space-around;
 	background-color: rgb(51, 51, 51);
 	padding: 15px;
+} */
+
+nav {
+	position: fixed;
+	top: 0;
+	right: 0;
+	width: 100%;
+	display: flex;
+	justify-content: space-around;
+	background-color: rgb(51, 51, 51);
+	padding: 10px;
+	z-index: 100;
 }
 
 nav a {
@@ -60,5 +72,9 @@ nav a {
 nav a:hover,
 a.router-link-active {
 	background-color: rgb(85, 85, 85);
+}
+
+#routerView {
+	margin-top: 65px;
 }
 </style>

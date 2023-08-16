@@ -1,5 +1,6 @@
 <template>
-    <div v-if="izdavac" class="publisher-details">
+    <div>
+        <div v-if="izdavac" class="publisher-details">
         <div class="publisher-card">
             <div class="publisher-details">
                 <h2 class="publisher-name">{{ izdavac.name }}</h2>
@@ -12,6 +13,7 @@
     <Igre :igre="igre" :stranica="'igreRAWG'"/>
     <Paginator v-model:rows="pageSize" v-model:totalRecords="count" :rowsPerPageOptions="[10, 20, 30, 40]"
         @page="onPageChange" />
+    </div>
 </template>
 
 <script setup lang="ts">

@@ -1,18 +1,20 @@
 <template>
-    <select v-model="sort" @change="changeTab" id="sortSelect">
-        <option value="desc" selected>Novije prema starijem</option>
-        <option value="asc">Starije prema novijem</option>
-    </select>
-    <TabView :lazy="true" v-model:activeIndex="active" v-on:update:active-index="changeTab">
-        <TabPanel header="Moji favoriti">
-            <Igre :igre="igre" :stranica="'igre'" />
-        </TabPanel>
-        <TabPanel header="Svi favoriti">
-            <Igre :igre="igre" :stranica="'igre'" />
-        </TabPanel>
-    </TabView>
-    <Paginator v-model:rows="pageSize" v-model:totalRecords="count" :rowsPerPageOptions="[10, 20, 30, 40]"
-        @page="onPageChange" />
+    <div>
+        <select v-model="sort" @change="changeTab" id="sortSelect">
+            <option value="desc" selected>Novije prema starijem</option>
+            <option value="asc">Starije prema novijem</option>
+        </select>
+        <TabView :lazy="true" v-model:activeIndex="active" v-on:update:active-index="changeTab">
+            <TabPanel header="Moji favoriti">
+                <Igre :igre="igre" :stranica="'igre'" />
+            </TabPanel>
+            <TabPanel header="Svi favoriti">
+                <Igre :igre="igre" :stranica="'igre'" />
+            </TabPanel>
+        </TabView>
+        <Paginator v-model:rows="pageSize" v-model:totalRecords="count" :rowsPerPageOptions="[10, 20, 30, 40]"
+            @page="onPageChange" />
+    </div>
 </template>
 
 <script setup lang="ts">

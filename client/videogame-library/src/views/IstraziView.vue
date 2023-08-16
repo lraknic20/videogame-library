@@ -1,44 +1,45 @@
 <template>
-    <h2>Istraži igre</h2>
-    <div class="container">
-        <div class="filter">
-            <h3>Filter</h3>
-            <div class="search">
-                <span class="p-input-icon-left">
-                    <i class="pi pi-search" />
-                    <InputText v-model="searchText" class="searchText" placeholder="Pretraživanje" />
-                </span>
+    <div>
+        <h2>Istraži igre</h2>
+        <div class="container">
+            <div class="filter">
+                <h3>Filter</h3>
+                <div class="search">
+                    <span class="p-input-icon-left">
+                        <i class="pi pi-search" />
+                        <InputText v-model="searchText" class="searchText" placeholder="Pretraživanje" />
+                    </span>
+                </div>
+                <div class="genre-select">
+                    <label for="genreSelect">Odabir žanra:</label>
+                    <MultiSelect v-model="selectedGenres" display="chip" :showToggleAll="false" :options="zanrovi"
+                        :optionLabel="zanr => zanr.naziv" :maxSelectedLabels="3" :placeholder="'Svi žanrovi'"
+                        class="multiselect" />
+                </div>
+                <div class="platform-select">
+                    <label for="platformSelect">Odabir platforme:</label>
+                    <MultiSelect v-model="selectedPlatforms" display="chip" :showToggleAll="false" :options="platforme"
+                        filter :optionLabel="platforma => platforma.naziv" :placeholder="'Sve platforme'"
+                        class="multiselect" />
+                </div>
+                <div class="dateRange">
+                    <label for="dateRange">Odabir raspona datuma:</label>
+                    <VueDatePicker v-model="selectedDateRange" :enable-time-picker="false" locale="hr" format="d.M.yyyy."
+                        select-text="Odaberi" cancel-text="Odustani" :clearable="true" range id="dateRange" />
+                </div>
+                <div class="buttons">
+                    <button @click="selectedGenres = [], selectedPlatforms = [], searchText = undefined, selectedDateRange = undefined,
+                        currentPage = 1, onRouteChange()">Resetiraj filter</button>
+                    <button @click="currentPage = 1, onRouteChange()">Spremi filter</button>
+                </div>
             </div>
-            <div class="genre-select">
-                <label for="genreSelect">Odabir žanra:</label>
-                <MultiSelect v-model="selectedGenres" display="chip" :showToggleAll="false" :options="zanrovi"
-                    :optionLabel="zanr => zanr.naziv" :maxSelectedLabels="3" :placeholder="'Svi žanrovi'"
-                    class="multiselect" />
-            </div>
-            <div class="platform-select">
-                <label for="platformSelect">Odabir platforme:</label>
-                <MultiSelect v-model="selectedPlatforms" display="chip" :showToggleAll="false" :options="platforme" filter
-                    :optionLabel="platforma => platforma.naziv" :placeholder="'Sve platforme'" class="multiselect" />
-            </div>
-            <div class="dateRange">
-                <label for="dateRange">Odabir raspona datuma:</label>
-                <VueDatePicker v-model="selectedDateRange" :enable-time-picker="false" locale="hr" format="d.M.yyyy."
-                    select-text="Odaberi" cancel-text="Odustani" :clearable="true" range id="dateRange" />
-            </div>
-            <div class="buttons">
-                <button @click="selectedGenres = [], selectedPlatforms = [], searchText = undefined, selectedDateRange = undefined,
-                    currentPage = 1, onRouteChange()">Resetiraj filter</button>
-                <button @click="currentPage = 1, onRouteChange()">Spremi filter</button>
-            </div>
-        </div>
-        {{ error }}
-        <ProgressSpinner v-if="isLoading" class="spinner" />
-        <div>
+            {{ error }}
+            <ProgressSpinner v-if="isLoading" class="spinner" />
             <Igre v-if="igre" :igre="igre" :stranica="'igreRAWG'" />
         </div>
+        <Paginator v-if="!error && igre" v-model:rows="pageSize" v-model:totalRecords="count"
+            :rowsPerPageOptions="[10, 20, 30, 40]" @page="onPageChange" />
     </div>
-    <Paginator v-if="!error && igre" v-model:rows="pageSize" v-model:totalRecords="count"
-        :rowsPerPageOptions="[10, 20, 30, 40]" @page="onPageChange" />
 </template>
 
 <script setup lang="ts">

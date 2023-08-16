@@ -1,20 +1,22 @@
 <template>
-    <h2>Izdavači</h2>
-    {{ error }}
-    <ProgressSpinner v-if="isLoading" class="spinner" />
-    <div class="publisher-container">
-        <div v-for="izdavac in izdavaci" :key="izdavac.id" class="publisher-item">
-            <RouterLink :to="`/izdavaci/${izdavac.slug}`">
-                <img v-if="izdavac.image_background" :src="izdavac.image_background" :alt="izdavac.name"
-                    class="publisher-image" />
-                <img v-else src="https://fakeimg.pl/1920x1080?text=Slika+ne+postoji" :alt="izdavac.name"
-                    class="publisher-image" />
-                <p class="publisher-name">{{ izdavac.name }}</p>
-            </RouterLink>
+    <div>
+        <h2>Izdavači</h2>
+        {{ error }}
+        <ProgressSpinner v-if="isLoading" class="spinner" />
+        <div class="publisher-container">
+            <div v-for="izdavac in izdavaci" :key="izdavac.id" class="publisher-item">
+                <RouterLink :to="`/izdavaci/${izdavac.slug}`">
+                    <img v-if="izdavac.image_background" :src="izdavac.image_background" :alt="izdavac.name"
+                        class="publisher-image" />
+                    <img v-else src="https://fakeimg.pl/1920x1080?text=Slika+ne+postoji" :alt="izdavac.name"
+                        class="publisher-image" />
+                    <p class="publisher-name">{{ izdavac.name }}</p>
+                </RouterLink>
+            </div>
         </div>
+        <Paginator v-if="!error && izdavaci" v-model:rows="pageSize" v-model:totalRecords="count"
+            :rowsPerPageOptions="[10, 20, 30, 40]" @page="onPageChange" />
     </div>
-    <Paginator v-if="!error && izdavaci" v-model:rows="pageSize" v-model:totalRecords="count"
-        :rowsPerPageOptions="[10, 20, 30, 40]" @page="onPageChange" />
 </template>
 
 <script setup lang="ts">
