@@ -1,7 +1,8 @@
 <template>
     <div>
-        <h2>Moderacija recenzija</h2>
+        <h1>Moderacija recenzija</h1>
         {{ error }}
+        <ProgressSpinner v-if="isLoading" class="spinner" />
         <div v-for="recenzija in recenzije" :key="recenzija.id" class="reviews">
             <div class="game">
                 <img :src="recenzija.igra.slika" :alt="recenzija.igra.naziv" class="game-image" />
@@ -13,15 +14,15 @@
                 <Rating class="rating" v-else :cancel="false" readonly disabled />
                 <span class="username" v-if="recenzija.obrisano == false">{{ recenzija.korime }}</span>
                 <span class="username" v-else>[Obrisano]</span>
-                <span v-if="recenzija.datum_istek_bloka">Blokiran do: {{ moment(recenzija.datum_istek_bloka)
+                <span v-if="new Date(recenzija.datum_istek_bloka) > new Date()">Blokiran do: {{ moment(recenzija.datum_istek_bloka)
                     .format('D.M.yyyy. HH:mm') }}</span>
                 <span class="date"> Objavljeno: {{ moment(recenzija.datum).format('D.M.yyyy.') }}</span>
                 <p class="comment" v-if="recenzija.obrisano == false">{{ recenzija.komentar }}</p>
                 <p class="comment" v-else>[Obrisano]</p>
             </div>
-            <div class="buttons" v-if="recenzija.obrisano == false">
-                <button @click="deleteReview(recenzija)">Obriši</button>
-                <button @click="showCalendar(recenzija)">Obriši i blokiraj</button>
+            <div v-if="recenzija.obrisano == false">
+                <Button @click="deleteReview(recenzija)" label="Obriši" size="small" />
+                <Button @click="showCalendar(recenzija)" label="Obriši i blokiraj" size="small" />
             </div>
         </div>
     </div>
@@ -36,22 +37,23 @@ import { useToast } from "vue-toastification";
 import moment from 'moment';
 import BlokiranjeKorisnika from '@/components/BlokiranjeKorisnika.vue';
 import { openModal } from "jenesius-vue-modal";
+const isLoading = ref(true);
 
 const toast = useToast();
 const recenzije = ref<RecenzijaI[]>([]);
 const error = ref<string>();
-const date = ref<Date>(new Date());
 const selectedDate = ref<Date>();
-const minDate = new Date();
 
 var getReviews = () => {
     axiosClient
         .get('recenzije/moderator/' + localStorage.getItem('id'))
         .then((response) => {
             recenzije.value = response.data;
+            isLoading.value = false;
         })
         .catch((err) => {
-            error.value = err.response.data;
+            isLoading.value = false;
+            error.value = "Greška prilikom dohvata recenzija. Molimo pokušajte kasnije.";
         });
 }
 
@@ -102,6 +104,14 @@ onMounted(() => {
 </script>
 
 <style scoped>
+.spinner {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 50%;
+    bottom: 50%;
+}
+
 .game-image {
     width: 200px;
     margin-right: 10px;
@@ -140,11 +150,7 @@ onMounted(() => {
     margin-right: 10px;
 }
 
-.buttons {
-    align-self: center;
-}
-
-button {
+Button {
     margin-right: 10px;
 }
 </style>

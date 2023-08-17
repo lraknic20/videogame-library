@@ -4,8 +4,8 @@
         <VueDatePicker v-model="date" time-picker-inline locale="hr" format="d.M.yyyy HH:mm" select-text="Odaberi"
             cancel-text="Odustani" :clearable="false" :min-date=minDate />
         <div class="buttons">
-            <button @click="closeModal()">Odustani</button>
-            <button @click="emitDate">Potvrdi i obriši</button>
+            <Button @click="closeModal()" label="Odustani" size="small" />
+            <Button @click="checkDate" label="Potvrdi i obriši" size="small" />
         </div>
     </div>
 </template>
@@ -19,7 +19,7 @@ const emits = defineEmits(['selectedDate']);
 const date = ref<Date>(new Date());
 const minDate = new Date();
 
-const emitDate = () => {
+const checkDate = () => {
     emits('selectedDate', date.value);
     closeModal();
 };
@@ -27,6 +27,7 @@ const emitDate = () => {
 
 <style scoped>
 .modal {
+    margin-top: -15%;
     display: flex;
     flex-direction: column;
     align-items: center;
