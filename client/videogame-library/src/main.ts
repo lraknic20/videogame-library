@@ -20,6 +20,7 @@ import InputText from 'primevue/inputtext';
 import Paginator from 'primevue/paginator';
 import Dropdown from 'primevue/dropdown';
 import Button from 'primevue/button';
+import Tooltip from 'primevue/tooltip';
 
 import Toast from "vue-toastification";
 import "vue-toastification/dist/index.css";
@@ -45,5 +46,6 @@ app.component('InputText', InputText);
 app.component('Paginator', Paginator);
 app.component('Dropdown', Dropdown);
 app.component('Button', Button);
+app.directive('tooltip', Tooltip);
 
 app.use(VueAwesomePaginate).mount('#app')

@@ -14,9 +14,8 @@
                 <Rating class="rating" v-else :cancel="false" readonly disabled />
                 <span class="username" v-if="recenzija.obrisano == false">{{ recenzija.korime }}</span>
                 <span class="username" v-else>[Obrisano]</span>
-                <span v-if="new Date(recenzija.datum_istek_bloka) > new Date()">Blokiran do: {{ moment(recenzija.datum_istek_bloka)
-                    .format('D.M.yyyy. HH:mm') }}</span>
-                <span class="date"> Objavljeno: {{ moment(recenzija.datum).format('D.M.yyyy.') }}</span>
+                <span v-if="new Date(recenzija.datum_istek_bloka) > new Date()">Blokiran do: {{ formatDate(recenzija.datum_istek_bloka) }}</span>
+                <span v-tooltip="formatDate(recenzija.datum)" class="date">Objavljeno prije {{ formateDateDistance(recenzija.datum) }}</span>
                 <p class="comment" v-if="recenzija.obrisano == false">{{ recenzija.komentar }}</p>
                 <p class="comment" v-else>[Obrisano]</p>
             </div>
@@ -34,15 +33,27 @@ import type { RecenzijaI } from '@/types/RecenzijaI';
 import Rating from 'primevue/rating';
 import axiosClient from '@/services/axiosClient';
 import { useToast } from "vue-toastification";
-import moment from 'moment';
 import BlokiranjeKorisnika from '@/components/BlokiranjeKorisnika.vue';
 import { openModal } from "jenesius-vue-modal";
+import moment from 'moment';
+import { format, formatDistanceStrict } from "date-fns";
+import { hr } from "date-fns/locale";
 const isLoading = ref(true);
 
 const toast = useToast();
 const recenzije = ref<RecenzijaI[]>([]);
 const error = ref<string>();
 const selectedDate = ref<Date>();
+
+var formatDate = (dateString: string) => {
+    let date = new Date(dateString);
+    return format(date, 'd.M.yyyy. HH:mm');
+}
+
+var formateDateDistance = (dateString: string) => {
+    let date = new Date(dateString);
+    return formatDistanceStrict(date, new Date(), { locale: hr });
+}
 
 var getReviews = () => {
     axiosClient

@@ -11,7 +11,7 @@
                 <Rating class="rating" v-model="recenzija.ocjena" :cancel="false" readonly
                     :disabled="recenzija.obrisano == true" />
                 <span class="username">{{ recenzija.korime }}</span>
-                <span class="date">Objavljeno: {{ moment(recenzija.datum).format('D.M.yyyy. HH:mm') }}</span>
+                <span v-tooltip="formatDate(recenzija.datum)" class="date">Objavljeno prije {{ formateDateDistance(recenzija.datum) }}</span>
                 <p class="comment">{{ recenzija.komentar }}</p>
             </div>
         </div>
@@ -21,9 +21,20 @@
 <script setup lang="ts">
 import type { RecenzijaI } from '@/types/RecenzijaI';
 import Rating from 'primevue/rating';
-import moment from 'moment';
+import { format, formatDistanceStrict } from "date-fns";
+import { hr } from "date-fns/locale";
 
 const props = defineProps<{ reviews: RecenzijaI[] }>();
+
+var formatDate = (dateString: string) => {
+    let date = new Date(dateString);
+    return format(date, 'd.M.yyyy. HH:mm');
+}
+
+var formateDateDistance = (dateString: string) => {
+    let date = new Date(dateString);
+    return formatDistanceStrict(date, new Date(), { locale: hr });
+}
 </script>
 
 <style scoped>
@@ -48,6 +59,7 @@ a {
     color: #333;
     font-weight: bold;
 }
+
 .game h4 {
     margin-top: 4px;
     margin-bottom: 8px;
