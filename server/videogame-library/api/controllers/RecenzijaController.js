@@ -56,8 +56,10 @@ module.exports = {
 
             const rawResult = await sails.sendNativeQuery(sql);
 
-            const count = rawResult.rows.length;
             const games = rawResult.rows;
+            const dbGamesIds = games.map(game => game.id);
+            const intersection = gameIds.filter(id => dbGamesIds.includes(id));
+            const count = intersection.length;
 
             const anonReviews = filteredReviews.map(review => {
                 let game = games.find(game => game.id === review.recenzijaIgra.id);

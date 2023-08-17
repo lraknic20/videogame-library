@@ -21,7 +21,7 @@
             <label for="tipKorisnika">Tip korisnika:</label>
             <InputText v-model="korisnik.tip_korisnika_id.naziv" type="text" id="tipKorisnika" disabled />
             <div v-if="zanrovi">
-                <label>Zaduzeni zanrovi:</label>
+                <label>Zaduženi žanrovi:</label>
                 <p>{{ zanrovi }}</p>
             </div>
             <span>{{ message }}</span>

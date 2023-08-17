@@ -7,6 +7,9 @@
             <span v-if="userBlocked">Blokirani ste do {{ blockedDate }}</span>
         </div>
         <ListaRecenzija :reviews="recenzije"/>
+        <div v-if="recenzije && recenzije.length == 0">
+            <p>Nema recenzija za ovu igru</p>
+        </div>
     </div>
 </template>
 
@@ -91,7 +94,7 @@ onMounted(() => {
     border: 1px solid #ccc;
     border-radius: 5px;
     padding: 16px;
-    margin: 10px;
+    margin: 0 5%;
 }
 
 .review-name {

@@ -17,9 +17,9 @@ const authStore = useAuthStore();
 			<RouterLink v-if="!authStore.loggedIn" to="/registracija">Registracija</RouterLink>
 			<RouterLink v-if="authStore.loggedIn" to="/favoriti">Favoriti</RouterLink>
 			<RouterLink v-if="authStore.loggedIn" to="/recenzije">Recenzije igara</RouterLink>
-			<RouterLink v-if="authStore.loggedIn" to="/profil">Profil</RouterLink>
 			<RouterLink v-if="authStore.loggedIn && authStore.isAdmin()" to="/admin">Admin</RouterLink>
 			<RouterLink v-if="authStore.loggedIn && authStore.isModerator()" to="/moderator">Moderator</RouterLink>
+			<RouterLink v-if="authStore.loggedIn" to="/profil">Profil</RouterLink>
 			<RouterLink v-if="authStore.loggedIn" to="/odjava">Odjava</RouterLink>
 		</nav>
 	</header>

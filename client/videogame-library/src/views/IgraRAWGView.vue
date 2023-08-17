@@ -1,11 +1,11 @@
 <template>
     <div>
-        <Igra :igra="igra" />
         {{ error }}
+        <ProgressSpinner v-if="isLoading" class="spinner" />
+        <Igra :igra="igra" />
         <RecenzijaKartica v-if="igra && !error && gameReleased()" :igra="igra" />
     </div>
 </template>
-  
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
@@ -18,11 +18,13 @@ import type { IgraI } from '@/types/IgraI';
 
 const route = useRoute();
 
-let igraRAWG = ref<IgraRAWGI>();
-let igra = ref<IgraI>();
-let error = ref<string>();
+const igraRAWG = ref<IgraRAWGI>();
+const igra = ref<IgraI>();
+const error = ref<string>();
+const isLoading = ref(false);
 
 const getGame = () => {
+    isLoading.value = true;
     axiosClient
         .get('/rawg/igre/' + route.params.id)
         .then((response) => {
@@ -59,10 +61,11 @@ const getGame = () => {
                     })),
                 };
             }
-
+            isLoading.value = false;
         })
         .catch((err) => {
-            error.value = "Greška prilikom dohvaćanja igre";
+            isLoading.value = false;
+            error.value = "Greška prilikom dohvaćanja igre. Molimo pokušajte kasnije.";
         });
 }
 
@@ -84,3 +87,13 @@ const findRequirements = () => {
 
 onMounted(getGame);
 </script>
+
+<style scoped>
+.spinner {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 50%;
+    bottom: 50%;
+}
+</style>
