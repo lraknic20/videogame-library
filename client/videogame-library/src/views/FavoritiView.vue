@@ -1,19 +1,26 @@
 <template>
     <div>
-        <select v-model="sort" @change="changeTab" id="sortSelect">
-            <option value="desc" selected>Novije prema starijem</option>
-            <option value="asc">Starije prema novijem</option>
-        </select>
-        <TabView :lazy="true" v-model:activeIndex="active" v-on:update:active-index="changeTab">
-            <TabPanel header="Moji favoriti">
-                <Igre :igre="igre" :stranica="'igre'" />
-            </TabPanel>
-            <TabPanel header="Svi favoriti">
-                <Igre :igre="igre" :stranica="'igre'" />
-            </TabPanel>
-        </TabView>
-        <Paginator v-model:rows="pageSize" v-model:totalRecords="count" :rowsPerPageOptions="[10, 20, 30, 40]"
-            @page="onPageChange" />
+        <h1>Favoriti</h1>
+        <div class="container">
+            <div class="filter">
+                <h3>Soritranje</h3>
+                <Dropdown v-model="selectedSort" :options="sortOptions" optionLabel="name" optionValue="value"
+                    @change="onRouteChange" id="sortSelect" class="filter-item" />
+            </div>
+            <ProgressSpinner v-if="isLoading" class="spinner" />
+            <TabView :lazy="true" v-model:activeIndex="active" v-on:update:active-index="changeTab">
+                <TabPanel header="Moji favoriti">
+                    {{ error }}
+                    <Igre v-if="igre" :igre="igre" :stranica="'igre'" />
+                </TabPanel>
+                <TabPanel header="Svi favoriti">
+                    {{ error }}
+                    <Igre v-if="igre" :igre="igre" :stranica="'igre'" />
+                </TabPanel>
+            </TabView>
+        </div>
+        <Paginator v-if="!error && igre" v-model:rows="pageSize" v-model:totalRecords="count"
+            :rowsPerPageOptions="[10, 20, 30, 40]" @page="onPageChange" />
     </div>
 </template>
 
@@ -26,12 +33,18 @@ import { useRoute, useRouter } from 'vue-router'
 import TabView from 'primevue/tabview';
 import TabPanel from 'primevue/tabpanel';
 
-let igre = ref<IgraI[]>([]);
-let currentPage = ref<number>();
-let pageSize = ref<number>();
-let count = ref<number>(0);
-let sort = ref<string>('desc');
+const igre = ref<IgraI[]>();
+const currentPage = ref<number>();
+const pageSize = ref<number>();
+const count = ref<number>(0);
+const selectedSort = ref<string>('desc');
 const active = ref(0);
+const isLoading = ref(false);
+const error = ref<string>();
+const sortOptions = [
+    { name: 'Novije prema starijem', value: 'desc' },
+    { name: 'Starije prema novijem', value: 'asc' },
+];
 
 const route = useRoute()
 const router = useRouter();
@@ -68,40 +81,48 @@ const changeTab = () => {
 };
 
 var getFavoritedGamesForUser = () => {
+    error.value = '';
+    isLoading.value = true;
     axiosClient
         .get('favoriti/' + localStorage.getItem('id'),
             {
                 params: {
                     page: currentPage.value,
                     pageSize: pageSize.value,
-                    sort: sort.value
+                    sort: selectedSort.value
                 }
             })
         .then((response) => {
             count.value = response.data.count;
             igre.value = response.data.games;
+            isLoading.value = false;
         })
         .catch((err) => {
-            // error.value = "Greška prilikom dohvaćanja igara";
+            isLoading.value = false;
+            error.value = "Greška prilikom dohvaćanja favorita. Molimo pokušajte kasnije.";
         });
 }
 
 var getAllFavoritedGames = () => {
+    error.value = '';
+    isLoading.value = true;
     axiosClient
         .get('favoriti/',
             {
                 params: {
                     page: currentPage.value,
                     pageSize: pageSize.value,
-                    sort: sort.value
+                    sort: selectedSort.value
                 }
             })
         .then((response) => {
             count.value = response.data.count;
             igre.value = response.data.games;
+            isLoading.value = false;
         })
         .catch((err) => {
-            // error.value = "Greška prilikom dohvaćanja igara";
+            isLoading.value = false;
+            error.value = "Greška prilikom dohvaćanja favorita. Molimo pokušajte kasnije.";
         });
 }
 
@@ -113,3 +134,17 @@ onMounted(() => {
     getFavoritedGamesForUser();
 });
 </script>
+
+<style scoped>
+.spinner {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 50%;
+    bottom: 50%;
+}
+
+.filter {
+	max-height: 130px;
+}
+</style>

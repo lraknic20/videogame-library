@@ -74,25 +74,7 @@ onMounted(getUpcomingGames);
 	bottom: 50%;
 }
 
-.container {
-	display: grid;
-	grid-template-columns: 1fr 4fr;
-	gap: 20px;
-	padding: 20px;
-}
-
 .filter {
-	height: 140px;
-	padding: 10px;
-	border: 1px solid rgb(204, 204, 204);
-	border-radius: 5px;
-}
-
-.filter h3 {
-	color: rgb(51, 51, 51);
-	margin: 10px 0 10px 0;
-	text-align: center;
-	padding-bottom: 8px;
-	border-bottom: 1px solid rgb(204, 204, 204);
+	max-height: 140px;
 }
 </style>

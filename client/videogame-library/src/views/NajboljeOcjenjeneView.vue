@@ -8,13 +8,13 @@
                     <label for="genreSelect">Odabir žanra:</label>
                     <MultiSelect v-model="selectedGenres" display="chip" :showToggleAll="false" :options="zanrovi"
                         :optionLabel="zanr => zanr.naziv" :maxSelectedLabels="3" :placeholder="'Svi žanrovi'"
-                        class="multiselect" />
+                        class="filter-item" />
                 </div>
                 <div class="platform-select">
                     <label for="platformSelect">Odabir platforme:</label>
                     <MultiSelect v-model="selectedPlatforms" display="chip" :showToggleAll="false" :options="platforme"
                         filter :optionLabel="platforma => platforma.naziv" :placeholder="'Sve platforme'"
-                        class="multiselect" />
+                        class="filter-item" />
                 </div>
                 <div class="buttons">
                     <button @click="currentPage = 1, onRouteChange()">Spremi filter</button>
@@ -153,48 +153,7 @@ onMounted(() => {
     bottom: 50%;
 }
 
-.container {
-    display: grid;
-    grid-template-columns: 1fr 4fr;
-    gap: 20px;
-    padding: 20px;
-}
-
 .filter {
     max-height: 290px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-.filter h3 {
-    color: rgb(51, 51, 51);
-    margin: 10px 0 10px 0;
-    text-align: center;
-    padding-bottom: 8px;
-    border-bottom: 1px solid rgb(204, 204, 204);
-}
-
-.buttons {
-    display: flex;
-    justify-content: space-between;
-}
-
-.multiselect {
-    width: 100%;
-}
-
-.genre-select,
-.platform-select {
-    margin-top: 16px;
-}
-
-button {
-    margin: 16px auto;
-    background-color: #0d79ec;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    padding: 10px;
 }
 </style>

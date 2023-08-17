@@ -5,30 +5,30 @@
             <div class="filter">
                 <h3>Soritranje</h3>
                 <Dropdown v-model="selectedSort" :options="sortOptions" optionLabel="name" optionValue="value"
-                    @change="onRouteChange" id="sortSelect" class="multiselect" />
+                    @change="onRouteChange" id="sortSelect" class="filter-item" />
                 <h3>Filter</h3>
                 <div class="search">
                     <span class="p-input-icon-left">
                         <i class="pi pi-search" />
-                        <InputText v-model="searchText" class="searchText" placeholder="Pretraživanje" />
+                        <InputText v-model="searchText" class="filter-item" placeholder="Pretraživanje" />
                     </span>
                 </div>
                 <div class="genre-select">
                     <label for="genreSelect">Odabir žanra:</label>
                     <MultiSelect v-model="selectedGenres" display="chip" :showToggleAll="false" :options="zanrovi"
                         :optionLabel="zanr => zanr.naziv" :maxSelectedLabels="3" :placeholder="'Svi žanrovi'"
-                        class="multiselect" />
+                        class="filter-item" />
                 </div>
                 <div class="platform-select">
                     <label for="platformSelect">Odabir platforme:</label>
                     <MultiSelect v-model="selectedPlatforms" display="chip" :showToggleAll="false" :options="platforme"
                         filter :optionLabel="platforma => platforma.naziv" :placeholder="'Sve platforme'"
-                        class="multiselect" />
+                        class="filter-item" />
                 </div>
                 <div class="publisher-select">
                     <label for="publisherSelect">Odabir izdavača:</label>
                     <MultiSelect v-model="selectedPublishers" display="chip" :showToggleAll="false" :options="izdavaci"
-                        filter :optionLabel="izdavac => izdavac.naziv" :placeholder="'Svi izdavači'" class="multiselect" />
+                        filter :optionLabel="izdavac => izdavac.naziv" :placeholder="'Svi izdavači'" class="filter-item" />
                 </div>
                 <div class="rating">
                     <label for="rating">Broj zvjezdica:</label>
@@ -37,7 +37,7 @@
                 <div class="dateRange">
                     <label for="calendar">Raspon godina izlaska igara:</label>
                     <Calendar v-model="years" view="year" dateFormat="yy." selectionMode="range" :manualInput="false"
-                        id="calendar" class="multiselect" />
+                        id="calendar" class="filter-item" />
                 </div>
                 <div class="buttons">
                     <button @click="selectedGenres = [], selectedPlatforms = [], selectedPublishers = [], searchText = undefined,
@@ -47,10 +47,11 @@
                 </div>
             </div>
             {{ error }}
-            <ListaRecenzija :reviews="recenzije" />
+            <ListaRecenzija v-if="recenzije" :reviews="recenzije" />
+            <ProgressSpinner v-if="isLoading" class="spinner" />
         </div>
-        <Paginator v-if="!error && recenzije" v-model:rows="pageSize" v-model:totalRecords="count" :rowsPerPageOptions="[5, 10, 15, 20, 30, 40]"
-            @page="onPageChange" />
+        <Paginator v-if="!error && recenzije" v-model:rows="pageSize" v-model:totalRecords="count"
+            :rowsPerPageOptions="[5, 10, 15, 20, 30, 40]" @page="onPageChange" />
     </div>
 </template>
 
@@ -71,10 +72,11 @@ import { useRoute, useRouter } from 'vue-router'
 const route = useRoute()
 const router = useRouter();
 
-const recenzije = ref<RecenzijaI[]>([]);
+const recenzije = ref<RecenzijaI[]>();
 const zanrovi = ref<ZanrI[]>([]);
 const platforme = ref<PlatformaI[]>([]);
 const izdavaci = ref<IzdavaciI[]>([]);
+const isLoading = ref(false);
 const error = ref<string>('');
 
 const selectedGenres = ref<ZanrI[]>([]);
@@ -133,6 +135,7 @@ var getReviews = () => {
     let platforms = selectedPlatforms.value.map((platforma) => platforma.id).join(',');
     let publishers = selectedPublishers.value.map((izdavac) => izdavac.id).join(',');
     error.value = '';
+    isLoading.value = true;
 
     axiosClient
         .get('recenzije',
@@ -156,9 +159,11 @@ var getReviews = () => {
             if (response.data.count == 0) {
                 error.value = "Ne postoje recenzije koje zadovoljavaju odabrane filtere";
             }
+            isLoading.value = false;
         })
         .catch((err) => {
-            error.value = "Greška prilikom dohvaćanja igara";
+            isLoading.value = false;
+            error.value = "Greška prilikom dohvaćanja recenzija. Molimo pokušajte kasnije.";
         });
 }
 
@@ -208,68 +213,15 @@ onMounted(() => {
 </script>
 
 <style scoped>
-h1 {
-    font-size: 36px;
-    color: rgb(51, 51, 51);
-    text-align: center;
-    margin-bottom: 0;
-}
-
-.container {
-    display: grid;
-    grid-template-columns: 1fr 4fr;
-    gap: 20px;
-    padding: 20px;
+.spinner {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 50%;
+    bottom: 50%;
 }
 
 .filter {
-    max-height: 700px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-.filter h3 {
-    color: rgb(51, 51, 51);
-    margin: 10px 0 10px 0;
-    text-align: center;
-    padding-bottom: 8px;
-    border-bottom: 1px solid rgb(204, 204, 204);
-}
-
-.multiselect {
-    width: 100%;
-}
-
-.p-input-icon-left {
-    margin-top: 16px;
-    width: 100%;
-}
-
-.searchText {
-    width: 100%;
-}
-
-.search,
-.genre-select,
-.platform-select,
-.publisher-select,
-.rating,
-.dateRange {
-    margin-bottom: 16px;
-}
-
-.buttons {
-    display: flex;
-    justify-content: space-between;
-}
-
-button {
-    margin: auto;
-    background-color: #0d79ec;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    padding: 10px;
+    max-height: 690px;
 }
 </style>
