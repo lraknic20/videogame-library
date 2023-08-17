@@ -25,7 +25,8 @@
                     <span v-if="index != igra.izdavaci!.length - 1">, </span>
                 </span>
             </div>
-            <p class="game-release-date">Datum izlaska: {{ moment(igra.datum_izlaska).format('D.M.yyyy.') }}</p>
+            <p class="game-release-date" v-if="igra.datum_izlaska">Datum izlaska: {{ moment(igra.datum_izlaska).format('D.M.yyyy.') }}</p>
+            <p v-else>Datum izlaska: Nije definiran</p>
             <p v-if="igra.metacritic" class="game-metacritic">Metacritic ocjena: {{ igra.metacritic }}</p>
             <a :href="igra.stranica" target="_blank" class="game-website">Posjeti stranicu</a>
             <h3>Zahtjevi</h3>

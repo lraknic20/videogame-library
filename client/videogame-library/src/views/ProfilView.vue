@@ -1,7 +1,7 @@
 <template>
     <div class="profile">
         <h2>Uredi profil</h2>
-        <form v-if="korisnik && korisnik.tip_korisnika_id" @submit.prevent="updateUser">
+        <form v-if="korisnik && korisnik.tip_korisnika_id">
             <label for="ime">Ime:</label>
             <InputText v-model="korisnik.ime" type="text" id="ime" :class="{ 'p-invalid': formErrors.ime }" />
             <span v-if="formErrors.ime" class="error-message">{{ formErrors.ime }}</span>
@@ -25,7 +25,7 @@
                 <p>{{ zanrovi }}</p>
             </div>
             <span>{{ message }}</span>
-            <button>Spremi promjene</button>
+            <Button @click="updateUser" label="Spremi promjene" />
         </form>
     </div>
 </template>
@@ -50,7 +50,6 @@ const formErrors = ref<any>({
     korime: '',
     email: ''
 });
-
 
 const message = ref();
 

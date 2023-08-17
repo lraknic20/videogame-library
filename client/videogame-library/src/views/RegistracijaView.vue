@@ -18,7 +18,7 @@
             <input v-bind="password" name="password" id="password" type="password" />
             <span>{{ errors.password }}</span>
             <span>{{ error }}</span>
-            <button>Registracija</button>
+            <Button label="Registracija" />
         </form>
     </div>
 </template>
@@ -92,7 +92,6 @@ var performRegister = async (ime: string, prezime: string, email: string, korime
 .registration label {
     display: block;
     margin-bottom: 5px;
-    font-weight: bold;
 }
 
 .registration input {
@@ -112,17 +111,8 @@ var performRegister = async (ime: string, prezime: string, email: string, korime
 
 .registration button {
     width: 50%;
-    padding: 10px;
-    background-color: #0d79ec;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
     display: grid;
     margin: auto;
-}
-
-.registration button:hover {
-    background-color: #0556ad;
+    margin-top: 8px;
 }
 </style>
