@@ -12,10 +12,12 @@
                 <TabPanel header="Moji favoriti">
                     {{ error }}
                     <Igre v-if="igre" :igre="igre" :stranica="'igre'" />
+                    {{ message }}
                 </TabPanel>
                 <TabPanel header="Svi favoriti">
                     {{ error }}
                     <Igre v-if="igre" :igre="igre" :stranica="'igre'" />
+                    {{ message }}
                 </TabPanel>
             </TabView>
         </div>
@@ -41,6 +43,7 @@ const selectedSort = ref<string>('desc');
 const active = ref(0);
 const isLoading = ref(false);
 const error = ref<string>();
+const message = ref<string>();
 const sortOptions = [
     { name: 'Novije prema starijem', value: 'desc' },
     { name: 'Starije prema novijem', value: 'asc' },
@@ -82,6 +85,7 @@ const changeTab = () => {
 
 var getFavoritedGamesForUser = () => {
     error.value = '';
+    igre.value = undefined;
     isLoading.value = true;
     axiosClient
         .get('favoriti/' + localStorage.getItem('id'),
@@ -94,7 +98,9 @@ var getFavoritedGamesForUser = () => {
             })
         .then((response) => {
             count.value = response.data.count;
-            igre.value = response.data.games;
+            if (response.data.games.length)
+                igre.value = response.data.games;
+            else message.value = "Nemate favorizirane igre";
             isLoading.value = false;
         })
         .catch((err) => {
@@ -117,7 +123,9 @@ var getAllFavoritedGames = () => {
             })
         .then((response) => {
             count.value = response.data.count;
-            igre.value = response.data.games;
+            if (response.data.games.length)
+                igre.value = response.data.games;
+            else message.value = "Ne postoje favorizirane igre";
             isLoading.value = false;
         })
         .catch((err) => {

@@ -1,20 +1,24 @@
 <template>
     <div>
-        <h2>Status žanrova i platforma</h2>
-        <h4>Žanrovi</h4>
-        <p>Broj žanrova u bazi: {{ zanroviBaza.length }}; Broj žanrova u RAWG bazi: {{ zanroviRAWG.length }}</p>
-        <button v-if="zanroviBaza.length != zanroviRAWG.length" @click="addGenres">Dodaj nove žanrove</button>
-        <h4>Platforme</h4>
-        <p>Broj platforma u bazi: {{ platformeBaza.length }}; Broj platforma u RAWG bazi: {{ platformeRAWG.length }}</p>
-        <button v-if="platformeBaza.length != platformeRAWG.length" @click="addPlatforms">Dodaj nove platforme</button>
-        <h2>Lista žanrova</h2>
-        <button @click="genresLocked = !genresLocked">Zaključaj/otključaj žanrove</button>
-        <ul>
-            <li v-for="zanr in zanroviBaza" :key="zanr.id">
-                <span v-if="genresLocked">{{ zanr.naziv }}</span>
-                <input v-if="!genresLocked" v-model="zanr.naziv" @change="updateGenre(zanr)" />
-            </li>
-        </ul>
+        <ProgressSpinner v-if="isLoading" class="spinner" />
+        <span v-if="error">Greška prilikom dohvaćanja podataka. Molimo pokušajte kasnije.</span>
+        <div v-if="!error && showGenresAndPlatforms">
+            <h2>Status žanrova i platforma</h2>
+            <h4>Žanrovi</h4>
+            <p>Broj žanrova u bazi: {{ zanroviBaza.length }}; Broj žanrova u RAWG bazi: {{ zanroviRAWG.length }}</p>
+            <Button v-if="zanroviBaza.length != zanroviRAWG.length" @click="addGenres" label="Dodaj nove žanrove" size="small"/>
+            <h4>Platforme</h4>
+            <p>Broj platforma u bazi: {{ platformeBaza.length }}; Broj platforma u RAWG bazi: {{ platformeRAWG.length }}</p>
+            <Button v-if="platformeBaza.length != platformeRAWG.length" @click="addPlatforms" label="Dodaj nove platforme" size="small"/>
+            <h2>Lista žanrova</h2>
+            <Button @click="genresLocked = !genresLocked" label="Zaključaj/otključaj uređivanje žanrove" size="small" />
+            <ul>
+                <li v-for="zanr in zanroviBaza" :key="zanr.id">
+                    <span v-if="genresLocked">{{ zanr.naziv }}</span>
+                    <input v-if="!genresLocked" v-model="zanr.naziv" @change="updateGenre(zanr)" />
+                </li>
+            </ul>
+        </div>
     </div>
 </template>
 
@@ -32,7 +36,10 @@ const zanroviBaza = ref<ZanrI[]>([]);
 const zanroviRAWG = ref<genres[]>([]);
 const platformeBaza = ref<PlatformaI[]>([]);
 const platformeRAWG = ref<platform[]>([]);
+const showGenresAndPlatforms = ref<boolean>(false);
 const genresLocked = ref<boolean>(true);
+const isLoading = ref(true);
+const error = ref<boolean>();
 
 var getAllGenres = () => {
     axiosClient
@@ -41,7 +48,7 @@ var getAllGenres = () => {
             zanroviBaza.value = response.data;
         })
         .catch((err) => {
-            toast.error('Greška kod dohvaćanja žanrova iz baze!');
+            error.value = true;
         });
 };
 
@@ -52,7 +59,7 @@ var getAllGenresRAWG = () => {
             zanroviRAWG.value = response.data.results;
         })
         .catch((err) => {
-            toast.error('Greška kod dohvaćanja žanrova iz RAWG baze!');
+            error.value = true;
         });
 };
 
@@ -66,7 +73,7 @@ var addGenres = () => {
     });
 
     axiosClient
-        .post('zanrovi', {zanrovi})
+        .post('zanrovi', { zanrovi })
         .then((response) => {
             toast.success(response.data);
             getAllGenres();
@@ -94,7 +101,7 @@ var getAllPlatforms = () => {
             platformeBaza.value = response.data;
         })
         .catch((err) => {
-            toast.error('Greška kod dohvaćanja žanrova iz baze!');
+            error.value = true;
         });
 };
 
@@ -107,10 +114,13 @@ var getAllPlatformsRAWG = (page: number) => {
                 getAllPlatformsRAWG(++page);
             } else {
                 platformeRAWG.value = platformeRAWG.value.flat();
+                isLoading.value = false;
+                showGenresAndPlatforms.value = true;
             }
         })
         .catch((err) => {
-            toast.error('Greška kod dohvaćanja platformi iz RAWG baze!');
+            isLoading.value = false;
+            error.value = true;
         });
 };
 
@@ -124,7 +134,7 @@ var addPlatforms = () => {
     });
 
     axiosClient
-        .post('platforme', {platforme})
+        .post('platforme', { platforme })
         .then((response) => {
             toast.success(response.data);
             getAllPlatforms();
@@ -134,10 +144,20 @@ var addPlatforms = () => {
         });
 };
 
-onMounted(() => {
+onMounted(async () => {
     getAllGenresRAWG();
     getAllPlatformsRAWG(1);
     getAllGenres();
     getAllPlatforms();
 });
 </script>
+
+<style scoped>
+.spinner {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 50%;
+    bottom: 50%;
+}
+</style>

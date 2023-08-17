@@ -1,4 +1,6 @@
 <template>
+    <div>
+        <h1>Admin</h1>
     <TabView :lazy="true">
         <TabPanel header="Korisnici">
             <Korisnici />
@@ -10,6 +12,7 @@
             <Statistika />
         </TabPanel>
     </TabView>
+    </div>
 </template>
 
 <script setup lang="ts">

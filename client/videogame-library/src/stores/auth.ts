@@ -63,7 +63,7 @@ export const useAuthStore = defineStore('auth', {
             }
         },
         logout() {
-            toast.info('Odlogirani ste');
+            toast.info('Odjavljeni ste');
             localStorage.removeItem('loggedIn');
             localStorage.removeItem('id');
             localStorage.removeItem('korime');

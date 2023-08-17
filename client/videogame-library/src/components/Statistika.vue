@@ -1,5 +1,7 @@
 <template>
-    <div class="chart-container">
+    <ProgressSpinner v-if="isLoading" class="spinner" />
+    <span v-if="error">Greška prilikom dohvaćanja statistike. Molimo pokušajte kasnije.</span>
+    <div v-if="chartDataFavorites && chartDataReviews" class="chart-container">
         <div class="chart-wrapper">
             <h2>Broj favorita po žanrovima</h2>
             <Chart type="bar" :data="chartDataFavorites" class="charts" />
@@ -9,7 +11,6 @@
             <Chart type="line" :data="chartDataReviews" class="charts" />
         </div>
     </div>
-    {{ error }}
 </template>
 
 <script setup lang="ts">
@@ -19,7 +20,8 @@ import Chart from 'primevue/chart';
 
 const chartDataFavorites = ref();
 const chartDataReviews = ref();
-const error = ref<string>();
+const isLoading = ref(true);
+const error = ref<boolean>();
 
 var getFavoritesStatistic = () => {
     axiosClient
@@ -28,7 +30,8 @@ var getFavoritesStatistic = () => {
             chartDataFavorites.value = setChartDataFavorites(response.data);
         })
         .catch((err) => {
-            error.value += 'Greška kod dohvaćanja statistike za favorite';
+            isLoading.value = false;
+            error.value = true;
         });
 };
 
@@ -36,10 +39,12 @@ var getReviewsStatistic = () => {
     axiosClient
         .get('statistika/recenzije')
         .then((response) => {
+            isLoading.value = false;
             chartDataReviews.value = setChartDataReviews(response.data);
         })
         .catch((err) => {
-            error.value += 'Greška kod dohvaćanja statistike za recenzije';
+            isLoading.value = false;
+            error.value = true;
         });
 };
 
@@ -87,5 +92,13 @@ onMounted(() => {
 
 .chart-wrapper {
     width: 50%;
+}
+
+.spinner {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 50%;
+    bottom: 50%;
 }
 </style>

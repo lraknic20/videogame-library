@@ -1,14 +1,15 @@
 <template>
     <div>
-        <table>
+        <ProgressSpinner v-if="isLoading" class="spinner" />
+        <table v-if="korisnici">
             <thead>
                 <tr>
                     <th>Ime</th>
                     <th>Prezime</th>
                     <th>Korisničko ime</th>
                     <th>Tip korisnika</th>
-                    <th></th>
                     <th>Zaduženi žanrovi</th>
+                    <th>Odredi zadužene žanrove</th>
                 </tr>
             </thead>
             <tbody>
@@ -16,48 +17,40 @@
                     <td>{{ korisnik.ime }}</td>
                     <td>{{ korisnik.prezime }}</td>
                     <td>{{ korisnik.korime }}</td>
-                    <td>{{ korisnik.tip_korisnika_id?.naziv }}</td>
-                    <td v-if="korisnik.id != prijavljeniAdminId">
-                        <button @click="showUserTypesList(korisnik), showGenres = false">Promijeni tip korisnika</button>
+                    <td>
+                        <Dropdown v-if="korisnik.id != prijavljeniAdminId" v-model="korisnik.tip_korisnika_id"
+                            :options="tipoviKorisnika" optionLabel="naziv"
+                            @change="saveSelectedUserType(korisnik.id!, korisnik.tip_korisnika_id!)" class="dropdown" />
+                        <span v-else>{{ korisnik.tip_korisnika_id?.naziv }}</span>
                     </td>
                     <td>
-                        <template v-for="(zanr, i) in korisnik.zaduzenZanr" :key="zanr.id">
+                        <template v-if="korisnik.tip_korisnika_id?.naziv == 'moderator'" v-for="(zanr, i) in korisnik.zaduzenZanr"
+                            :key="zanr.id">
                             {{ zanr.naziv }}<span v-if="korisnik.zaduzenZanr && i < korisnik.zaduzenZanr.length - 1">,
                             </span>
                         </template>
                     </td>
-                    <td v-if="korisnik.tip_korisnika_id?.id === 3">
-                        <button @click="showGenresList(korisnik), showUserTypes = false">Dodaj/promijeni zadužene
-                            žanrove</button>
+                    <td>
+                        <Button v-if="korisnik.tip_korisnika_id?.id === 3"
+                            @click="showGenresList(korisnik), showUserTypes = false" label="Dodaj/promijeni zadužene
+                            žanrove" size="small"/>
                     </td>
                 </tr>
             </tbody>
         </table>
-        <div v-if="showGenres">
+        <div v-if="showGenres" ref="sectionAssignedGenres">
             <h2>Zaduženi žanrovi za korisnika {{ selectedUser?.ime }} {{ selectedUser?.prezime }}</h2>
             <div v-for="zanr in zanrovi" :key="zanr.id">
-                <label>
-                    <input type="checkbox" :checked="isGenreChecked(zanr)" @change="changeGenreChecked(zanr)" />
-                    {{ zanr.naziv }}
-                </label>
+                <input type="checkbox" :checked="isGenreChecked(zanr)" @change="changeGenreChecked(zanr)" />
+                {{ zanr.naziv }}
             </div>
-            <button @click="saveSelectedGenres">Spremi</button>
-            <button @click="closeGenres">Zatvori</button>
-        </div>
-        <div v-if="showUserTypes">
-            <h2>Tipovi korisnika za {{ selectedUser?.ime }} {{ selectedUser?.prezime }}</h2>
-            <div v-for="tip in tipoviKorisnika" :key="tip.id">
-                <label>
-                    <input type="radio" :checked="isSelectedUserType(tip)" @change="tempSelectedUserType = tip" />
-                    Naziv: {{ tip.naziv }} Opis: {{ tip.opis }}
-                </label>
+            <div>
+                <Button @click="closeGenres" label="Zatvori" size="small" />
+                <Button @click="saveSelectedGenres" label="Spremi" size="small" />
             </div>
-            <button @click="saveSelectedUserType">Spremi</button>
-            <button @click="closeUserTypes">Zatvori</button>
         </div>
     </div>
-    <div v-if="message">{{ message }}</div>
-    <div v-if="error">{{ error }}</div>
+    {{ error }}
 </template>
 
 <script setup lang="ts">
@@ -65,29 +58,34 @@ import { ref, onMounted } from 'vue';
 import axiosClient from '@/services/axiosClient';
 import type { KorisnikI, TipKorisnikaI } from '@/types/KorisnikI';
 import type { ZanrI } from '@/types/ZanrI';
+import { useToast } from "vue-toastification";
 
-const korisnici = ref<KorisnikI[]>([]);
+const korisnici = ref<KorisnikI[]>();
 const zanrovi = ref<ZanrI[]>([]);
 const tipoviKorisnika = ref<TipKorisnikaI[]>([]);
 const prijavljeniAdminId: number = Number(localStorage.getItem('id'));
-const message = ref<string>();
 const error = ref<string>();
 const showGenres = ref(false);
+const sectionAssignedGenres = ref();
 const showUserTypes = ref(false);
 const selectedUser = ref<KorisnikI>();
+const isLoading = ref(false);
 
-const tempSelectedUserType = ref<TipKorisnikaI>();
+const toast = useToast();
 
 var spremljeniZanrovi: ZanrI[] | undefined = [];
 
 var getUsers = () => {
+    isLoading.value = true;
     axiosClient
         .get('korisnici')
         .then((response) => {
             korisnici.value = response.data;
+            isLoading.value = false;
         })
         .catch((err) => {
-            error.value = err.response.data.error;
+            isLoading.value = false;
+            error.value = "Greška kod dohvaćanja korisnika. Molimo pokušajte kasnije.";
         });
 };
 
@@ -98,7 +96,8 @@ var getAllGenres = () => {
             zanrovi.value = response.data;
         })
         .catch((err) => {
-            error.value = err.response.data.error;
+            console.log(err.response.data.error);
+            console.log("Greška kod dohvaćanja žanrova. Molimo pokušajte kasnije.");
         });
 };
 
@@ -109,7 +108,8 @@ var getAllUserTypes = () => {
             tipoviKorisnika.value = response.data;
         })
         .catch((err) => {
-            error.value = err.response.data.error;
+            console.log(err.response.data.error);
+            console.log("Greška kod dohvaćanja tipova korisnika. Molimo pokušajte kasnije.");
         });
 };
 
@@ -150,10 +150,10 @@ async function saveSelectedGenres() {
         .then((response) => {
             selectedUser.value = undefined;
             showGenres.value = false;
-            message.value = response.data;
+            toast.success(response.data);
         })
         .catch((err) => {
-            error.value = err.response.data.error;
+            toast.error("Greška prilikom spremanja zaduženih žanrova.");
         });
 }
 
@@ -161,42 +161,73 @@ function showGenresList(korisnik: KorisnikI) {
     selectedUser.value = korisnik;
     spremljeniZanrovi = JSON.parse(JSON.stringify(selectedUser.value?.zaduzenZanr));
     showGenres.value = true;
+    setTimeout(() => {
+        sectionAssignedGenres.value?.scrollIntoView();
+    }, 100);
 }
 
-function showUserTypesList(korisnik: KorisnikI) {
-    selectedUser.value = korisnik;
-    showUserTypes.value = true;
-    tempSelectedUserType.value = korisnik.tip_korisnika_id;
-}
-
-function isSelectedUserType(tip: TipKorisnikaI): boolean {
-    return tempSelectedUserType.value === tip.id;
-}
-
-function saveSelectedUserType() {
+function saveSelectedUserType(userId: number, userType: TipKorisnikaI) {
     axiosClient
-        .put('korisnici/' + selectedUser.value?.id + '/tipKorisnika', {
-            tip_korisnika_id: tempSelectedUserType.value?.id
+        .put('korisnici/' + userId + '/tipKorisnika', {
+            tip_korisnika_id: userType.id
         })
         .then((response) => {
-            if (selectedUser.value?.tip_korisnika_id?.id)
-                selectedUser.value.tip_korisnika_id = tempSelectedUserType.value;
-            selectedUser.value = undefined;
-            showUserTypes.value = false;
-            message.value = response.data;
+            toast.success(response.data);
         })
         .catch((err) => {
-            error.value = err.response.data.error;
+            toast.error("Greška prilikom spremanja tipa korisnika.");
         });
 }
 
-function closeUserTypes() {
-    selectedUser.value = undefined;
-    showUserTypes.value = false;
-    tempSelectedUserType.value = undefined;
+onMounted(() => {
+    getUsers();
+    getAllGenres();
+    getAllUserTypes();
+});
+</script>
+
+<style scoped>
+.spinner {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 50%;
+    bottom: 50%;
 }
 
-onMounted(getUsers);
-onMounted(getAllGenres);
-onMounted(getAllUserTypes);
-</script>
+table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #ccc;
+}
+
+th {
+    background-color: #f2f2f2;
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: center;
+}
+
+td {
+    border: 1px solid #ccc;
+    padding: 8px;
+}
+
+table th:nth-child(5),
+table td:nth-child(5) {
+    width: 40%;
+}
+
+table th:nth-child(6),
+table td:nth-child(6) {
+    width: 13%;
+}
+
+.dropdown {
+    width: 100%;
+}
+
+Button {
+    margin: 8px 8px 0 0;
+}
+</style>
