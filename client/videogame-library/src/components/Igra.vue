@@ -67,11 +67,11 @@ const formatPlatforms = (platforme: PlatformaI[] | undefined) => {
     border: 1px solid #ccc;
     border-radius: 5px;
     padding: 16px;
-    margin: 10px 5% 10px 5%;
+    margin: 10px 10% 10px 10%;
 }
 
 .game-image {
-    width: 40%;
+    width: 45%;
     border-radius: 5px;
     display: block;
     margin: 0 auto;

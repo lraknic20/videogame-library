@@ -94,7 +94,7 @@ onMounted(() => {
     border: 1px solid #ccc;
     border-radius: 5px;
     padding: 16px;
-    margin: 0 5%;
+    margin: 0 10%;
 }
 
 .review-name {

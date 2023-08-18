@@ -143,7 +143,7 @@ module.exports = {
         try {
             const igraId = req.params.gameId;
 
-            const reviews = await Recenzija.find({ recenzijaIgra: igraId }).populate('recenzijaKorisnik');
+            const reviews = await Recenzija.find({ recenzijaIgra: igraId }).populate('recenzijaKorisnik').sort('id desc');
 
             const anonReviews = reviews.map(review => {
                 const { recenzijaKorisnik, ...recenzija } = review;
@@ -155,12 +155,14 @@ module.exports = {
                         komentar: '[Obrisano]',
                         datum: recenzija.datum,
                         obrisano: recenzija.obrisano,
-                        korime: '[Obrisano]'
+                        korime: '[Obrisano]',
+                        korisnikId: recenzijaKorisnik.id
                     }
                 }
                 return {
                     ...recenzija,
-                    korime: recenzijaKorisnik.korime
+                    korime: recenzijaKorisnik.korime,
+                    korisnikId: recenzijaKorisnik.id
                 };
             });
 

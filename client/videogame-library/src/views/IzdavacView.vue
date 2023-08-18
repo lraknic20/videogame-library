@@ -10,7 +10,7 @@
         </div>
     </div>
     {{ error }}
-    <Igre :igre="igre" :stranica="'igreRAWG'"/>
+    <Igre class="games" :igre="igre" :stranica="'igreRAWG'"/>
     <Paginator v-model:rows="pageSize" v-model:totalRecords="count" :rowsPerPageOptions="[10, 20, 30, 40]"
         @page="onPageChange" />
     </div>
@@ -86,7 +86,7 @@ onMounted(() => {
     border: 1px solid #ccc;
     border-radius: 5px;
     padding: 16px;
-    margin: 10px;
+    margin: 10px 10% 10px 10%;
 }
 
 .publisher-details {
@@ -107,5 +107,9 @@ onMounted(() => {
 .publisher-games-count {
     font-size: 14px;
     color: #888;
+}
+
+.games {
+    margin: 10px 10% 10px 10%;
 }
 </style>

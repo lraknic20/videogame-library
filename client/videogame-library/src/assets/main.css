@@ -73,3 +73,18 @@ h1 {
 .p-password-input {
 	width: 100%;
 }
+
+.filter {
+    position: sticky;
+    top: 80px;
+}
+
+.v-enter-active,
+.v-leave-active {
+    transition: opacity 0.5s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+    opacity: 0;
+}

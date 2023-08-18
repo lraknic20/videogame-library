@@ -29,26 +29,6 @@ const authStore = useAuthStore();
 </template>
 
 <style scoped>
-.fade-enter-from,
-.fade-leave-to {
-	opacity: 0;
-}
-
-.fade-enter-active,
-.fade-leave-active {
-	transition: opacity 0.5s ease;
-}
-
-/* nav {
-	margin-left: -1rem;
-	margin-top: -1rem;
-	margin-bottom: 1rem;
-	display: flex;
-	justify-content: space-around;
-	background-color: rgb(51, 51, 51);
-	padding: 15px;
-} */
-
 nav {
 	position: fixed;
 	top: 0;

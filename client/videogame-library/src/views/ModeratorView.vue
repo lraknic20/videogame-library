@@ -3,6 +3,7 @@
         <h1>Moderacija recenzija</h1>
         {{ error }}
         <ProgressSpinner v-if="isLoading" class="spinner" />
+        <span v-if="!recenzije">Nema recenzija koje možete pregledavati.</span>
         <div v-for="recenzija in recenzije" :key="recenzija.id" class="reviews">
             <div class="game">
                 <img :src="recenzija.igra.slika" :alt="recenzija.igra.naziv" class="game-image" />
@@ -15,7 +16,7 @@
                 <span class="username" v-if="recenzija.obrisano == false">{{ recenzija.korime }}</span>
                 <span class="username" v-else>[Obrisano]</span>
                 <span v-if="new Date(recenzija.datum_istek_bloka) > new Date()">Blokiran do: {{ formatDate(recenzija.datum_istek_bloka) }}</span>
-                <span v-tooltip="formatDate(recenzija.datum)" class="date">Objavljeno prije {{ formateDateDistance(recenzija.datum) }}</span>
+                <span v-tooltip="formatDate(recenzija.datum)" class="date"> Objavljeno prije {{ formateDateDistance(recenzija.datum) }}</span>
                 <p class="comment" v-if="recenzija.obrisano == false">{{ recenzija.komentar }}</p>
                 <p class="comment" v-else>[Obrisano]</p>
             </div>

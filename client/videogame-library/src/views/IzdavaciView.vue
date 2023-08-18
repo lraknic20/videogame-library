@@ -90,7 +90,9 @@ onMounted(() => {
 
 .publisher-image {
     margin-top: 16px;
+    max-width: 90%;
     max-height: 78%;
+    border-radius: 5px;
 }
 
 a {

@@ -7,7 +7,7 @@
             <Chart type="bar" :data="chartDataFavorites" class="charts" />
         </div>
         <div class="chart-wrapper">
-            <h2>Broj recenzija u posljednjoj godini</h2>
+            <h2>Broj recenzija u posljednjih godinu dana</h2>
             <Chart type="line" :data="chartDataReviews" class="charts" />
         </div>
     </div>
