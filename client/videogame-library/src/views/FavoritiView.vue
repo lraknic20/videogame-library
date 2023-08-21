@@ -34,7 +34,9 @@ import type { IgraI } from '@/types/IgraI';
 import { useRoute, useRouter } from 'vue-router'
 import TabView from 'primevue/tabview';
 import TabPanel from 'primevue/tabpanel';
+import { useAuthStore } from '@/stores/auth';
 
+const authStore = useAuthStore();
 const igre = ref<IgraI[]>();
 const currentPage = ref<number>();
 const pageSize = ref<number>();
@@ -88,7 +90,7 @@ var getFavoritedGamesForUser = () => {
     igre.value = undefined;
     isLoading.value = true;
     axiosClient
-        .get('favoriti/' + localStorage.getItem('id'),
+        .get('favoriti/' + authStore.returnUserId(),
             {
                 params: {
                     page: currentPage.value,

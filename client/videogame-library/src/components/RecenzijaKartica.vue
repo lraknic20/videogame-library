@@ -26,6 +26,7 @@ import { useAuthStore } from '@/stores/auth';
 
 const authStore = useAuthStore();
 const props = defineProps<{ igra: IgraI }>();
+const userId = authStore.returnUserId();
 
 const recenzije = ref<RecenzijaI[]>([]);
 const userBlocked = ref(false);
@@ -62,7 +63,7 @@ const isLoggedIn = () => {
 
 const checkIfUserBlocked = () => {
     axiosClient
-        .get('/korisnici/' + localStorage.getItem('id'))
+        .get('/korisnici/' + userId)
         .then((response) => {
             korisnik.value = response.data;
 
@@ -77,7 +78,7 @@ const checkIfUserBlocked = () => {
                 userBlocked.value = true;
             }
 
-            isUserReviewed.value = recenzije.value.some(recenzija => recenzija.korisnikId == Number(localStorage.getItem('id')));
+            isUserReviewed.value = recenzije.value.some(recenzija => recenzija.korisnikId == Number(userId));
         })
         .catch((err) => {
             console.log('Greška kod dohvaćanja korisnika');

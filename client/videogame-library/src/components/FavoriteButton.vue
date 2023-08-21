@@ -16,7 +16,7 @@ const authStore = useAuthStore();
 const toast = useToast();
 
 const props = defineProps<{ igra: IgraI }>();
-const userId = localStorage.getItem('id');
+const userId = authStore.returnUserId();
 let favoritId = ref<number>();
 
 const isFavorite = ref<boolean>(false);

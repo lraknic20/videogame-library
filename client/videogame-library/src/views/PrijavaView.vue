@@ -54,8 +54,6 @@ var performLogin = async () => {
 		axiosClient
 			.post('prijava', { korime: korisnik.value.korime, lozinka: korisnik.value.lozinka })
 			.then((response) => {
-				localStorage.setItem('id', response.data.id);
-				localStorage.setItem('korime', response.data.korime);
 				localStorage.setItem('token', response.data.token);
 				authStore.login();
 				toast.success(response.data.message);

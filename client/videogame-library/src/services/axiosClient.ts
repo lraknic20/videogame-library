@@ -15,9 +15,6 @@ axiosClient.interceptors.request.use(
         if (token && !isTokenExpired(token)) {
             config.headers['Authorization'] = `Bearer ${token}`;
         } else {
-            localStorage.removeItem('loggedIn');
-            localStorage.removeItem('id');
-            localStorage.removeItem('korime');
             localStorage.removeItem('token');
         }
 

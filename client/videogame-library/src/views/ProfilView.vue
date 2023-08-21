@@ -38,7 +38,9 @@ import axiosClient from '@/services/axiosClient';
 import { useToast } from "vue-toastification";
 import InputText from 'primevue/inputtext';
 import moment from 'moment';
+import { useAuthStore } from '@/stores/auth';
 
+const authStore = useAuthStore();
 const toast = useToast();
 
 const korisnik = ref<KorisnikI>();
@@ -60,11 +62,11 @@ const schema = yup.object({
     email: yup.string().email('Email nije validan.').required('Email je obavezno polje.'),
 });
 
-const userID = localStorage.getItem('id');
+const userId = authStore.returnUserId();
 
 var getUserData = async () => {
     axiosClient
-        .get('korisnici/' + userID)
+        .get('korisnici/' + userId)
         .then((response) => {
             korisnik.value = response.data;
             if (korisnik.value?.datum_istek_bloka) {
@@ -90,7 +92,7 @@ async function updateUser() {
 
         await schema.validate(korisnik.value, { abortEarly: false });
 
-        const response = await axiosClient.put(`korisnici/${userID}`, korisnik.value);
+        const response = await axiosClient.put(`korisnici/${userId}`, korisnik.value);
 
         if (response.status == 200)
             toast.success('Profil je uspješno ažuriran!');

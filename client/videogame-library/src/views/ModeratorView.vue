@@ -40,7 +40,9 @@ import moment from 'moment';
 import { format, formatDistanceStrict } from "date-fns";
 import { hr } from "date-fns/locale";
 const isLoading = ref(true);
+import { useAuthStore } from '@/stores/auth';
 
+const authStore = useAuthStore();
 const toast = useToast();
 const recenzije = ref<RecenzijaI[]>([]);
 const error = ref<string>();
@@ -58,7 +60,7 @@ var formateDateDistance = (dateString: string) => {
 
 var getReviews = () => {
     axiosClient
-        .get('recenzije/moderator/' + localStorage.getItem('id'))
+        .get('recenzije/moderator/' + authStore.returnUserId())
         .then((response) => {
             recenzije.value = response.data;
             isLoading.value = false;

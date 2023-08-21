@@ -59,11 +59,13 @@ import axiosClient from '@/services/axiosClient';
 import type { KorisnikI, TipKorisnikaI } from '@/types/KorisnikI';
 import type { ZanrI } from '@/types/ZanrI';
 import { useToast } from "vue-toastification";
+import { useAuthStore } from '@/stores/auth';
 
+const authStore = useAuthStore();
 const korisnici = ref<KorisnikI[]>();
 const zanrovi = ref<ZanrI[]>([]);
 const tipoviKorisnika = ref<TipKorisnikaI[]>([]);
-const prijavljeniAdminId: number = Number(localStorage.getItem('id'));
+const prijavljeniAdminId: number = authStore.returnUserId();
 const error = ref<string>();
 const showGenres = ref(false);
 const sectionAssignedGenres = ref();

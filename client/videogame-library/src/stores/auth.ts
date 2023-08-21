@@ -5,42 +5,33 @@ const toast = useToast();
 
 interface JwtPayload {
     userType: number;
+    userId: number;
+}
+
+function checkUserType(userType: number): boolean {
+    const token = localStorage.getItem('token');
+
+    if (token) {
+        const decodedToken = returnDecodedToken(token) as JwtPayload;
+        return decodedToken.userType === userType;
+    }
+
+    return false;
 }
 
 export const useAuthStore = defineStore('auth', {
     state: () => ({
-        loggedIn: localStorage.getItem('loggedIn') === 'true',
+        loggedIn: localStorage.getItem('token') !== '',
     }),
     actions: {
         login() {
             this.loggedIn = true;
-            localStorage.setItem('loggedIn', 'true');
         },
         isAdmin(): boolean {
-            const token = localStorage.getItem('token');
-
-            if (token) {
-                const decodedToken = returnDecodedToken(token) as JwtPayload;
-
-                if (decodedToken.userType == 2) {
-                    return true;
-                }
-                else return false;
-            }
-            else return false;
+            return checkUserType(2);
         },
         isModerator(): boolean {
-            const token = localStorage.getItem('token');
-
-            if (token) {
-                const decodedToken = returnDecodedToken(token) as JwtPayload;
-
-                if (decodedToken.userType == 3) {
-                    return true;
-                }
-                else return false;
-            }
-            else return false;
+            return checkUserType(3);
         },
         returnUserType(): number {
             const token = localStorage.getItem('token');
@@ -49,6 +40,16 @@ export const useAuthStore = defineStore('auth', {
                 const decodedToken = returnDecodedToken(token) as JwtPayload;
 
                 return decodedToken.userType;
+            }
+            else return 0;
+        },
+        returnUserId(): number {
+            const token = localStorage.getItem('token');
+
+            if (token) {
+                const decodedToken = returnDecodedToken(token) as JwtPayload;
+
+                return decodedToken.userId;
             }
             else return 0;
         },
@@ -64,9 +65,6 @@ export const useAuthStore = defineStore('auth', {
         },
         logout() {
             toast.info('Odjavljeni ste');
-            localStorage.removeItem('loggedIn');
-            localStorage.removeItem('id');
-            localStorage.removeItem('korime');
             localStorage.removeItem('token');
             this.loggedIn = false;
         },
