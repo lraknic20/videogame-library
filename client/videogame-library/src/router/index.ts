@@ -67,6 +67,12 @@ const router = createRouter({
 			meta: { requiresAuth: true, userType: 2 },
 		},
 		{
+			path: '/moderator',
+			name: 'moderator',
+			component: ModeratorView,
+			meta: { requiresAuth: true, userType: 3 },
+		},
+		{
 			path: '/istrazi',
 			name: 'istrazi',
 			component: IstraziView,
@@ -103,12 +109,6 @@ const router = createRouter({
 			meta: { requiresAuth: false },
 		},
 		{
-			path: '/moderator',
-			name: 'moderator',
-			component: ModeratorView,
-			meta: { requiresAuth: true, userType: 3 },
-		},
-		{
 			path: '/favoriti',
 			name: 'favoriti',
 			component: FavoritiView,
@@ -142,9 +142,7 @@ router.beforeEach((to, from, next) => {
 				next();
 			}
 		}
-	} else if (to.path === '/prijava' && loggedIn) {
-		next('/');
-	} else if (to.path === '/registracija' && loggedIn) {
+	} else if (to.path === '/prijava' && loggedIn || to.path === '/registracija' && loggedIn) {
 		next('/');
 	} else {
 		next();

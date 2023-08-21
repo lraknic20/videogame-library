@@ -17,9 +17,15 @@
                         class="filter-item" />
                 </div>
                 <div class="buttons">
-                    <button @click="currentPage = 1, onRouteChange()">Spremi filter</button>
-                    <button @click="selectedGenres = [], selectedPlatforms = [], currentPage = 1, onRouteChange()">Resetiraj
-                        filter</button>
+                    <Transition>
+                        <div v-if="showReset">
+                            <Button
+                                @click="selectedGenres = [], selectedPlatforms = [], currentPage = 1, onRouteChange(), showReset = false"
+                                class="reset-button" label="Resetiraj filter" size="small" severity="secondary" />
+                        </div>
+                    </Transition>
+                    <Button @click="currentPage = 1, onRouteChange(), showReset = true" class="save-button"
+                        label="Spremi filter" size="small" />
                 </div>
             </div>
             {{ error }}
@@ -55,6 +61,7 @@ const currentPage = ref<number>();
 const pageSize = ref<number>();
 const count = ref<number>(0);
 
+const showReset = ref(false);
 const isLoading = ref(false);
 const error = ref<string>();
 

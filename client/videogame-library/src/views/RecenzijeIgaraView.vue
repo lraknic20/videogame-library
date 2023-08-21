@@ -40,10 +40,16 @@
                         id="calendar" class="filter-item" />
                 </div>
                 <div class="buttons">
-                    <button @click="selectedGenres = [], selectedPlatforms = [], selectedPublishers = [], searchText = undefined,
-                        currentPage = 1, selectedRating = undefined, years = undefined, onRouteChange()">Resetiraj
-                        filter</button>
-                    <button @click="currentPage = 1, onRouteChange()">Spremi filter</button>
+                    <Transition>
+                        <div v-if="showReset">
+                            <Button
+                                @click="selectedGenres = [], selectedPlatforms = [], selectedPublishers = [], searchText = undefined,
+                                    currentPage = 1, selectedRating = undefined, years = undefined, onRouteChange(), showReset = false"
+                                class="reset-button" label="Resetiraj filter" size="small" severity="secondary" />
+                        </div>
+                    </Transition>
+                    <Button @click="currentPage = 1, onRouteChange(), showReset = true" class="save-button"
+                        label="Spremi filter" size="small" />
                 </div>
             </div>
             {{ error }}
@@ -76,6 +82,7 @@ const recenzije = ref<RecenzijaI[]>();
 const zanrovi = ref<ZanrI[]>([]);
 const platforme = ref<PlatformaI[]>([]);
 const izdavaci = ref<IzdavaciI[]>([]);
+const showReset = ref(false);
 const isLoading = ref(false);
 const error = ref<string>('');
 
@@ -223,5 +230,7 @@ onMounted(() => {
 
 .filter {
     max-height: 690px;
+    position: relative;
+    top: 20px;
 }
 </style>

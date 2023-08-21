@@ -28,9 +28,15 @@
                         select-text="Odaberi" cancel-text="Odustani" :clearable="true" range id="dateRange" />
                 </div>
                 <div class="buttons">
-                    <button @click="selectedGenres = [], selectedPlatforms = [], searchText = undefined, selectedDateRange = undefined,
-                        currentPage = 1, onRouteChange()">Resetiraj filter</button>
-                    <button @click="currentPage = 1, onRouteChange()">Spremi filter</button>
+                    <Transition>
+                        <div v-if="showReset">
+                            <Button @click="selectedGenres = [], selectedPlatforms = [], searchText = undefined, selectedDateRange = undefined,
+                                currentPage = 1, onRouteChange(), showReset = false" class="reset-button"
+                                label="Resetiraj filter" size="small" severity="secondary" />
+                        </div>
+                    </Transition>
+                    <Button @click="currentPage = 1, onRouteChange(), showReset = true" class="save-button"
+                        label="Spremi filter" size="small" />
                 </div>
             </div>
             {{ error }}
@@ -71,6 +77,7 @@ const searchText = ref<string>();
 
 const selectedDateRange = ref();
 
+const showReset = ref(false);
 const isLoading = ref(false);
 const error = ref<string>();
 
