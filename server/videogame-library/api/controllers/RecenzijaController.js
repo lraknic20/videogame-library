@@ -108,7 +108,7 @@ module.exports = {
 
             const zaduzeniZanrovi = user.zaduzenZanr.map(zanr => zanr.id);
 
-            const reviews = await Recenzija.find().populate('recenzijaKorisnik').populate('recenzijaIgra');
+            const reviews = await Recenzija.find().populate('recenzijaKorisnik').populate('recenzijaIgra').sort('id desc');
 
             var gameIds = reviews.map(review => review.recenzijaIgra.id);
 

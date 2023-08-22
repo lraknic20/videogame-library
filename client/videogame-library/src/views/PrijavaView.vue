@@ -113,6 +113,6 @@ input {
 	width: 50%;
 	display: grid;
 	margin: auto;
-	margin-top: 8px;
+	margin-top: 16px;
 }
 </style>

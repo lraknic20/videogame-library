@@ -87,6 +87,7 @@ const changeTab = () => {
 
 var getFavoritedGamesForUser = () => {
     error.value = '';
+    message.value = '';
     igre.value = undefined;
     isLoading.value = true;
     axiosClient
@@ -113,7 +114,8 @@ var getFavoritedGamesForUser = () => {
 
 var getAllFavoritedGames = () => {
     error.value = '';
-    isLoading.value = true;
+    message.value = '';
+    isLoading.value = true; 
     axiosClient
         .get('favoriti/',
             {

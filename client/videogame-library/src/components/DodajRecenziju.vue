@@ -116,4 +116,5 @@ h2 {
 
 .buttons button {
     margin: 0 8px;
-}</style>
+}
+</style>

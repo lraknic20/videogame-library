@@ -1,7 +1,7 @@
 <template>
     <div class="registration">
         <h2>Registracija</h2>
-        <form @submit="onSubmit">
+        <form>
             <label for="name">Ime</label>
             <input v-bind="name" name="name" id="name" type="text" />
             <span>{{ errors.name }}</span>
@@ -18,7 +18,7 @@
             <input v-bind="password" name="password" id="password" type="password" />
             <span>{{ errors.password }}</span>
             <span>{{ error }}</span>
-            <Button label="Registracija" />
+            <Button @click="onSubmit" label="Registracija" />
         </form>
     </div>
 </template>

@@ -45,7 +45,7 @@
                 {{ zanr.naziv }}
             </div>
             <div>
-                <Button @click="closeGenres" label="Zatvori" size="small" />
+                <Button @click="closeGenres" label="Zatvori" severity="secondary" size="small" />
                 <Button @click="saveSelectedGenres" label="Spremi" size="small" />
             </div>
         </div>

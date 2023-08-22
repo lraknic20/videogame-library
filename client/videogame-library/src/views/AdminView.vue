@@ -5,7 +5,7 @@
         <TabPanel header="Korisnici">
             <Korisnici />
         </TabPanel>
-        <TabPanel header="Žanr i platforme">
+        <TabPanel header="Žanrovi i platforme">
             <ZanrIPlatforme />
         </TabPanel>
         <TabPanel header="Statistika">
