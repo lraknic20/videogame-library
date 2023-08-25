@@ -6,8 +6,8 @@
         <label for="comment" class="label">Komentar:</label>
         <textarea v-model="comment" type="text" id="comment" cols="33" rows="5"></textarea>
         <div class="buttons">
-            <button @click="closeModal()">Odustani</button>
-            <button @click="saveGame()">Dodaj recenziju</button>
+            <Button label="Odustani" size="small" severity="secondary" @click="closeModal()" />
+            <Button label="Dodaj recenziju" size="small" @click="saveGame()" />
         </div>
     </div>
 </template>
