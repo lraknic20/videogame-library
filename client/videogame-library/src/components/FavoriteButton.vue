@@ -36,19 +36,7 @@ const toggleFavorite = () => {
 const saveFavoriteGame = () => {
     axiosClient
         .post('/igre', {
-            igra: {
-                id: props.igra.id,
-                naziv: props.igra.naziv,
-                kratki_naziv: props.igra.kratki_naziv,
-                opis: props.igra.opis,
-                slika: props.igra.slika,
-                objavljeno: props.igra.objavljeno,
-                datum_izlaska: props.igra.datum_izlaska,
-                stranica: props.igra.stranica,
-                metacritic: props.igra.metacritic,
-                minimalni_zahtjevi: props.igra.minimalni_zahtjevi,
-                preporuceni_zahtjevi: props.igra.preporuceni_zahtjevi,
-            },
+            igra: props.igra,
             izdavac: props.igra.izdavaci!.map((izdavac) => ({
                 id: izdavac.id,
                 naziv: izdavac.naziv,
