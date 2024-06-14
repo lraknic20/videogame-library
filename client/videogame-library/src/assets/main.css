@@ -1,35 +1,90 @@
-@import './base.css';
-
 #app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-
-  font-weight: normal;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-a,
-.green {
-  text-decoration: none;
-  color: hsla(160, 100%, 37%, 1);
-  transition: 0.4s;
+html {
+    scroll-behavior: smooth;
 }
 
-@media (hover: hover) {
-  a:hover {
-    background-color: hsla(160, 100%, 37%, 0.2);
-  }
+h1 {
+    font-size: 36px;
+    color: rgb(51, 51, 51);
+    text-align: center;
+    margin-bottom: 0;
 }
 
-@media (min-width: 1024px) {
-  body {
-    display: flex;
-    place-items: center;
-  }
-
-  #app {
+.container {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 0 2rem;
-  }
+    grid-template-columns: 1fr 4fr;
+    gap: 20px;
+    padding: 20px;
+}
+
+.filter {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.filter h3 {
+    color: rgb(51, 51, 51);
+    margin: 10px 0 16px 0;
+    text-align: center;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgb(204, 204, 204);
+}
+
+.filter-item {
+    width: 100%;
+}
+
+.filter .buttons {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 10px;
+}
+
+.filter Button .p-button-label {
+    font-size: 12px;
+}
+
+.reset-button {
+    grid-column: 1;
+}
+
+.save-button {
+    grid-column: 3;
+}
+
+.search,
+.genre-select,
+.platform-select,
+.publisher-select,
+.rating,
+.dateRange {
+    margin-bottom: 16px;
+}
+
+.p-input-icon-left {
+    width: 100%;
+}
+
+.p-password-input {
+    width: 100%;
+}
+
+.filter {
+    position: sticky;
+    top: 80px;
+}
+
+.v-enter-active,
+.v-leave-active {
+    transition: opacity 0.5s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+    opacity: 0;
 }

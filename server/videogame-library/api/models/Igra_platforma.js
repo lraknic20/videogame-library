@@ -13,7 +13,7 @@ module.exports = {
       model:'igra',
       columnName: 'igra_id'
     },
-    platforma: {
+    platforme: {
       model: 'platforma',
       columnName: 'platforma_id'
     }

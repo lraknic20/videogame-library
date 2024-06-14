@@ -27,8 +27,13 @@ module.exports.policies = {
     '*': ['isAuthenticated', 'isAdmin']
   },
 
+  'AdminController': {
+    '*': ['isAuthenticated', 'isAdmin']
+  },
+
   'ZanrController': {
-    'saveGenres': ['isAuthenticated', 'isAdmin']
+    'saveGenres': ['isAuthenticated', 'isAdmin'],
+    'updateGenre': ['isAuthenticated', 'isAdmin']
   },
 
   'PlatformaController': {
@@ -41,12 +46,14 @@ module.exports.policies = {
 
   'FavoritController': {
     '*': 'isAuthenticated',
-    'getFavourites': ['isAuthenticated', 'isAdmin'],
-    'getFavouritesForUser': ['isAuthenticated', 'isCorrectUser']
+    'getFavouritesForUser': ['isAuthenticated', 'isCorrectUser'],
+    'getFavouriteForUser': ['isAuthenticated', 'isCorrectUser']
   },
 
   'RecenzijaController': {
+    'getReviews': 'isAuthenticated',
     'saveReview': 'isAuthenticated',
+    'getReviewsForModerator': ['isAuthenticated', 'isCorrectUser', 'isModerator'],
     'markAsDeltedReview': ['isAuthenticated', 'isModerator'],
     'deleteReview': ['isAuthenticated', 'isAdmin'],
   },

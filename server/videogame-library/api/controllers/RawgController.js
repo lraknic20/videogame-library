@@ -12,13 +12,22 @@ async function getData(resource, parameters) {
     for(let p in parameters)
         url += '&' + p + "=" + parameters[p];
     
-    const response = await fetch(url);
-    const data = await response.json();
-    return { data, statusCode: response.status };
+    try {
+        const response = await fetch(url);
+        
+        if (!response.ok) {
+            throw new Error();
+        }
+
+        const data = await response.json();
+        return { data };
+    } catch (error) {
+        return { statusCode: 404 };
+    }
 }
 
 module.exports = {
-    async getDevelopers(req, res) {
+    async getPublishers(req, res) {
         try {
             const page = req.query.page;
             const pageSize  = req.query.pageSize;
@@ -28,7 +37,23 @@ module.exports = {
                 page_size: pageSize
             }
 
-            const { data, statusCode } = await getData("developers", parameters)    
+            const { data, statusCode } = await getData("publishers", parameters)    
+
+            if (statusCode === 404){
+                return res.notFound();
+            }
+
+            return res.ok(data);
+        } catch (error) {
+            return res.serverError(error);
+        }
+    },
+
+    async getPublisher(req, res) {
+        try {
+            const id = req.params.id;
+
+            const { data, statusCode } = await getData("publishers/" + id)    
 
             if (statusCode === 404){
                 return res.notFound();
@@ -45,13 +70,15 @@ module.exports = {
             const page = req.query.page;
             const pageSize  = req.query.pageSize;
             const genres = req.query.genres;
-            
+            const platforms = req.query.platforms;
+
             const parameters = {
                 page: page,
                 page_size: pageSize,
                 metacritic: '90,100',
                 ordering: '-added',
                 ...(genres && { genres }),
+                ...(platforms && { platforms }),
             }
 
             const { data, statusCode } = await getData("games", parameters)    
@@ -68,9 +95,10 @@ module.exports = {
 
     async getPopularGames(req, res) {
         try {
+            const { format } = require('date-fns');
             const page = req.query.page;
             const pageSize  = req.query.pageSize;
-            const currentDate = new Date().toISOString().slice(0, 10);
+            const currentDate = format(new Date(), 'yyyy-MM-dd');
            
             const parameters = {
                 page: page,
@@ -93,9 +121,10 @@ module.exports = {
 
     async getUpcomingGames(req, res) {
         try {
+            const { format } = require('date-fns');
             const page = req.query.page;
             const pageSize  = req.query.pageSize;
-            const currentDate = new Date().toISOString().slice(0, 10);
+            const currentDate = format(new Date(), 'yyyy-MM-dd');
             const futureDate = req.query.futureDate;
             
             const parameters = {

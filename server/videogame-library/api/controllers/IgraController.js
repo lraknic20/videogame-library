@@ -15,7 +15,7 @@ module.exports = {
 
             const existingGame = await Igra.findOne({ id: igra.id });
             if (existingGame) {
-                return res.badRequest('Ova igra je već dodana!');
+                return res.ok('Ova igra je već dodana!');
             }
 
             const newGame = await Igra.create({
@@ -36,7 +36,7 @@ module.exports = {
                 for (const izdavac of izdavaci) {
                     const existingIzdavac = await Izdavac.findOne({ id: izdavac.id });
                     if (existingIzdavac) {
-                        await Igra.addToCollection(newGame.id, 'izdavac', existingIzdavac.id);
+                        await Igra.addToCollection(newGame.id, 'izdavaci', existingIzdavac.id);
                     } else {
                         const newIzdavac = await Izdavac.create({
                             id: izdavac.id,
@@ -44,17 +44,17 @@ module.exports = {
                             kratki_naziv: izdavac.kratki_naziv,
                             broj_igara: izdavac.broj_igara,
                         }).fetch();
-                        await Igra.addToCollection(newGame.id, 'izdavac', newIzdavac.id);
+                        await Igra.addToCollection(newGame.id, 'izdavaci', newIzdavac.id);
                     }
                 }
             }
 
             if (zanrovi) {
-                await Igra.addToCollection(newGame.id, 'zanr', zanrovi);
+                await Igra.addToCollection(newGame.id, 'zanrovi', zanrovi);
             }
 
             if (platforme) {
-                await Igra.addToCollection(newGame.id, 'platforma', platforme);
+                await Igra.addToCollection(newGame.id, 'platforme', platforme);
             }
 
             return res.ok();
@@ -68,6 +68,22 @@ module.exports = {
             const games = await Igra.find();
 
             return res.ok(games);
+        } catch (err) {
+            return res.serverError(err);
+        }
+    },
+
+    getGame: async function (req, res) {
+        try {
+            const id = req.params.gameId;
+
+            const game = await Igra.findOne({ kratki_naziv: id }).populate('zanrovi').populate('platforme').populate('izdavaci');
+
+            if (!game) {
+                return res.status(404).json('Igra nije pronađena!');
+            }
+
+            return res.ok(game);
         } catch (err) {
             return res.serverError(err);
         }
